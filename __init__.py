@@ -42,6 +42,14 @@ import os
 # UI properties
 class GI_SceneProperties(PropertyGroup):
         
+    # User Settings
+    midi_file: StringProperty(
+        name="MIDI File",
+        description="Music file you want to import",
+        subtype = 'FILE_PATH'
+        )
+
+    # MIDI Keys
     obj_c: PointerProperty(
         name="C",
         description="Object to be controlled",
@@ -117,7 +125,7 @@ class GI_SceneProperties(PropertyGroup):
 # UI Panel
 class GI_GamepadInputPanel(bpy.types.Panel):
     """Creates a Panel in the scene context of the properties editor"""
-    bl_category = "MIDI"
+    bl_category = "MIDI Import"
     bl_label = "MIDI Importer"
     bl_idname = "SCENE_PT_gamepad"
     bl_space_type = 'VIEW_3D'
@@ -129,8 +137,13 @@ class GI_GamepadInputPanel(bpy.types.Panel):
 
         scene = context.scene
         gamepad_props = scene.gamepad_props
-
+        
         row = layout.row()
+        row.operator("wm.install_midi")
+
+        layout.label(text="Controls")
+        row = layout.row()
+        row.prop(gamepad_props, "midi_file")
 
         layout.label(text="Controls")
         row = layout.row()
@@ -156,12 +169,31 @@ class GI_GamepadInputPanel(bpy.types.Panel):
         row = layout.row()
         row.prop(gamepad_props, "obj_asharp")
 
+class GI_install_midi(bpy.types.Operator):
+    """Test function for gamepads"""
+    bl_idname = "wm.install_midi"
+    bl_label = "Install dependencies"
+    bl_description = "Installs necessary Python modules for handling MIDI files"
+
+    def execute(self, context: bpy.types.Context):
+
+        print("Installing MIDI library...") 
+        python_exe = os.path.join(sys.prefix, 'bin', 'python.exe')
+        target = os.path.join(sys.prefix, 'lib', 'site-packages')
+
+        subprocess.call([python_exe, '-m', 'ensurepip'])
+        subprocess.call([python_exe, '-m', 'pip', 'install', '--upgrade', 'pip'])
+
+        subprocess.call([python_exe, '-m', 'pip', 'install', '--upgrade', 'mido', '-t', target])
+
+        return {"FINISHED"}
 
 
 # Load/unload addon into Blender
 classes = (
     GI_SceneProperties,
     GI_GamepadInputPanel,
+    GI_install_midi
 )
 
 def register():

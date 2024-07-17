@@ -35,6 +35,10 @@ import subprocess
 import sys
 import os
 
+# Constants
+
+midi_note_map = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
+
 # ------------------------------------------------------------------------
 #    Scene Properties
 # ------------------------------------------------------------------------
@@ -141,11 +145,14 @@ class GI_GamepadInputPanel(bpy.types.Panel):
         row = layout.row()
         row.operator("wm.install_midi")
 
-        layout.label(text="Controls")
+        layout.label(text="Settings")
         row = layout.row()
         row.prop(gamepad_props, "midi_file")
+        row = layout.row()
+        row.operator("wm.generate_keyframes")
 
-        layout.label(text="Controls")
+
+        layout.label(text="Piano Keys")
         row = layout.row()
         row.prop(gamepad_props, "obj_c")
         row = layout.row()
@@ -187,13 +194,61 @@ class GI_install_midi(bpy.types.Operator):
         subprocess.call([python_exe, '-m', 'pip', 'install', '--upgrade', 'mido', '-t', target])
 
         return {"FINISHED"}
+    
+    
+class GI_generate_keyframes(bpy.types.Operator):
+    """Test function for gamepads"""
+    bl_idname = "wm.generate_keyframes"
+    bl_label = "Generate keyframes"
+    bl_description = "Creates keyframes using MIDI file and assigned objects"
+
+    def execute(self, context: bpy.types.Context):
+
+
+        midi_file_path = context.scene.gamepad_props.midi_file
+
+        # Check input and ensure it's actually MIDI
+        print("Checking if it's a MIDI file")
+        is_midi_file = ".mid" in midi_file_path
+        # TODO: Return error to user somehow??
+        if not is_midi_file:
+            return {"FINISHED"}
+            
+        # Import the MIDI file
+        print("Loading MIDI file...") 
+        from mido import MidiFile
+
+        mid = MidiFile(midi_file_path)
+        
+
+        # Loop over each MIDI track
+        for i, track in enumerate(mid.tracks):
+            print('Track {}: {}'.format(i, track.name))
+            # Loop over each note in the track
+            for msg in track:
+                # mido returns "metadata" embedded alongside music
+                # we don't need so we filter out
+                if not msg.is_meta:
+                    print(msg)
+                    # Get the octave
+                    octave = round(msg.note / 12)
+
+                    # Figure out the actual note "letter" (e.g. C, C#, etc)
+                    # MIDI note number = current octave * 12 + the note index (0-11)
+                    octave_offset = octave * 12
+                    note_index = msg.note - octave_offset
+                    note_letter = midi_note_map[note_index]
+                    print("Note: {}{}".format(note_letter, octave))
+
+        return {"FINISHED"}
 
 
 # Load/unload addon into Blender
 classes = (
     GI_SceneProperties,
     GI_GamepadInputPanel,
-    GI_install_midi
+    GI_install_midi,
+    GI_generate_keyframes
 )
 
 def register():

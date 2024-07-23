@@ -324,9 +324,7 @@ class GI_generate_keyframes(bpy.types.Operator):
         # Figure out total time
         # We basically loop over every note in the selected track
         # and add up the time!
-
         for msg in mid.tracks[int(selected_track)]:
-            print('Note {}'.format(msg))
             total_time += msg.time
             
         
@@ -334,7 +332,8 @@ class GI_generate_keyframes(bpy.types.Operator):
         for msg in mid.tracks[int(selected_track)]:
             # mido returns "metadata" embedded alongside music
             # we don't need so we filter out
-            if not msg.is_meta:
+            is_note = True if msg.type == "note_on" or msg.type == "note_off" else False
+            if not msg.is_meta and is_note:
                 print(msg.type)
                 pressed = True if msg.type == "note_on" else False
                 released = True if msg.type == "note_off" else False
@@ -369,7 +368,6 @@ class GI_generate_keyframes(bpy.types.Operator):
                 move_distance = 1 if pressed else 0
                 # move_distance = 0 if released else move_distance
                 move_obj.location.z = move_distance
-                print("move distance {} {}".format(pressed, move_distance))
 
                 # Create keyframes
                 move_obj.keyframe_insert(data_path="location", frame=current_frame)

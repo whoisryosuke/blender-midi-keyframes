@@ -44,18 +44,17 @@ midi_note_map = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"
 # ------------------------------------------------------------------------
 
 def selected_track_enum_callback(scene, context):
+    selected_tracks_raw = []
     gamepad_props = context.scene.gamepad_props
     midi_file_path = gamepad_props.midi_file
 
     # Check input and ensure it's actually MIDI
-    print("Checking if it's a MIDI file")
     is_midi_file = ".mid" in midi_file_path
     # TODO: Return error to user somehow??
     if not is_midi_file:
-        return {"FINISHED"}
+        return selected_tracks_raw
         
     # Import the MIDI file
-    print("Loading MIDI file...") 
     from mido import MidiFile
 
     mid = MidiFile(midi_file_path)
@@ -67,11 +66,9 @@ def selected_track_enum_callback(scene, context):
     scene_end_frame = context.scene.frame_end
     total_frames = scene_end_frame - scene_start_frame
     
-    selected_tracks_raw = []
 
     # Determine active track
     for i, track in enumerate(mid.tracks):
-        print('Track {}: {}'.format(i, track))
         # Loop over each note in the track
         for msg in track:
             if not msg.is_meta:
@@ -79,7 +76,7 @@ def selected_track_enum_callback(scene, context):
                 selected_tracks_raw.insert(len(selected_tracks_raw), ("{}".format(i), "Track {}".format(i), ""))
                 break;
 
-    print(selected_tracks_raw)
+    # print(selected_tracks_raw)
 
     return selected_tracks_raw
 
@@ -317,60 +314,65 @@ class GI_generate_keyframes(bpy.types.Operator):
 
         # Setup time for track
         time = 0
+        total_time = 0
         # current_frame = context.scene.frame_current
         scene_start_frame = context.scene.frame_start
         scene_end_frame = context.scene.frame_end
         total_frames = scene_end_frame - scene_start_frame
-
-        # Determine active track
-
+        selected_track = gamepad_props.selected_track
 
         # Figure out total time
         # We basically loop over every note in the selected track
         # and add up the time!
+
+        for msg in mid.tracks[int(selected_track)]:
+            print('Note {}'.format(msg))
+            total_time += msg.time
+            
         
         # Loop over each MIDI track
-        for i, track in enumerate(mid.tracks):
-            print('Track {}: {}'.format(i, track))
-            # Loop over each note in the track
-            for msg in track:
-                # mido returns "metadata" embedded alongside music
-                # we don't need so we filter out
-                if not msg.is_meta:
-                    print(msg)
-                    # Get the octave
-                    octave = round(msg.note / 12)
+        for msg in mid.tracks[int(selected_track)]:
+            # mido returns "metadata" embedded alongside music
+            # we don't need so we filter out
+            if not msg.is_meta:
+                print(msg.type)
+                pressed = True if msg.type == "note_on" else False
+                released = True if msg.type == "note_off" else False
 
-                    # Figure out the actual note "letter" (e.g. C, C#, etc)
-                    # MIDI note number = current octave * 12 + the note index (0-11)
-                    octave_offset = octave * 12
-                    note_index = msg.note - octave_offset
-                    note_letter = midi_note_map[note_index]
-                    print("Note: {}{}".format(note_letter, octave))
-                    
-                    # Increment time
-                    time += msg.time
-                    # Figure out what frame we're on
-                    current_frame = 10
 
-                    # Get the right object corresponding to the note
-                    move_obj = self.get_note_obj(gamepad_props, note_letter)
-
-                    if move_obj == None:
-                        return;
+                # Figure out the actual note "letter" (e.g. C, C#, etc)
+                # Get the octave
+                octave = round(msg.note / 12)
+                # MIDI note number = current octave * 12 + the note index (0-11)
+                octave_offset = octave * 12
+                note_index = msg.note - octave_offset
+                note_letter = midi_note_map[note_index]
+                print("Note: {}{}".format(note_letter, octave))
                 
-                    # Save initial position as previous frame
-                    if not self.pressed[note_letter]:
-                        self.pressed[note_letter] = True
-                        move_obj.keyframe_insert(data_path="location", frame=current_frame - 1)
+                # Increment time
+                time += msg.time
+                # Figure out what frame we're on
+                time_percent = time / total_time
+                current_frame = total_frames * time_percent
 
-                    # Move the object
-                    move_distance = 1 if hasattr(msg, "note_on") else 0
-                    move_obj.location.z += move_distance
+                # Keyframe generation
+                # Get the right object corresponding to the note
+                move_obj = self.get_note_obj(gamepad_props, note_letter)
+                if move_obj == None:
+                    return;
+            
+                # Save initial position as previous frame
+                # if not self.pressed[note_letter]:
+                #     move_obj.keyframe_insert(data_path="location", frame=current_frame - 1)
 
-                    # Create keyframes
-                    move_obj.keyframe_insert(data_path="location", frame=current_frame)
+                # Move the object
+                move_distance = 1 if pressed else 0
+                # move_distance = 0 if released else move_distance
+                move_obj.location.z = move_distance
+                print("move distance {} {}".format(pressed, move_distance))
 
+                # Create keyframes
+                move_obj.keyframe_insert(data_path="location", frame=current_frame)
 
 
         return {"FINISHED"}

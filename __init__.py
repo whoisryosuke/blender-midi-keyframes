@@ -43,14 +43,43 @@ midi_note_map = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"
 #    Scene Properties
 # ------------------------------------------------------------------------
 
+def selected_track_enum_callback(scene, context):
+    items = [
+        ('LOC', "Location", ""),
+        ('ROT', "Rotation", ""),
+        ('SCL', "Scale", ""),
+    ]
+
+    # get selection
+    selection = bpy.context.selected_objects
+
+    # get selection type list
+    selection_types = get_object_type_list(selection)
+
+    if len(selection_types) == 1:
+
+        # check for lamps
+        if selection_types[0] == 'LAMP':
+            items.append(('NRG', "Energy", ""))
+            items.append(('COL', "Color", ""))
+
+    return items
+
 # UI properties
 class GI_SceneProperties(PropertyGroup):
         
     # User Settings
+    
+    # MIDI File data
     midi_file: StringProperty(
         name="MIDI File",
         description="Music file you want to import",
         subtype = 'FILE_PATH'
+        )
+    selected_track:EnumProperty(
+        name="Selected Track",
+        description="The track you want copied to animation frames",
+        items=selected_track_enum_callback
         )
 
     # MIDI Keys
@@ -202,10 +231,52 @@ class GI_generate_keyframes(bpy.types.Operator):
     bl_label = "Generate keyframes"
     bl_description = "Creates keyframes using MIDI file and assigned objects"
 
+    pressed = {
+            "C": False,
+            "C#": False,
+            "D": False,
+            "D#": False,
+            "E": False,
+            "F": False,
+            "F#": False,
+            "G": False,
+            "G#": False,
+            "A": False,
+            "A#": False,
+            "B": False,
+        }
+
+    def get_note_obj(self, gamepad_props, noteLetter):
+        if noteLetter == "C":
+            return gamepad_props.obj_c
+        if noteLetter == "D":
+            return gamepad_props.obj_d
+        if noteLetter == "E":
+            return gamepad_props.obj_e
+        if noteLetter == "F":
+            return gamepad_props.obj_f
+        if noteLetter == "G":
+            return gamepad_props.obj_g
+        if noteLetter == "A":
+            return gamepad_props.obj_a
+        if noteLetter == "B":
+            return gamepad_props.obj_b
+        if noteLetter == "C#":
+            return gamepad_props.obj_csharp
+        if noteLetter == "D#":
+            return gamepad_props.obj_dsharp
+        if noteLetter == "F#":
+            return gamepad_props.obj_fsharp
+        if noteLetter == "G#":
+            return gamepad_props.obj_gsharp
+        if noteLetter == "A#":
+            return gamepad_props.obj_asharp
+
     def execute(self, context: bpy.types.Context):
 
 
-        midi_file_path = context.scene.gamepad_props.midi_file
+        gamepad_props = context.scene.gamepad_props
+        midi_file_path = gamepad_props.midi_file
 
         # Check input and ensure it's actually MIDI
         print("Checking if it's a MIDI file")
@@ -219,11 +290,24 @@ class GI_generate_keyframes(bpy.types.Operator):
         from mido import MidiFile
 
         mid = MidiFile(midi_file_path)
-        
 
+        # Setup time for track
+        time = 0
+        # current_frame = context.scene.frame_current
+        scene_start_frame = context.scene.frame_start
+        scene_end_frame = context.scene.frame_end
+        total_frames = scene_end_frame - scene_start_frame
+
+        # Determine active track
+
+
+        # Figure out total time
+        # We basically loop over every note in the selected track
+        # and add up the time!
+        
         # Loop over each MIDI track
         for i, track in enumerate(mid.tracks):
-            print('Track {}: {}'.format(i, track.name))
+            print('Track {}: {}'.format(i, track))
             # Loop over each note in the track
             for msg in track:
                 # mido returns "metadata" embedded alongside music
@@ -239,6 +323,31 @@ class GI_generate_keyframes(bpy.types.Operator):
                     note_index = msg.note - octave_offset
                     note_letter = midi_note_map[note_index]
                     print("Note: {}{}".format(note_letter, octave))
+                    
+                    # Increment time
+                    time += msg.time
+                    # Figure out what frame we're on
+                    current_frame = 10
+
+                    # Get the right object corresponding to the note
+                    move_obj = self.get_note_obj(gamepad_props, note_letter)
+
+                    if move_obj == None:
+                        return;
+                
+                    # Save initial position as previous frame
+                    if not self.pressed[note_letter]:
+                        self.pressed[note_letter] = True
+                        move_obj.keyframe_insert(data_path="location", frame=current_frame - 1)
+
+                    # Move the object
+                    move_distance = 1 if hasattr(msg, "note_on") else 0
+                    move_obj.location.z += move_distance
+
+                    # Create keyframes
+                    move_obj.keyframe_insert(data_path="location", frame=current_frame)
+
+
 
         return {"FINISHED"}
 

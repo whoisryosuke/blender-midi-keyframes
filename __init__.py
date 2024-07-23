@@ -44,26 +44,44 @@ midi_note_map = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"
 # ------------------------------------------------------------------------
 
 def selected_track_enum_callback(scene, context):
-    items = [
-        ('LOC', "Location", ""),
-        ('ROT', "Rotation", ""),
-        ('SCL', "Scale", ""),
-    ]
+    gamepad_props = context.scene.gamepad_props
+    midi_file_path = gamepad_props.midi_file
 
-    # get selection
-    selection = bpy.context.selected_objects
+    # Check input and ensure it's actually MIDI
+    print("Checking if it's a MIDI file")
+    is_midi_file = ".mid" in midi_file_path
+    # TODO: Return error to user somehow??
+    if not is_midi_file:
+        return {"FINISHED"}
+        
+    # Import the MIDI file
+    print("Loading MIDI file...") 
+    from mido import MidiFile
 
-    # get selection type list
-    selection_types = get_object_type_list(selection)
+    mid = MidiFile(midi_file_path)
 
-    if len(selection_types) == 1:
+    # Setup time for track
+    time = 0
+    # current_frame = context.scene.frame_current
+    scene_start_frame = context.scene.frame_start
+    scene_end_frame = context.scene.frame_end
+    total_frames = scene_end_frame - scene_start_frame
+    
+    selected_tracks_raw = []
 
-        # check for lamps
-        if selection_types[0] == 'LAMP':
-            items.append(('NRG', "Energy", ""))
-            items.append(('COL', "Color", ""))
+    # Determine active track
+    for i, track in enumerate(mid.tracks):
+        print('Track {}: {}'.format(i, track))
+        # Loop over each note in the track
+        for msg in track:
+            if not msg.is_meta:
+                # add to list of tracks
+                selected_tracks_raw.insert(len(selected_tracks_raw), ("{}".format(i), "Track {}".format(i), ""))
+                break;
 
-    return items
+    print(selected_tracks_raw)
+
+    return selected_tracks_raw
 
 # UI properties
 class GI_SceneProperties(PropertyGroup):
@@ -76,6 +94,10 @@ class GI_SceneProperties(PropertyGroup):
         description="Music file you want to import",
         subtype = 'FILE_PATH'
         )
+    selected_tracks_raw: [
+        (0, "Test Track 1", ""),
+        (1, "Test Track 2", ""),
+    ]
     selected_track:EnumProperty(
         name="Selected Track",
         description="The track you want copied to animation frames",
@@ -179,6 +201,8 @@ class GI_GamepadInputPanel(bpy.types.Panel):
         row.prop(gamepad_props, "midi_file")
         row = layout.row()
         row.operator("wm.generate_keyframes")
+        row = layout.row()
+        row.prop(gamepad_props, "selected_track")
 
 
         layout.label(text="Piano Keys")
@@ -350,7 +374,7 @@ class GI_generate_keyframes(bpy.types.Operator):
 
 
         return {"FINISHED"}
-
+    
 
 # Load/unload addon into Blender
 classes = (

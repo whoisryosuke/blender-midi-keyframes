@@ -216,6 +216,8 @@ class GI_GamepadInputPanel(bpy.types.Panel):
         row = layout.row()
         row.prop(gamepad_props, "obj_a")
         row = layout.row()
+        row.prop(gamepad_props, "obj_b")
+        row = layout.row()
         row.prop(gamepad_props, "obj_csharp")
         row = layout.row()
         row.prop(gamepad_props, "obj_dsharp")
@@ -321,20 +323,29 @@ class GI_generate_keyframes(bpy.types.Operator):
         total_frames = scene_end_frame - scene_start_frame
         selected_track = gamepad_props.selected_track
 
-        # Figure out total time
-        # We basically loop over every note in the selected track
-        # and add up the time!
+        # Some MIDI files don't have on/off note press support
+        has_release = False
+
         for msg in mid.tracks[int(selected_track)]:
+            
+            # Figure out total time
+            # We basically loop over every note in the selected track
+            # and add up the time!
             total_time += msg.time
+
+            # We also see if there's any stopping points using `note_off`
+            # If missing - we assume notes are held for 1 second (like 1 block in FLStudio)
+            if msg.type == 'note_off':
+                has_release = True
             
         
         # Loop over each MIDI track
         for msg in mid.tracks[int(selected_track)]:
             # mido returns "metadata" embedded alongside music
             # we don't need so we filter out
+            print(msg.type)
             is_note = True if msg.type == "note_on" or msg.type == "note_off" else False
             if not msg.is_meta and is_note:
-                print(msg.type)
                 pressed = True if msg.type == "note_on" else False
                 released = True if msg.type == "note_off" else False
 
@@ -346,7 +357,7 @@ class GI_generate_keyframes(bpy.types.Operator):
                 octave_offset = octave * 12
                 note_index = msg.note - octave_offset
                 note_letter = midi_note_map[note_index]
-                print("Note: {}{}".format(note_letter, octave))
+                print("Note: {}{} - {}".format(note_letter, octave, msg.type))
                 
                 # Increment time
                 time += msg.time
@@ -358,19 +369,25 @@ class GI_generate_keyframes(bpy.types.Operator):
                 # Get the right object corresponding to the note
                 move_obj = self.get_note_obj(gamepad_props, note_letter)
                 if move_obj == None:
-                    return;
+                    break
             
                 # Save initial position as previous frame
-                # if not self.pressed[note_letter]:
-                #     move_obj.keyframe_insert(data_path="location", frame=current_frame - 1)
+                move_obj.location.z = 0
+                move_obj.keyframe_insert(data_path="location", frame=current_frame - 1)
 
                 # Move the object
                 move_distance = 1 if pressed else 0
-                # move_distance = 0 if released else move_distance
                 move_obj.location.z = move_distance
 
                 # Create keyframes
                 move_obj.keyframe_insert(data_path="location", frame=current_frame)
+
+                # Does the file not have "released" notes? Create one if not
+                # TODO: Figure out proper "hold" time based on time scale
+                if not has_release:
+                    move_obj.location.z = 0
+                    move_obj.keyframe_insert(data_path="location", frame=current_frame + 10)
+
 
 
         return {"FINISHED"}

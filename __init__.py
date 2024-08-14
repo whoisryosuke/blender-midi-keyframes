@@ -38,6 +38,7 @@ import os
 # Constants
 
 midi_note_map = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
+DEFAULT_TEMPO = 500000
 
 # ------------------------------------------------------------------------
 #    Scene Properties
@@ -310,7 +311,7 @@ class GI_generate_keyframes(bpy.types.Operator):
             
         # Import the MIDI file
         print("Loading MIDI file...") 
-        from mido import MidiFile
+        from mido import MidiFile, tick2second
 
         mid = MidiFile(midi_file_path)
 
@@ -321,11 +322,20 @@ class GI_generate_keyframes(bpy.types.Operator):
         scene_start_frame = context.scene.frame_start
         scene_end_frame = context.scene.frame_end
         total_frames = scene_end_frame - scene_start_frame
+        fps = context.scene.render.fps
+        total_time_in_seconds = total_frames / fps
         selected_track = gamepad_props.selected_track
 
         # Some MIDI files don't have on/off note press support
         has_release = False
+        tempo = DEFAULT_TEMPO
 
+        # Get tempo from the first track
+        for msg in mid.tracks[0]:
+            if msg.is_meta and msg.type == 'set_tempo':
+                tempo = msg.tempo
+
+        # Total time
         for msg in mid.tracks[int(selected_track)]:
             
             # Figure out total time
@@ -337,13 +347,18 @@ class GI_generate_keyframes(bpy.types.Operator):
             # If missing - we assume notes are held for 1 second (like 1 block in FLStudio)
             if msg.type == 'note_off':
                 has_release = True
-            
-        
+
+        # Debug - check for meta messages    
+        # for msg in mid.tracks[int(selected_track)]:
+        #     is_note = True if msg.type == "note_on" or msg.type == "note_off" else False
+        #     if not is_note:
+        #         print(msg)
+
         # Loop over each MIDI track
         for msg in mid.tracks[int(selected_track)]:
             # mido returns "metadata" embedded alongside music
             # we don't need so we filter out
-            print(msg.type)
+            # print(msg.type)
             is_note = True if msg.type == "note_on" or msg.type == "note_off" else False
             if not msg.is_meta and is_note:
                 pressed = True if msg.type == "note_on" else False
@@ -357,13 +372,19 @@ class GI_generate_keyframes(bpy.types.Operator):
                 octave_offset = octave * 12
                 note_index = msg.note - octave_offset
                 note_letter = midi_note_map[note_index]
-                print("Note: {}{} - {}".format(note_letter, octave, msg.type))
+                # print("Note: {}{} - {}".format(note_letter, octave, msg.type))
                 
                 # Increment time
                 time += msg.time
                 # Figure out what frame we're on
                 time_percent = time / total_time
                 current_frame = total_frames * time_percent
+                # print("time: {}, current frame: {}".format(time, current_frame))
+                real_time = tick2second(time, mid.ticks_per_beat, tempo)
+
+                print("real time in seconds", real_time)
+
+                real_keyframe = real_time * fps
 
                 # Keyframe generation
                 # Get the right object corresponding to the note
@@ -373,20 +394,20 @@ class GI_generate_keyframes(bpy.types.Operator):
             
                 # Save initial position as previous frame
                 move_obj.location.z = 0
-                move_obj.keyframe_insert(data_path="location", frame=current_frame - 1)
+                move_obj.keyframe_insert(data_path="location", frame=real_keyframe - 1)
 
                 # Move the object
                 move_distance = 1 if pressed else 0
                 move_obj.location.z = move_distance
 
                 # Create keyframes
-                move_obj.keyframe_insert(data_path="location", frame=current_frame)
+                move_obj.keyframe_insert(data_path="location", frame=real_keyframe)
 
                 # Does the file not have "released" notes? Create one if not
                 # TODO: Figure out proper "hold" time based on time scale
                 if not has_release:
                     move_obj.location.z = 0
-                    move_obj.keyframe_insert(data_path="location", frame=current_frame + 10)
+                    move_obj.keyframe_insert(data_path="location", frame=real_keyframe + 10)
 
 
 

@@ -203,7 +203,9 @@ class GI_GamepadInputPanel(bpy.types.Panel):
         row = layout.row()
         row.prop(gamepad_props, "midi_file")
         row = layout.row()
-        row.operator("wm.generate_keyframes")
+        row.operator("wm.generate_piano_animation")
+        row = layout.row()
+        row.operator("wm.generate_jumping_animation")
         row = layout.row()
         row.prop(gamepad_props, "selected_track")
 
@@ -348,6 +350,9 @@ class ParsedMidiFile:
         fps = context.scene.render.fps
         time = 0
 
+        last_keyframe = 0
+        last_note = None
+
 
         # Loop over each MIDI track
         for msg in self.midi.tracks[int(self.selected_track)]:
@@ -374,57 +379,28 @@ class ParsedMidiFile:
 
                 real_keyframe = real_time * fps
 
-                key_callback(context, note_letter, real_keyframe, pressed, self.has_release)
+                key_callback(context, note_letter, real_keyframe, pressed, self.has_release, last_keyframe, last_note)
 
-class GI_generate_keyframes(bpy.types.Operator):
+                last_keyframe = real_keyframe
+                last_note = note_letter
+
+class GI_generate_piano_animation(bpy.types.Operator):
     """Test function for gamepads"""
-    bl_idname = "wm.generate_keyframes"
-    bl_label = "Generate keyframes"
-    bl_description = "Creates keyframes using MIDI file and assigned objects"
-
-    pressed = {
-            "C": False,
-            "C#": False,
-            "D": False,
-            "D#": False,
-            "E": False,
-            "F": False,
-            "F#": False,
-            "G": False,
-            "G#": False,
-            "A": False,
-            "A#": False,
-            "B": False,
-        }
+    bl_idname = "wm.generate_piano_animation"
+    bl_label = "Piano Key Animation"
+    bl_description = "Creates keyframes on piano key objects to simulate playback"
 
     def execute(self, context: bpy.types.Context):
-
-
         gamepad_props = context.scene.gamepad_props
         midi_file_path = gamepad_props.midi_file
-
-        check_for_midi_file(context)
-
-        # Setup time for track
-        time = 0
-        # current_frame = context.scene.frame_current
-        scene_start_frame = context.scene.frame_start
-        scene_end_frame = context.scene.frame_end
-        total_frames = scene_end_frame - scene_start_frame
-        fps = context.scene.render.fps
-        total_time_in_seconds = total_frames / fps
         selected_track = gamepad_props.selected_track
 
-            
+        # Is it a MIDI file? If not, bail early
+        check_for_midi_file(context)
+
         # Import the MIDI file
         print("Parsing MIDI file...") 
-        from mido import tick2second
-
         midi_file = ParsedMidiFile(midi_file_path, selected_track)
-        # Some MIDI files don't have on/off note press support
-        has_release = midi_file.has_release
-        tempo = midi_file.tempo
-        total_time = midi_file.total_time
 
         # Debug - check for meta messages    
         # for msg in mid.tracks[int(selected_track)]:
@@ -432,11 +408,49 @@ class GI_generate_keyframes(bpy.types.Operator):
         #     if not is_note:
         #         print(msg)
 
+        # Loop over each music note and animate corresponding keys
         midi_file.for_each_key(context, animate_keys)
 
         return {"FINISHED"}
 
-def animate_keys(context, note_letter, real_keyframe, pressed, has_release):
+class GI_generate_jumping_animation(bpy.types.Operator):
+    """Test function for gamepads"""
+    bl_idname = "wm.generate_jumping_animation"
+    bl_label = "Jumping Animation"
+    bl_description = "Creates keyframes on Jump object animating between keys"
+
+    def execute(self, context: bpy.types.Context):
+        gamepad_props = context.scene.gamepad_props
+        midi_file_path = gamepad_props.midi_file
+        selected_track = gamepad_props.selected_track
+
+        # Is it a MIDI file? If not, bail early
+        check_for_midi_file(context)
+
+        # Do we have an object to move?
+        if gamepad_props.obj_jump == None:
+            return;
+
+        # Import the MIDI file
+        print("Parsing MIDI file...") 
+        midi_file = ParsedMidiFile(midi_file_path, selected_track)
+
+        # Debug - check for meta messages    
+        # for msg in mid.tracks[int(selected_track)]:
+        #     is_note = True if msg.type == "note_on" or msg.type == "note_off" else False
+        #     if not is_note:
+        #         print(msg)
+
+        # Save initial keyframe
+        gamepad_props.obj_jump.keyframe_insert(data_path="location", frame=0)
+
+        # Loop over each music note and animate corresponding keys
+        midi_file.for_each_key(context, animate_jump)
+
+        return {"FINISHED"}
+
+# Animates objects up and down like piano keys
+def animate_keys(context, note_letter, real_keyframe, pressed, has_release, prev_keyframe, prev_note):
     gamepad_props = context.scene.gamepad_props
     # Keyframe generation
     # Get the right object corresponding to the note
@@ -461,13 +475,50 @@ def animate_keys(context, note_letter, real_keyframe, pressed, has_release):
         move_obj.location.z = 0
         move_obj.keyframe_insert(data_path="location", frame=real_keyframe + 10)
 
+# Animates an object to "jump" between keys
+def animate_jump(context, note_letter, real_keyframe, pressed, has_release, prev_keyframe, prev_note):
+    gamepad_props = context.scene.gamepad_props
+    # Keyframe generation
+    # Get the right object corresponding to the note
+    piano_key = get_note_obj(gamepad_props, note_letter)
+    if piano_key == None:
+        return
+    
+    move_obj = gamepad_props.obj_jump
+
+    if pressed:
+        piano_key_world_pos = piano_key.matrix_world.to_translation()
+
+        # Create jumping keyframes in between
+        if prev_note != None:
+            frame_between = int((real_keyframe - prev_keyframe) / 2) + prev_keyframe
+            print("Jumping!!: {} {} {}".format(real_keyframe, prev_keyframe, frame_between))
+            prev_piano_key = get_note_obj(gamepad_props, prev_note)
+            prev_piano_key_world_pos = prev_piano_key.matrix_world.to_translation()
+            move_obj.location.x = (prev_piano_key_world_pos.x - piano_key_world_pos.x) / 2
+            move_obj.location.z += 1
+            move_obj.keyframe_insert(data_path="location", frame=frame_between)
+            print("Moving back down")
+            # Place it back down
+            move_obj.location.z -= 1
+
+
+        # Move object to current key (the "down" moment)
+        print("pressed keyframe: {}".format(real_keyframe))
+        # print("Setting jump keyframe: {} {}".format(piano_key.location.x, str(mathutils.Matrix.decompose(piano_key.matrix_world)[0])))
+        # print("Setting jump keyframe: {} {}".format(note_letter, piano_key_world_pos.x))
+        move_obj.location.x = piano_key_world_pos.x
+        move_obj.keyframe_insert(data_path="location", frame=real_keyframe)
+
+
 
 # Load/unload addon into Blender
 classes = (
     GI_SceneProperties,
     GI_GamepadInputPanel,
     GI_install_midi,
-    GI_generate_keyframes
+    GI_generate_piano_animation,
+    GI_generate_jumping_animation
 )
 
 def register():

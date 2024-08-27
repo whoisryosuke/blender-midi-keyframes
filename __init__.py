@@ -266,6 +266,10 @@ class GI_GamepadInputPanel(bpy.types.Panel):
         row = layout.row()
         row.prop(gamepad_props, "obj_jump")
 
+        layout.label(text="Danger Zone")
+        row = layout.row()
+        row.operator("wm.delete_all_keyframes")
+
 class GI_install_midi(bpy.types.Operator):
     """Test function for gamepads"""
     bl_idname = "wm.install_midi"
@@ -477,6 +481,23 @@ class GI_generate_piano_animation(bpy.types.Operator):
 
         return {"FINISHED"}
 
+class GI_delete_all_keyframes(bpy.types.Operator):
+    """Test function for gamepads"""
+    bl_idname = "wm.delete_all_keyframes"
+    bl_label = "Delete All Keyframes"
+    bl_description = "Clears all animation data from assigned key objects"
+
+    def execute(self, context: bpy.types.Context):
+        gamepad_props = context.scene.gamepad_props
+
+        for note_letter in midi_note_map:
+            note_obj = get_note_obj(gamepad_props, note_letter)
+            if note_obj == None:
+                return
+            note_obj.animation_data_clear()
+
+        return {"FINISHED"}
+
 class GI_assign_keys(bpy.types.Operator):
     """Test function for gamepads"""
     bl_idname = "wm.assign_keys"
@@ -620,7 +641,8 @@ classes = (
     GI_install_midi,
     GI_generate_piano_animation,
     GI_generate_jumping_animation,
-    GI_assign_keys
+    GI_assign_keys,
+    GI_delete_all_keyframes
 )
 
 def register():

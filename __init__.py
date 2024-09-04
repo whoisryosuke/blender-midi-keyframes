@@ -431,7 +431,7 @@ class ParsedMidiFile:
                 # print("time: {}, current frame: {}".format(time, current_frame))
                 real_time = tick2second(time, self.midi.ticks_per_beat, self.tempo)
 
-                print("real time in seconds", real_time)
+                # print("real time in seconds", real_time)
 
                 real_keyframe = (real_time * fps) + 1
 
@@ -614,19 +614,21 @@ def animate_jump(context, note_letter, real_keyframe, pressed, has_release, prev
         # Create jumping keyframes in between
         if prev_note != None:
             frame_between = int((real_keyframe - prev_keyframe) / 2) + prev_keyframe
-            print("Jumping!!: {} {} {}".format(real_keyframe, prev_keyframe, frame_between))
+            # print("Jumping!!: {} {} {}".format(real_keyframe, prev_keyframe, frame_between))
             prev_piano_key = get_note_obj(gamepad_props, prev_note)
             prev_piano_key_world_pos = prev_piano_key.matrix_world.to_translation()
-            move_obj.location.x = (prev_piano_key_world_pos.x - piano_key_world_pos.x) / 2
-            move_obj.location.z += 1
+            middle_distance_x = (piano_key_world_pos.x - prev_piano_key_world_pos.x)
+            move_obj.location.x = prev_piano_key_world_pos.x + middle_distance_x
+            print("middle point x", prev_piano_key_world_pos.x + middle_distance_x)
+            move_obj.location.z += gamepad_props.travel_distance
             move_obj.keyframe_insert(data_path="location", frame=frame_between)
-            print("Moving back down")
+            print("Moving back down", note_letter, prev_note, prev_piano_key.name, prev_piano_key.location, prev_piano_key_world_pos.x, piano_key_world_pos.x)
             # Place it back down
-            move_obj.location.z -= 1
+            move_obj.location.z -= gamepad_props.travel_distance
 
 
         # Move object to current key (the "down" moment)
-        print("pressed keyframe: {}".format(real_keyframe))
+        # print("pressed keyframe: {}".format(real_keyframe))
         # print("Setting jump keyframe: {} {}".format(piano_key.location.x, str(mathutils.Matrix.decompose(piano_key.matrix_world)[0])))
         # print("Setting jump keyframe: {} {}".format(note_letter, piano_key_world_pos.x))
         move_obj.location.x = piano_key_world_pos.x

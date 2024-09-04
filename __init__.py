@@ -74,7 +74,7 @@ def selected_track_enum_callback(scene, context):
         for msg in track:
             if not msg.is_meta:
                 # add to list of tracks
-                selected_tracks_raw.insert(len(selected_tracks_raw), ("{}".format(i), "Track {}".format(i), ""))
+                selected_tracks_raw.insert(len(selected_tracks_raw), ("{}".format(i), "Track {} {}".format(i, track.name), ""))
                 break;
 
     # print(selected_tracks_raw)

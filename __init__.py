@@ -40,12 +40,17 @@ import os
 midi_note_map = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 DEFAULT_TEMPO = 500000
 
+# Global state
+midi_file_loaded = ""
+selected_tracks_raw = []
+
 # ------------------------------------------------------------------------
 #    Scene Properties
 # ------------------------------------------------------------------------
 
 def selected_track_enum_callback(scene, context):
-    selected_tracks_raw = []
+    global midi_file_loaded, selected_tracks_raw
+
     gamepad_props = context.scene.gamepad_props
     midi_file_path = gamepad_props.midi_file
 
@@ -53,14 +58,20 @@ def selected_track_enum_callback(scene, context):
     is_midi_file = ".mid" in midi_file_path
     # TODO: Return error to user somehow??
     if not is_midi_file:
-        return selected_tracks_raw
+        return []
         
+
+    # Have we already scanned this file? Check the "cache"
+    if midi_file_loaded == midi_file_path:
+        return selected_tracks_raw
+
     # Import the MIDI file
     from mido import MidiFile
 
     mid = MidiFile(midi_file_path)
 
     # Setup time for track
+    selected_tracks_raw = []
     time = 0
     # current_frame = context.scene.frame_current
     scene_start_frame = context.scene.frame_start
@@ -79,6 +90,9 @@ def selected_track_enum_callback(scene, context):
 
     # print(selected_tracks_raw)
 
+    # Mark this MIDI file as "cached"
+    midi_file_loaded = midi_file_path
+    
     return selected_tracks_raw
 
 # UI properties
@@ -92,15 +106,12 @@ class GI_SceneProperties(PropertyGroup):
         description="Music file you want to import",
         subtype = 'FILE_PATH'
         )
-    selected_tracks_raw: [
-        (0, "Test Track 1", ""),
-        (1, "Test Track 2", ""),
-    ]
     selected_track:EnumProperty(
         name="Selected Track",
         description="The track you want copied to animation frames",
         items=selected_track_enum_callback
         )
+    midi_file_loaded = ""
     
     # Animation toggles
     travel_distance: FloatProperty(

@@ -51,8 +51,8 @@ selected_tracks_raw = []
 def selected_track_enum_callback(scene, context):
     global midi_file_loaded, selected_tracks_raw
 
-    gamepad_props = context.scene.gamepad_props
-    midi_file_path = gamepad_props.midi_file
+    midi_keyframe_props = context.scene.midi_keyframe_props
+    midi_file_path = midi_keyframe_props.midi_file
 
     # Check input and ensure it's actually MIDI
     is_midi_file = ".mid" in midi_file_path
@@ -223,14 +223,14 @@ class GI_GamepadInputPanel(bpy.types.Panel):
         layout = self.layout
 
         scene = context.scene
-        gamepad_props = scene.gamepad_props
+        midi_keyframe_props = scene.midi_keyframe_props
         
         row = layout.row()
         row.operator("wm.install_midi")
 
         layout.label(text="Settings")
         row = layout.row()
-        row.prop(gamepad_props, "midi_file")
+        row.prop(midi_keyframe_props, "midi_file")
         row = layout.row()
         row.operator("wm.assign_keys")
         row = layout.row()
@@ -238,44 +238,44 @@ class GI_GamepadInputPanel(bpy.types.Panel):
         row = layout.row()
         row.operator("wm.generate_jumping_animation")
         row = layout.row()
-        row.prop(gamepad_props, "selected_track")
+        row.prop(midi_keyframe_props, "selected_track")
 
 
         layout.label(text="Animation Settings")
         row = layout.row()
-        row.prop(gamepad_props, "travel_distance")
+        row.prop(midi_keyframe_props, "travel_distance")
         row = layout.row()
-        row.prop(gamepad_props, "rotate_object")
+        row.prop(midi_keyframe_props, "rotate_object")
 
         layout.label(text="Piano Keys")
         row = layout.row()
-        row.prop(gamepad_props, "obj_c")
+        row.prop(midi_keyframe_props, "obj_c")
         row = layout.row()
-        row.prop(gamepad_props, "obj_d")
+        row.prop(midi_keyframe_props, "obj_d")
         row = layout.row()
-        row.prop(gamepad_props, "obj_e")
+        row.prop(midi_keyframe_props, "obj_e")
         row = layout.row()
-        row.prop(gamepad_props, "obj_f")
+        row.prop(midi_keyframe_props, "obj_f")
         row = layout.row()
-        row.prop(gamepad_props, "obj_g")
+        row.prop(midi_keyframe_props, "obj_g")
         row = layout.row()
-        row.prop(gamepad_props, "obj_a")
+        row.prop(midi_keyframe_props, "obj_a")
         row = layout.row()
-        row.prop(gamepad_props, "obj_b")
+        row.prop(midi_keyframe_props, "obj_b")
         row = layout.row()
-        row.prop(gamepad_props, "obj_csharp")
+        row.prop(midi_keyframe_props, "obj_csharp")
         row = layout.row()
-        row.prop(gamepad_props, "obj_dsharp")
+        row.prop(midi_keyframe_props, "obj_dsharp")
         row = layout.row()
-        row.prop(gamepad_props, "obj_fsharp")
+        row.prop(midi_keyframe_props, "obj_fsharp")
         row = layout.row()
-        row.prop(gamepad_props, "obj_gsharp")
+        row.prop(midi_keyframe_props, "obj_gsharp")
         row = layout.row()
-        row.prop(gamepad_props, "obj_asharp")
+        row.prop(midi_keyframe_props, "obj_asharp")
 
         layout.label(text="Other Objects")
         row = layout.row()
-        row.prop(gamepad_props, "obj_jump")
+        row.prop(midi_keyframe_props, "obj_jump")
 
         layout.label(text="Danger Zone")
         row = layout.row()
@@ -301,61 +301,61 @@ class GI_install_midi(bpy.types.Operator):
         return {"FINISHED"}
     
 # Shared helper functions
-def get_note_obj(gamepad_props, noteLetter):
+def get_note_obj(midi_keyframe_props, noteLetter):
     if noteLetter == "C":
-        return gamepad_props.obj_c
+        return midi_keyframe_props.obj_c
     if noteLetter == "D":
-        return gamepad_props.obj_d
+        return midi_keyframe_props.obj_d
     if noteLetter == "E":
-        return gamepad_props.obj_e
+        return midi_keyframe_props.obj_e
     if noteLetter == "F":
-        return gamepad_props.obj_f
+        return midi_keyframe_props.obj_f
     if noteLetter == "G":
-        return gamepad_props.obj_g
+        return midi_keyframe_props.obj_g
     if noteLetter == "A":
-        return gamepad_props.obj_a
+        return midi_keyframe_props.obj_a
     if noteLetter == "B":
-        return gamepad_props.obj_b
+        return midi_keyframe_props.obj_b
     if noteLetter == "C#":
-        return gamepad_props.obj_csharp
+        return midi_keyframe_props.obj_csharp
     if noteLetter == "D#":
-        return gamepad_props.obj_dsharp
+        return midi_keyframe_props.obj_dsharp
     if noteLetter == "F#":
-        return gamepad_props.obj_fsharp
+        return midi_keyframe_props.obj_fsharp
     if noteLetter == "G#":
-        return gamepad_props.obj_gsharp
+        return midi_keyframe_props.obj_gsharp
     if noteLetter == "A#":
-        return gamepad_props.obj_asharp
+        return midi_keyframe_props.obj_asharp
     
-def replace_note_obj(gamepad_props, noteLetter, new_obj):
+def replace_note_obj(midi_keyframe_props, noteLetter, new_obj):
     if noteLetter == "C":
-        gamepad_props.obj_c = new_obj
+        midi_keyframe_props.obj_c = new_obj
     if noteLetter == "D":
-        gamepad_props.obj_d = new_obj
+        midi_keyframe_props.obj_d = new_obj
     if noteLetter == "E":
-        gamepad_props.obj_e = new_obj
+        midi_keyframe_props.obj_e = new_obj
     if noteLetter == "F":
-        gamepad_props.obj_f = new_obj
+        midi_keyframe_props.obj_f = new_obj
     if noteLetter == "G":
-        gamepad_props.obj_g = new_obj
+        midi_keyframe_props.obj_g = new_obj
     if noteLetter == "A":
-        gamepad_props.obj_a = new_obj
+        midi_keyframe_props.obj_a = new_obj
     if noteLetter == "B":
-        gamepad_props.obj_b = new_obj
+        midi_keyframe_props.obj_b = new_obj
     if noteLetter == "C#":
-        gamepad_props.obj_csharp = new_obj
+        midi_keyframe_props.obj_csharp = new_obj
     if noteLetter == "D#":
-        gamepad_props.obj_dsharp = new_obj
+        midi_keyframe_props.obj_dsharp = new_obj
     if noteLetter == "F#":
-        gamepad_props.obj_fsharp = new_obj
+        midi_keyframe_props.obj_fsharp = new_obj
     if noteLetter == "G#":
-        gamepad_props.obj_gsharp = new_obj
+        midi_keyframe_props.obj_gsharp = new_obj
     if noteLetter == "A#":
-        gamepad_props.obj_asharp = new_obj
+        midi_keyframe_props.obj_asharp = new_obj
 
 def check_for_midi_file(context):
-        gamepad_props = context.scene.gamepad_props
-        midi_file_path = gamepad_props.midi_file
+        midi_keyframe_props = context.scene.midi_keyframe_props
+        midi_file_path = midi_keyframe_props.midi_file
 
         # Check input and ensure it's actually MIDI
         print("Checking if it's a MIDI file")
@@ -458,9 +458,9 @@ class GI_generate_piano_animation(bpy.types.Operator):
     bl_description = "Creates keyframes on piano key objects to simulate playback"
 
     def execute(self, context: bpy.types.Context):
-        gamepad_props = context.scene.gamepad_props
-        midi_file_path = gamepad_props.midi_file
-        selected_track = gamepad_props.selected_track
+        midi_keyframe_props = context.scene.midi_keyframe_props
+        midi_file_path = midi_keyframe_props.midi_file
+        selected_track = midi_keyframe_props.selected_track
 
         # Is it a MIDI file? If not, bail early
         check_for_midi_file(context)
@@ -478,13 +478,13 @@ class GI_generate_piano_animation(bpy.types.Operator):
         # Get initial positions for each key
         for note_letter in midi_note_map:
             # Get the right object corresponding to the note
-            move_obj = get_note_obj(gamepad_props, note_letter)
+            move_obj = get_note_obj(midi_keyframe_props, note_letter)
             if move_obj == None:
                 return
-            if gamepad_props.rotate_object:
-                gamepad_props.initial_positions[note_letter] = move_obj.rotation_euler.x
+            if midi_keyframe_props.rotate_object:
+                midi_keyframe_props.initial_positions[note_letter] = move_obj.rotation_euler.x
             else:
-                gamepad_props.initial_positions[note_letter] = move_obj.location.z
+                midi_keyframe_props.initial_positions[note_letter] = move_obj.location.z
             
             
         # Loop over each music note and animate corresponding keys
@@ -499,10 +499,10 @@ class GI_delete_all_keyframes(bpy.types.Operator):
     bl_description = "Clears all animation data from assigned key objects"
 
     def execute(self, context: bpy.types.Context):
-        gamepad_props = context.scene.gamepad_props
+        midi_keyframe_props = context.scene.midi_keyframe_props
 
         for note_letter in midi_note_map:
-            note_obj = get_note_obj(gamepad_props, note_letter)
+            note_obj = get_note_obj(midi_keyframe_props, note_letter)
             if note_obj == None:
                 return
             note_obj.animation_data_clear()
@@ -516,7 +516,7 @@ class GI_assign_keys(bpy.types.Operator):
     bl_description = "Finds piano keys in currently selected collection"
 
     def execute(self, context: bpy.types.Context):
-        gamepad_props = context.scene.gamepad_props
+        midi_keyframe_props = context.scene.midi_keyframe_props
 
         for check_obj in context.collection.all_objects:
             obj_name_split = check_obj.name.split(".")
@@ -525,7 +525,7 @@ class GI_assign_keys(bpy.types.Operator):
                 if note == obj_name_key:
                     print("Found a note obj!")
                     print(note)
-                    replace_note_obj(gamepad_props, note, check_obj)
+                    replace_note_obj(midi_keyframe_props, note, check_obj)
 
         return {"FINISHED"}
 
@@ -536,15 +536,15 @@ class GI_generate_jumping_animation(bpy.types.Operator):
     bl_description = "Creates keyframes on Jump object animating between keys"
 
     def execute(self, context: bpy.types.Context):
-        gamepad_props = context.scene.gamepad_props
-        midi_file_path = gamepad_props.midi_file
-        selected_track = gamepad_props.selected_track
+        midi_keyframe_props = context.scene.midi_keyframe_props
+        midi_file_path = midi_keyframe_props.midi_file
+        selected_track = midi_keyframe_props.selected_track
 
         # Is it a MIDI file? If not, bail early
         check_for_midi_file(context)
 
         # Do we have an object to move?
-        if gamepad_props.obj_jump == None:
+        if midi_keyframe_props.obj_jump == None:
             return;
 
         # Import the MIDI file
@@ -558,7 +558,7 @@ class GI_generate_jumping_animation(bpy.types.Operator):
         #         print(msg)
 
         # Save initial keyframe
-        gamepad_props.obj_jump.keyframe_insert(data_path="location", frame=0)
+        midi_keyframe_props.obj_jump.keyframe_insert(data_path="location", frame=0)
 
         # Loop over each music note and animate corresponding keys
         midi_file.for_each_key(context, animate_jump)
@@ -567,12 +567,12 @@ class GI_generate_jumping_animation(bpy.types.Operator):
 
 # Animates objects up and down like piano keys
 def animate_keys(context, note_letter, real_keyframe, pressed, has_release, prev_keyframe, prev_note):
-    gamepad_props = context.scene.gamepad_props
-    rotate_object = gamepad_props.rotate_object
-    initial_positions = gamepad_props.initial_positions
+    midi_keyframe_props = context.scene.midi_keyframe_props
+    rotate_object = midi_keyframe_props.rotate_object
+    initial_positions = midi_keyframe_props.initial_positions
     # Keyframe generation
     # Get the right object corresponding to the note
-    move_obj = get_note_obj(gamepad_props, note_letter)
+    move_obj = get_note_obj(midi_keyframe_props, note_letter)
     if move_obj == None:
         return
 
@@ -588,12 +588,12 @@ def animate_keys(context, note_letter, real_keyframe, pressed, has_release, prev
     # Move the object
     if rotate_object:
         # Rotation distance is positive for pressing
-        move_distance = gamepad_props.travel_distance + initial_positions[note_letter] if pressed else initial_positions[note_letter]
+        move_distance = midi_keyframe_props.travel_distance + initial_positions[note_letter] if pressed else initial_positions[note_letter]
         move_obj.rotation_euler.x = math.radians(move_distance)
         move_obj.keyframe_insert(data_path="rotation_euler", frame=real_keyframe)
     else:
         # Position distance is negative for pressing (since we're in Z-axis going "down")
-        reverse_direction = gamepad_props.travel_distance * -1
+        reverse_direction = midi_keyframe_props.travel_distance * -1
         move_distance = reverse_direction + initial_positions[note_letter] if pressed else initial_positions[note_letter]
         move_obj.location.z = move_distance
         move_obj.keyframe_insert(data_path="location", frame=real_keyframe)
@@ -610,14 +610,14 @@ def animate_keys(context, note_letter, real_keyframe, pressed, has_release, prev
 
 # Animates an object to "jump" between keys
 def animate_jump(context, note_letter, real_keyframe, pressed, has_release, prev_keyframe, prev_note):
-    gamepad_props = context.scene.gamepad_props
+    midi_keyframe_props = context.scene.midi_keyframe_props
     # Keyframe generation
     # Get the right object corresponding to the note
-    piano_key = get_note_obj(gamepad_props, note_letter)
+    piano_key = get_note_obj(midi_keyframe_props, note_letter)
     if piano_key == None:
         return
     
-    move_obj = gamepad_props.obj_jump
+    move_obj = midi_keyframe_props.obj_jump
 
     if pressed:
         piano_key_world_pos = piano_key.matrix_world.to_translation()
@@ -626,16 +626,16 @@ def animate_jump(context, note_letter, real_keyframe, pressed, has_release, prev
         if prev_note != None:
             frame_between = int((real_keyframe - prev_keyframe) / 2) + prev_keyframe
             # print("Jumping!!: {} {} {}".format(real_keyframe, prev_keyframe, frame_between))
-            prev_piano_key = get_note_obj(gamepad_props, prev_note)
+            prev_piano_key = get_note_obj(midi_keyframe_props, prev_note)
             prev_piano_key_world_pos = prev_piano_key.matrix_world.to_translation()
             middle_distance_x = (piano_key_world_pos.x - prev_piano_key_world_pos.x)
             move_obj.location.x = prev_piano_key_world_pos.x + middle_distance_x
             print("middle point x", prev_piano_key_world_pos.x + middle_distance_x)
-            move_obj.location.z += gamepad_props.travel_distance
+            move_obj.location.z += midi_keyframe_props.travel_distance
             move_obj.keyframe_insert(data_path="location", frame=frame_between)
             print("Moving back down", note_letter, prev_note, prev_piano_key.name, prev_piano_key.location, prev_piano_key_world_pos.x, piano_key_world_pos.x)
             # Place it back down
-            move_obj.location.z -= gamepad_props.travel_distance
+            move_obj.location.z -= midi_keyframe_props.travel_distance
 
 
         # Move object to current key (the "down" moment)
@@ -663,7 +663,7 @@ def register():
     for cls in classes:
         register_class(cls)
 
-    bpy.types.Scene.gamepad_props = PointerProperty(type=GI_SceneProperties)
+    bpy.types.Scene.midi_keyframe_props = PointerProperty(type=GI_SceneProperties)
 
 def unregister():
     from bpy.utils import unregister_class

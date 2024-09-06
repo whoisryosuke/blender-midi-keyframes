@@ -289,7 +289,7 @@ class GI_GamepadInputPanel(bpy.types.Panel):
 
         layout.label(text="Danger Zone")
         row = layout.row()
-        row.operator("wm.delete_all_keyframes")
+        row.operator("wm.delete_all_keyframes", icon="TRASH")
 
 class GI_install_midi(bpy.types.Operator):
     """Test function for gamepads"""
@@ -504,11 +504,15 @@ class GI_generate_piano_animation(bpy.types.Operator):
         return {"FINISHED"}
 
 class GI_delete_all_keyframes(bpy.types.Operator):
-    """Test function for gamepads"""
+    """Deletes all keyframes with confirm dialog"""
     bl_idname = "wm.delete_all_keyframes"
     bl_label = "Delete All Keyframes"
     bl_description = "Clears all animation data from assigned key objects"
+    bl_options = {'REGISTER', 'INTERNAL'}
 
+    @classmethod
+    def poll(cls, context):
+        return True
     def execute(self, context: bpy.types.Context):
         midi_keyframe_props = context.scene.midi_keyframe_props
 
@@ -519,6 +523,8 @@ class GI_delete_all_keyframes(bpy.types.Operator):
             note_obj.animation_data_clear()
 
         return {"FINISHED"}
+    def invoke(self, context, event):
+        return context.window_manager.invoke_confirm(self, event)
 
 class GI_assign_keys(bpy.types.Operator):
     """Test function for gamepads"""

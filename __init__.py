@@ -126,6 +126,14 @@ class GI_SceneProperties(PropertyGroup):
         description="Rotate piano keys instead of moving position down",
         default = False
         )
+    axis: EnumProperty(
+        name="Axis",
+        description="Axis that gets animated",
+        items=[ ('0', "X", ""),
+                ('1', "Y", ""),
+                ('2', "Z", ""),
+              ]
+        )
 
 
     # MIDI Keys
@@ -246,6 +254,8 @@ class GI_GamepadInputPanel(bpy.types.Panel):
         row.prop(midi_keyframe_props, "travel_distance")
         row = layout.row()
         row.prop(midi_keyframe_props, "rotate_object")
+        row = layout.row()
+        row.prop(midi_keyframe_props, "axis")
 
         layout.label(text="Piano Keys")
         row = layout.row()
@@ -461,6 +471,7 @@ class GI_generate_piano_animation(bpy.types.Operator):
         midi_keyframe_props = context.scene.midi_keyframe_props
         midi_file_path = midi_keyframe_props.midi_file
         selected_track = midi_keyframe_props.selected_track
+        axis = int(midi_keyframe_props.axis)
 
         # Is it a MIDI file? If not, bail early
         check_for_midi_file(context)
@@ -482,9 +493,9 @@ class GI_generate_piano_animation(bpy.types.Operator):
             if move_obj == None:
                 return
             if midi_keyframe_props.rotate_object:
-                midi_keyframe_props.initial_positions[note_letter] = move_obj.rotation_euler.x
+                midi_keyframe_props.initial_positions[note_letter] = move_obj.rotation_euler[axis]
             else:
-                midi_keyframe_props.initial_positions[note_letter] = move_obj.location.z
+                midi_keyframe_props.initial_positions[note_letter] = move_obj.location[axis]
             
             
         # Loop over each music note and animate corresponding keys
@@ -570,6 +581,7 @@ def animate_keys(context, note_letter, real_keyframe, pressed, has_release, prev
     midi_keyframe_props = context.scene.midi_keyframe_props
     rotate_object = midi_keyframe_props.rotate_object
     initial_positions = midi_keyframe_props.initial_positions
+    axis = int(midi_keyframe_props.axis)
     # Keyframe generation
     # Get the right object corresponding to the note
     move_obj = get_note_obj(midi_keyframe_props, note_letter)
@@ -579,33 +591,33 @@ def animate_keys(context, note_letter, real_keyframe, pressed, has_release, prev
     # Save initial position as previous frame
     
     if rotate_object:
-        move_obj.rotation_euler.x = initial_positions[note_letter]
+        move_obj.rotation_euler[axis] = initial_positions[note_letter]
         move_obj.keyframe_insert(data_path="rotation_euler", frame=real_keyframe - 1)
     else:
-        move_obj.location.z = initial_positions[note_letter]
+        move_obj.location[axis] = initial_positions[note_letter]
         move_obj.keyframe_insert(data_path="location", frame=real_keyframe - 1)
 
     # Move the object
     if rotate_object:
         # Rotation distance is positive for pressing
         move_distance = midi_keyframe_props.travel_distance + initial_positions[note_letter] if pressed else initial_positions[note_letter]
-        move_obj.rotation_euler.x = math.radians(move_distance)
+        move_obj.rotation_euler[axis] = math.radians(move_distance)
         move_obj.keyframe_insert(data_path="rotation_euler", frame=real_keyframe)
     else:
         # Position distance is negative for pressing (since we're in Z-axis going "down")
         reverse_direction = midi_keyframe_props.travel_distance * -1
         move_distance = reverse_direction + initial_positions[note_letter] if pressed else initial_positions[note_letter]
-        move_obj.location.z = move_distance
+        move_obj.location[axis] = move_distance
         move_obj.keyframe_insert(data_path="location", frame=real_keyframe)
 
     # Does the file not have "released" notes? Create one if not
     # TODO: Figure out proper "hold" time based on time scale
     if not has_release:
         if rotate_object:
-            move_obj.rotation_euler.x = initial_positions[note_letter]
+            move_obj.rotation_euler[axis] = initial_positions[note_letter]
             move_obj.keyframe_insert(data_path="rotation_euler", frame=real_keyframe + 10)
         else:
-            move_obj.location.z = initial_positions[note_letter]
+            move_obj.location[axis] = initial_positions[note_letter]
             move_obj.keyframe_insert(data_path="location", frame=real_keyframe + 10)
 
 # Animates an object to "jump" between keys

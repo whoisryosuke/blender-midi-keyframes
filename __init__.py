@@ -292,7 +292,7 @@ class GI_GamepadInputPanel(bpy.types.Panel):
         row.operator("wm.delete_all_keyframes", icon="TRASH")
 
 class GI_install_midi(bpy.types.Operator):
-    """Test function for gamepads"""
+    """Install mido"""
     bl_idname = "wm.install_midi"
     bl_label = "Install dependencies"
     bl_description = "Installs necessary Python modules for handling MIDI files"
@@ -462,7 +462,7 @@ class ParsedMidiFile:
                 last_note = note_letter
 
 class GI_generate_piano_animation(bpy.types.Operator):
-    """Test function for gamepads"""
+    """Generate animation"""
     bl_idname = "wm.generate_piano_animation"
     bl_label = "Piano Key Animation"
     bl_description = "Creates keyframes on piano key objects to simulate playback"
@@ -547,7 +547,7 @@ class GI_assign_keys(bpy.types.Operator):
         return {"FINISHED"}
 
 class GI_generate_jumping_animation(bpy.types.Operator):
-    """Test function for gamepads"""
+    """Jump animation"""
     bl_idname = "wm.generate_jumping_animation"
     bl_label = "Jumping Animation"
     bl_description = "Creates keyframes on Jump object animating between keys"

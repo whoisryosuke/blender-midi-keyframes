@@ -116,7 +116,7 @@ class GI_SceneProperties(PropertyGroup):
     # Animation toggles
     travel_distance: FloatProperty(
         name = "Travel Distance",
-        description = "How far key moves down when 'pressed'",
+        description = "How far key moves when 'pressed' or how high object 'jumps'",
         default = 1.0,
         min = 0.01,
         max = 100.0
@@ -128,7 +128,7 @@ class GI_SceneProperties(PropertyGroup):
         )
     axis: EnumProperty(
         name="Axis",
-        description="Axis that gets animated",
+        description="Axis that gets animated, aka direction piano keys move",
         items=[ ('0', "X", ""),
                 ('1', "Y", ""),
                 ('2', "Z", ""),
@@ -236,58 +236,64 @@ class GI_GamepadInputPanel(bpy.types.Panel):
         row = layout.row()
         row.operator("wm.install_midi")
 
-        layout.label(text="Settings")
+        layout.label(text="MIDI Settings", icon="OUTLINER_OB_SPEAKER")
         row = layout.row()
         row.prop(midi_keyframe_props, "midi_file")
         row = layout.row()
-        row.operator("wm.assign_keys")
-        row = layout.row()
-        row.operator("wm.generate_piano_animation")
-        row = layout.row()
-        row.operator("wm.generate_jumping_animation")
-        row = layout.row()
         row.prop(midi_keyframe_props, "selected_track")
 
-
-        layout.label(text="Animation Settings")
+        layout.separator(factor=1.5)
+        layout.label(text="Animation Settings", icon="IPO_ELASTIC")
+        row = layout.row()
+        row.prop(midi_keyframe_props, "axis")
         row = layout.row()
         row.prop(midi_keyframe_props, "travel_distance")
         row = layout.row()
         row.prop(midi_keyframe_props, "rotate_object")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "axis")
 
-        layout.label(text="Piano Keys")
+        layout.separator(factor=1.5)
+        layout.label(text="Generate Animation", icon="RENDER_ANIMATION")
         row = layout.row()
-        row.prop(midi_keyframe_props, "obj_c")
+        row.operator("wm.generate_piano_animation")
         row = layout.row()
-        row.prop(midi_keyframe_props, "obj_d")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "obj_e")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "obj_f")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "obj_g")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "obj_a")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "obj_b")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "obj_csharp")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "obj_dsharp")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "obj_fsharp")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "obj_gsharp")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "obj_asharp")
+        row.operator("wm.generate_jumping_animation")
 
-        layout.label(text="Other Objects")
+        layout.separator(factor=1.5)
+        layout.label(text="Piano Keys", icon="OBJECT_DATAMODE")
         row = layout.row()
-        row.prop(midi_keyframe_props, "obj_jump")
+        row.operator("wm.assign_keys")
+        row = layout.row()
+        row.prop(midi_keyframe_props, "obj_c", icon="EVENT_C")
+        row = layout.row()
+        row.prop(midi_keyframe_props, "obj_d", icon="EVENT_D")
+        row = layout.row()
+        row.prop(midi_keyframe_props, "obj_e", icon="EVENT_E")
+        row = layout.row()
+        row.prop(midi_keyframe_props, "obj_f", icon="EVENT_F")
+        row = layout.row()
+        row.prop(midi_keyframe_props, "obj_g", icon="EVENT_G")
+        row = layout.row()
+        row.prop(midi_keyframe_props, "obj_a", icon="EVENT_A")
+        row = layout.row()
+        row.prop(midi_keyframe_props, "obj_b", icon="EVENT_B")
+        row = layout.row()
+        row.prop(midi_keyframe_props, "obj_csharp", icon="EVENT_C")
+        row = layout.row()
+        row.prop(midi_keyframe_props, "obj_dsharp", icon="EVENT_D")
+        row = layout.row()
+        row.prop(midi_keyframe_props, "obj_fsharp", icon="EVENT_F")
+        row = layout.row()
+        row.prop(midi_keyframe_props, "obj_gsharp", icon="EVENT_G")
+        row = layout.row()
+        row.prop(midi_keyframe_props, "obj_asharp", icon="EVENT_A")
 
-        layout.label(text="Danger Zone")
+        layout.separator(factor=1.5)
+        layout.label(text="Other Objects", icon="OBJECT_HIDDEN")
+        row = layout.row()
+        row.prop(midi_keyframe_props, "obj_jump", icon="MATSPHERE")
+
+        layout.separator(factor=4.2)
+        layout.label(text="Danger Zone", icon="ERROR")
         row = layout.row()
         row.operator("wm.delete_all_keyframes", icon="TRASH")
 

@@ -30,7 +30,7 @@ One last thing, you'll need to press 1 more button:
 
 ## How it works
 
-TBD
+I did [a full breakdown on my blog here](https://whoisryosuke.com/blog/2024/midi-powered-animations-in-blender) that covers the creation of the plugin and tips and tricks for working with MIDI in Python.
 
 ## Credits
 

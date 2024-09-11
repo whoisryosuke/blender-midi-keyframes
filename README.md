@@ -13,7 +13,7 @@ This is a free Blender addon to import MIDI files and generate animation keyfram
 1. Go to Edit > Preferences and go to the Addons tab on left.
 1. Click install button.
 1. Select the zip you downloaded.
-1. You can confirm it's installed by searching for "Gamepad" and seeing if it's checked off
+1. You can confirm it's installed by searching for "MIDI to Keyframes" and seeing if it's checked off
 
 One last thing, you'll need to press 1 more button:
 

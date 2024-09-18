@@ -11,7 +11,6 @@ bl_info = {
     "category": "Development"
 }
 
-# from .inputs import devices
 
 import bpy
 from bpy.props import (StringProperty,
@@ -66,7 +65,7 @@ def selected_track_enum_callback(scene, context):
         return selected_tracks_raw
 
     # Import the MIDI file
-    from mido import MidiFile
+    from .modules.mido.mido import MidiFile
 
     mid = MidiFile(midi_file_path)
 
@@ -236,8 +235,9 @@ class GI_GamepadInputPanel(bpy.types.Panel):
         scene = context.scene
         midi_keyframe_props = scene.midi_keyframe_props
         
-        row = layout.row()
-        row.operator("wm.install_midi")
+        # Legacy: Install deps using pip - we keep deps as git submodules now
+        # row = layout.row()
+        # row.operator("wm.install_midi")
 
         layout.label(text="MIDI Settings", icon="OUTLINER_OB_SPEAKER")
         row = layout.row()
@@ -408,7 +408,7 @@ class ParsedMidiFile:
     def __init__(self, midi_file_path, selected_track) -> None:
         print("Loading MIDI file...") 
         self.selected_track = selected_track
-        from mido import MidiFile
+        from .modules.mido.mido import MidiFile
 
         self.midi = MidiFile(midi_file_path)
         

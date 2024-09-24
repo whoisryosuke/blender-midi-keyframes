@@ -58,6 +58,14 @@ This will probably get fixed in the future 👍
 
 I did [a full breakdown on my blog here](https://whoisryosuke.com/blog/2024/midi-powered-animations-in-blender) that covers the creation of the plugin and tips and tricks for working with MIDI in Python.
 
+## Development
+
+1. Clone the repo: `git clone`
+1. Download any submodules: `git submodule update --init --recursive`
+1. Install in Blender
+1. Open the plugin code inside your Blender plugin folder
+1. Edit, Save, Repeat.
+
 ## 💪 Credits
 
 - [mido](https://github.com/mido/mido)

@@ -4,8 +4,6 @@
 
 This is a free Blender addon to import MIDI files and generate animation keyframes. It assigns the keyframes to objects you assign as piano keys.
 
-> On some devices like Mac you may need to give elevated permissions to Blender to allow for plugin to work. This is because we need to install a library to read MIDI files inside Blender.
-
 ## ⬇️ Installation
 
 1. [Download as a zip](https://github.com/whoisryosuke/blender-midi-keyframes/archive/refs/heads/main.zip)

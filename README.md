@@ -15,12 +15,6 @@ This is a free Blender addon to import MIDI files and generate animation keyfram
 1. Select the zip you downloaded.
 1. You can confirm it's installed by searching for "MIDI to Keyframes" and seeing if it's checked off
 
-One last thing, you'll need to press 1 more button:
-
-1. Open up the side panel labeled **"MIDI Import"**, it's available in the 3D viewport in the n-panel (the right side panel that's usually collapsed).
-1. Click the button labeled **"Install Dependencies"**.
-1. Done!
-
 ## How to use
 
 1. Open up the side panel labeled **"MIDI Import"**, it's available in the 3D viewport in the n-panel (the right side panel that's usually collapsed).
@@ -28,10 +22,17 @@ One last thing, you'll need to press 1 more button:
 1. Assign 3D objects to piano keys.
 1. Click the button labeled **"Generate Keyframes"**
 
+> Not happy with the animation? You can undo the keyframes (`CTRL/CMD + Z`). Can't undo? Try the **"Delete All Keyframes"** button, it will delete **_all_** keyframes on any selected note object.
+
+### Tips
+
+I'd recommend downloading [Audacity](https://www.audacityteam.org/) to visualize the MIDI tracks and see what the note charts look like before you import them into Blender.
+
 ## How it works
 
 I did [a full breakdown on my blog here](https://whoisryosuke.com/blog/2024/midi-powered-animations-in-blender) that covers the creation of the plugin and tips and tricks for working with MIDI in Python.
 
 ## Credits
 
+- [mido](https://github.com/mido/mido)
 - [Gamepad Input Blender addon](https://github.com/whoisryosuke/blender-gamepad)

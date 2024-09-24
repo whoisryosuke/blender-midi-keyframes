@@ -1,4 +1,4 @@
-![Example of Blender addon using DualSense gamepad](./screenshot.gif)
+[MIDI to Keyframe - Process - Creating Keyframes V2 Shorter Zoom.webm](https://github.com/user-attachments/assets/dc90301c-569a-493f-a6f9-35798aeb086b)
 
 # MIDI to Keyframes Blender addon
 

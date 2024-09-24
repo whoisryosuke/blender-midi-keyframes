@@ -19,7 +19,7 @@ This is a free Blender addon to import MIDI files and generate animation keyfram
 
 ![The plugin panel inside Blender](/docs/screenshots/plugin-panel.jpg)
 
-1. Open up the side panel labeled **"MIDI Import"**, it's available in the 3D viewport in the n-panel (the right side panel that's usually collapsed).
+1. Open up the side panel labeled **"MIDI Importer"**, it's available in the 3D viewport in the n-panel (the right side panel that's usually collapsed).
 1. Select a MIDI file you'd like to import.
 1. Assign 3D objects to piano keys.
 1. Click the button labeled **"Generate Keyframes"**

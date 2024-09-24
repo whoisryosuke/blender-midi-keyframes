@@ -136,6 +136,13 @@ class GI_SceneProperties(PropertyGroup):
                 ('2', "Z", ""),
               ]
         )
+    direction: EnumProperty(
+        name = "Direction",
+        description = "Do the objects move up or down?",
+        items=[ ('down', "Down", ""),
+                ('up', "Up", ""),
+              ]
+        )
 
 
     # MIDI Keys
@@ -256,6 +263,8 @@ class GI_GamepadInputPanel(bpy.types.Panel):
         row.prop(midi_keyframe_props, "travel_distance")
         row = layout.row()
         row.prop(midi_keyframe_props, "animation_type")
+        row = layout.row()
+        row.prop(midi_keyframe_props, "direction")
 
         layout.separator(factor=1.5)
         layout.label(text="Generate Animation", icon="RENDER_ANIMATION")
@@ -606,6 +615,8 @@ def animate_keys(context, note_letter, real_keyframe, pressed, has_release, prev
     midi_keyframe_props = context.scene.midi_keyframe_props
     initial_state = midi_keyframe_props.initial_state
     animation_type = midi_keyframe_props.animation_type
+    direction = midi_keyframe_props.direction
+    direction_factor = -1 if direction == "down" else 1
     axis = int(midi_keyframe_props.axis)
 
     # Keyframe generation
@@ -632,7 +643,8 @@ def animate_keys(context, note_letter, real_keyframe, pressed, has_release, prev
     match animation_type:
         case "MOVE":
             # Position distance is negative for pressing (since we're in Z-axis going "down")
-            reverse_direction = midi_keyframe_props.travel_distance * -1
+            # But it can be flipped by user preference
+            reverse_direction = midi_keyframe_props.travel_distance * direction_factor
             move_distance = reverse_direction + initial_state[note_letter] if pressed else initial_state[note_letter]
             move_obj.location[axis] = move_distance
             move_obj.keyframe_insert(data_path="location", frame=real_keyframe)

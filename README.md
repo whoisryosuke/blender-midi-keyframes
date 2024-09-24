@@ -6,7 +6,7 @@ This is a free Blender addon to import MIDI files and generate animation keyfram
 
 ## ⬇️ Installation
 
-1. [Download as a zip](https://github.com/whoisryosuke/blender-midi-keyframes/archive/refs/heads/main.zip)
+1. [Download the plugin zip](https://github.com/whoisryosuke/blender-midi-keyframes/releases/download/v0.0.1/midi-to-keyframes-v0.0.1.zip) from the releases page
 1. Open Blender
 1. Go to Edit > Preferences and go to the Addons tab on left.
 1. Click install button.

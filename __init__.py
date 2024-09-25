@@ -73,7 +73,7 @@ def selected_track_enum_callback(scene, context):
         return selected_tracks_raw
 
     # Import the MIDI file
-    from .modules.mido.mido import MidiFile
+    from mido import MidiFile
 
     fixed_path = handle_midi_file_path(midi_file_path)
     mid = MidiFile(fixed_path)
@@ -426,7 +426,7 @@ class ParsedMidiFile:
     def __init__(self, midi_file_path, selected_track) -> None:
         print("Loading MIDI file...") 
         self.selected_track = selected_track
-        from .modules.mido.mido import MidiFile
+        from mido import MidiFile
 
         fixed_midi_file_path = handle_midi_file_path(midi_file_path)
 

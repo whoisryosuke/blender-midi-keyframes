@@ -41,19 +41,6 @@ Then you can select the collection and press the **"Auto-Assign Keys" button**.
 
 I'd recommend downloading [Audacity](https://www.audacityteam.org/) to visualize the MIDI tracks and see what the note charts look like before you import them into Blender.
 
-## 🐛 Known Bugs
-
-### MIDI file won't load!
-
-Currently the plugin only works with a full file path. The plugin will not work if you provide a relative file path (which Blender sometimes does automatically if the MIDI file is located in the same folder as the Blender file...).
-
-Correct way:
-
-- Windows: `C:\some-folder\midi-file.mid`
-- Mac: `Macintosh HD/Users/Your Name/some-folder/midi-file.mid`
-
-This will probably get fixed in the future 👍
-
 ## ⚙️ How it works
 
 I did [a full breakdown on my blog here](https://whoisryosuke.com/blog/2024/midi-powered-animations-in-blender) that covers the creation of the plugin and tips and tricks for working with MIDI in Python.

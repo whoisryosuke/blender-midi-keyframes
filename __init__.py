@@ -1,12 +1,12 @@
 bl_info = {
     "name": "MIDI to Keyframes",
-    "description": "",
+    "description": "Import MIDI files and generate animation keyframes",
     "author": "whoisryosuke",
-    "version": (0, 0, 1),
-    "blender": (2, 80, 0),
+    "version": (0, 0, 2),
+    "blender": (2, 80, 0), # not sure if this is right
     "location": "Properties > Output",
     "warning": "", # used for warning icon and text in addons panel
-    "wiki_url": "",
+    "wiki_url": "https://github.com/whoisryosuke/blender-midi-keyframes",
     "tracker_url": "",
     "category": "Development"
 }

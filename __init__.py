@@ -14,22 +14,14 @@ bl_info = {
 
 import bpy
 from bpy.props import (StringProperty,
-                       BoolProperty,
-                       IntProperty,
                        FloatProperty,
-                       FloatVectorProperty,
                        EnumProperty,
                        PointerProperty,
                        )
-from bpy.types import (Panel,
-                       Menu,
-                       Operator,
+from bpy.types import (
                        PropertyGroup,
                        )
-import threading
-import numpy
 import math
-import mathutils
 import subprocess
 import sys
 import os
@@ -43,9 +35,25 @@ DEFAULT_TEMPO = 500000
 midi_file_loaded = ""
 selected_tracks_raw = []
 
+def handle_midi_file_path(midi_file_path):
+    fixed_midi_file_path = midi_file_path
+
+    # Relative file path? Lets fix that
+    if "//" in midi_file_path:
+        filepath = bpy.data.filepath
+        directory = os.path.dirname(filepath)
+        print("Directory", directory)
+        midi_path_base = midi_file_path.replace("//", "")
+        fixed_midi_file_path = os.path.join( directory , midi_path_base)
+        print("created relative path", fixed_midi_file_path)
+        
+    return fixed_midi_file_path
+    
+
 # ------------------------------------------------------------------------
 #    Scene Properties
 # ------------------------------------------------------------------------
+
 
 def selected_track_enum_callback(scene, context):
     global midi_file_loaded, selected_tracks_raw
@@ -67,7 +75,8 @@ def selected_track_enum_callback(scene, context):
     # Import the MIDI file
     from .modules.mido.mido import MidiFile
 
-    mid = MidiFile(midi_file_path)
+    fixed_path = handle_midi_file_path(midi_file_path)
+    mid = MidiFile(fixed_path)
 
     # Setup time for track
     selected_tracks_raw = []
@@ -419,7 +428,9 @@ class ParsedMidiFile:
         self.selected_track = selected_track
         from .modules.mido.mido import MidiFile
 
-        self.midi = MidiFile(midi_file_path)
+        fixed_midi_file_path = handle_midi_file_path(midi_file_path)
+
+        self.midi = MidiFile(fixed_midi_file_path)
         
         # Get tempo from the first track
         for msg in self.midi.tracks[0]:

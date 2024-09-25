@@ -4,11 +4,9 @@
 
 This is a free Blender addon to import MIDI files and generate animation keyframes. It assigns the keyframes to objects you assign as piano keys.
 
-> On some devices like Mac you may need to give elevated permissions to Blender to allow for plugin to work. This is because we need to install a library to read MIDI files inside Blender.
-
 ## ⬇️ Installation
 
-1. [Download as a zip](https://github.com/whoisryosuke/blender-midi-keyframes/archive/refs/heads/main.zip)
+1. [Download the plugin zip](https://github.com/whoisryosuke/blender-midi-keyframes/releases/download/v0.0.1/midi-to-keyframes-v0.0.1.zip) from the releases page
 1. Open Blender
 1. Go to Edit > Preferences and go to the Addons tab on left.
 1. Click install button.
@@ -43,22 +41,17 @@ Then you can select the collection and press the **"Auto-Assign Keys" button**.
 
 I'd recommend downloading [Audacity](https://www.audacityteam.org/) to visualize the MIDI tracks and see what the note charts look like before you import them into Blender.
 
-## 🐛 Known Bugs
-
-### MIDI file won't load!
-
-Currently the plugin only works with a full file path. The plugin will not work if you provide a relative file path (which Blender sometimes does automatically if the MIDI file is located in the same folder as the Blender file...).
-
-Correct way:
-
-- Windows: `C:\some-folder\midi-file.mid`
-- Mac: `Macintosh HD/Users/Your Name/some-folder/midi-file.mid`
-
-This will probably get fixed in the future 👍
-
 ## ⚙️ How it works
 
 I did [a full breakdown on my blog here](https://whoisryosuke.com/blog/2024/midi-powered-animations-in-blender) that covers the creation of the plugin and tips and tricks for working with MIDI in Python.
+
+## Development
+
+1. Clone the repo: `git clone`
+1. Download any submodules: `git submodule update --init --recursive`
+1. Install in Blender
+1. Open the plugin code inside your Blender plugin folder
+1. Edit, Save, Repeat.
 
 ## 💪 Credits
 

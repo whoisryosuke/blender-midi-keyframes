@@ -14,22 +14,14 @@ bl_info = {
 
 import bpy
 from bpy.props import (StringProperty,
-                       BoolProperty,
-                       IntProperty,
                        FloatProperty,
-                       FloatVectorProperty,
                        EnumProperty,
                        PointerProperty,
                        )
-from bpy.types import (Panel,
-                       Menu,
-                       Operator,
+from bpy.types import (
                        PropertyGroup,
                        )
-import threading
-import numpy
 import math
-import mathutils
 import subprocess
 import sys
 import os
@@ -45,14 +37,15 @@ selected_tracks_raw = []
 
 def handle_midi_file_path(midi_file_path):
     fixed_midi_file_path = midi_file_path
+
     # Relative file path? Lets fix that
     if "//" in midi_file_path:
-        filepath = bpy.data.abspath
+        filepath = bpy.data.filepath
         directory = os.path.dirname(filepath)
         print("Directory", directory)
-        midi_path_base = midi_file_path.replace("//../", "")
+        midi_path_base = midi_file_path.replace("//", "")
         fixed_midi_file_path = os.path.join( directory , midi_path_base)
-        print("found relative path", fixed_midi_file_path)
+        print("created relative path", fixed_midi_file_path)
         
     return fixed_midi_file_path
     

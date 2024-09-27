@@ -166,7 +166,13 @@ class GI_SceneProperties(PropertyGroup):
                 ('8', "8", ""),
               ]
         )
-
+    speed: FloatProperty(
+            name = "Speed",
+            description = "Controls the tempo by this rate (e.g. 2 = 2x slower, 0.5 = 2x faster)",
+            default = 1.0,
+            min = 0.01,
+            max = 100.0
+        )
 
     # MIDI Keys
     obj_jump: PointerProperty(
@@ -274,6 +280,8 @@ class GI_GamepadInputPanel(bpy.types.Panel):
         row.prop(midi_keyframe_props, "midi_file")
         row = layout.row()
         row.prop(midi_keyframe_props, "selected_track")
+        row = layout.row()
+        row.prop(midi_keyframe_props, "octave")
 
         layout.separator(factor=1.5)
         layout.label(text="Animation Settings", icon="IPO_ELASTIC")
@@ -289,7 +297,7 @@ class GI_GamepadInputPanel(bpy.types.Panel):
         row = layout.row()
         row.prop(midi_keyframe_props, "direction")
         row = layout.row()
-        row.prop(midi_keyframe_props, "octave")
+        row.prop(midi_keyframe_props, "speed")
 
         layout.separator(factor=1.5)
         layout.label(text="Generate Animation", icon="RENDER_ANIMATION")
@@ -475,6 +483,8 @@ class ParsedMidiFile:
         total_frames = scene_end_frame - scene_start_frame
         fps = context.scene.render.fps
         time = 0
+        midi_keyframe_props = context.scene.midi_keyframe_props
+        speed = midi_keyframe_props.speed
 
         last_keyframe = 0
         last_note = None
@@ -499,7 +509,7 @@ class ParsedMidiFile:
                 time_percent = time / self.total_time
                 current_frame = total_frames * time_percent
                 # print("time: {}, current frame: {}".format(time, current_frame))
-                real_time = tick2second(time, self.midi.ticks_per_beat, self.tempo)
+                real_time = tick2second(time, self.midi.ticks_per_beat, self.tempo) * speed
 
                 # print("real time in seconds", real_time)
 

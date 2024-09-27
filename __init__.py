@@ -2,10 +2,10 @@ bl_info = {
     "name": "MIDI to Keyframes",
     "description": "Import MIDI files and generate animation keyframes",
     "author": "whoisryosuke",
-    "version": (0, 0, 2),
+    "version": (0, 0, 3),
     "blender": (2, 80, 0), # not sure if this is right
     "location": "Properties > Output",
-    "warning": "", # used for warning icon and text in addons panel
+    "warning": "Make sure to press 'Install dependencies' button in the plugin panel before using", # used for warning icon and text in addons panel
     "wiki_url": "https://github.com/whoisryosuke/blender-midi-keyframes",
     "tracker_url": "",
     "category": "Development"
@@ -152,6 +152,20 @@ class GI_SceneProperties(PropertyGroup):
                 ('up', "Up", ""),
               ]
         )
+    octave: EnumProperty(
+        name = "Octave",
+        description = "Which octave should we use? (e.g. 3 = C3, D3, etc)",
+        items=[ ('0', "All", ""),
+                ('1', "1", ""),
+                ('2', "2", ""),
+                ('3', "3", ""),
+                ('4', "4", ""),
+                ('5', "5", ""),
+                ('6', "6", ""),
+                ('7', "7", ""),
+                ('8', "8", ""),
+              ]
+        )
 
 
     # MIDI Keys
@@ -274,6 +288,8 @@ class GI_GamepadInputPanel(bpy.types.Panel):
         row.prop(midi_keyframe_props, "animation_type")
         row = layout.row()
         row.prop(midi_keyframe_props, "direction")
+        row = layout.row()
+        row.prop(midi_keyframe_props, "octave")
 
         layout.separator(factor=1.5)
         layout.label(text="Generate Animation", icon="RENDER_ANIMATION")
@@ -366,6 +382,7 @@ def get_note_obj(midi_keyframe_props, noteLetter):
         return midi_keyframe_props.obj_gsharp
     if noteLetter == "A#":
         return midi_keyframe_props.obj_asharp
+    return None
     
 def replace_note_obj(midi_keyframe_props, noteLetter, new_obj):
     if noteLetter == "C":
@@ -414,7 +431,7 @@ def get_note_letter(note):
     note_letter = midi_note_map[note_index]
     # print("Note: {}{}".format(note_letter, octave))
 
-    return note_letter
+    return note_letter, octave
 
 class ParsedMidiFile:
     total_time = 0
@@ -474,7 +491,7 @@ class ParsedMidiFile:
                 released = True if msg.type == "note_off" else False
 
                 # Figure out the actual note "letter" (e.g. C, C#, etc)
-                note_letter = get_note_letter(msg.note)
+                note_letter, octave = get_note_letter(msg.note)
                 
                 # Increment time
                 time += msg.time
@@ -488,7 +505,7 @@ class ParsedMidiFile:
 
                 real_keyframe = (real_time * fps) + 1
 
-                key_callback(context, note_letter, real_keyframe, pressed, self.has_release, last_keyframe, last_note)
+                key_callback(context, note_letter, octave, real_keyframe, pressed, self.has_release, last_keyframe, last_note)
 
                 last_keyframe = real_keyframe
                 last_note = note_letter
@@ -525,7 +542,8 @@ class GI_generate_piano_animation(bpy.types.Operator):
             # Get the right object corresponding to the note
             move_obj = get_note_obj(midi_keyframe_props, note_letter)
             if move_obj == None:
-                return
+                break
+            print(move_obj)
             
             match animation_type:
                 case "MOVE":
@@ -558,7 +576,7 @@ class GI_delete_all_keyframes(bpy.types.Operator):
         for note_letter in midi_note_map:
             note_obj = get_note_obj(midi_keyframe_props, note_letter)
             if note_obj == None:
-                return
+                break
             note_obj.animation_data_clear()
 
         return {"FINISHED"}
@@ -601,7 +619,7 @@ class GI_generate_jumping_animation(bpy.types.Operator):
 
         # Do we have an object to move?
         if midi_keyframe_props.obj_jump == None:
-            return;
+            return {"CANCELLED"}
 
         # Import the MIDI file
         print("Parsing MIDI file...") 
@@ -622,20 +640,29 @@ class GI_generate_jumping_animation(bpy.types.Operator):
         return {"FINISHED"}
 
 # Animates objects up and down like piano keys
-def animate_keys(context, note_letter, real_keyframe, pressed, has_release, prev_keyframe, prev_note):
+def animate_keys(context, note_letter, octave: int, real_keyframe, pressed, has_release, prev_keyframe, prev_note):
     midi_keyframe_props = context.scene.midi_keyframe_props
     initial_state = midi_keyframe_props.initial_state
     animation_type = midi_keyframe_props.animation_type
     direction = midi_keyframe_props.direction
     direction_factor = -1 if direction == "down" else 1
     axis = int(midi_keyframe_props.axis)
+    user_octave: str = midi_keyframe_props.octave
+
+    # Skip this note if we don't care about the octave
+    # 0 = All, so if it's not all, we need to check for octave
+    if user_octave != "0":
+        # The user_octave is string, while MIDI returns int for octave 
+        if user_octave != str(octave):
+            return;
+
 
     # Keyframe generation
     # Get the right object corresponding to the note
     move_obj = get_note_obj(midi_keyframe_props, note_letter)
     if move_obj == None:
         return
-
+    
     # Save initial position as previous frame
     match animation_type:
         case "MOVE":
@@ -684,7 +711,7 @@ def animate_keys(context, note_letter, real_keyframe, pressed, has_release, prev
             move_obj.keyframe_insert(data_path="rotation_euler", frame=real_keyframe + 10)
 
 # Animates an object to "jump" between keys
-def animate_jump(context, note_letter, real_keyframe, pressed, has_release, prev_keyframe, prev_note):
+def animate_jump(context, note_letter, octave, real_keyframe, pressed, has_release, prev_keyframe, prev_note):
     midi_keyframe_props = context.scene.midi_keyframe_props
     # Keyframe generation
     # Get the right object corresponding to the note

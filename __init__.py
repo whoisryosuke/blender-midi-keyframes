@@ -42,10 +42,8 @@ def handle_midi_file_path(midi_file_path):
     if "//" in midi_file_path:
         filepath = bpy.data.filepath
         directory = os.path.dirname(filepath)
-        print("Directory", directory)
         midi_path_base = midi_file_path.replace("//", "")
         fixed_midi_file_path = os.path.join( directory , midi_path_base)
-        print("created relative path", fixed_midi_file_path)
         
     return fixed_midi_file_path
     
@@ -423,7 +421,6 @@ def check_for_midi_file(context):
         midi_file_path = midi_keyframe_props.midi_file
 
         # Check input and ensure it's actually MIDI
-        print("Checking if it's a MIDI file")
         is_midi_file = ".mid" in midi_file_path
         # TODO: Return error to user somehow??
         if not is_midi_file:
@@ -553,8 +550,6 @@ class GI_generate_piano_animation(bpy.types.Operator):
             move_obj = get_note_obj(midi_keyframe_props, note_letter)
             if move_obj == None:
                 continue
-            print("Move Object Note Letter", note_letter)
-            print("Move Object", move_obj)
             
             match animation_type:
                 case "MOVE":
@@ -608,8 +603,6 @@ class GI_assign_keys(bpy.types.Operator):
             obj_name_key = obj_name_split[-1]
             for note in midi_note_map:
                 if note == obj_name_key:
-                    print("Found a note obj!")
-                    print(note)
                     replace_note_obj(midi_keyframe_props, note, check_obj)
 
         return {"FINISHED"}
@@ -618,7 +611,7 @@ class GI_generate_jumping_animation(bpy.types.Operator):
     """Jump animation"""
     bl_idname = "wm.generate_jumping_animation"
     bl_label = "Jumping Animation"
-    bl_description = "Creates keyframes on Jump object animating between keys"
+    bl_description = "(BETA) Creates keyframes on Jump object animating between keys"
 
     def execute(self, context: bpy.types.Context):
         midi_keyframe_props = context.scene.midi_keyframe_props
@@ -685,8 +678,6 @@ def animate_keys(context, note_letter, octave: int, real_keyframe, pressed, has_
             move_obj.keyframe_insert(data_path="scale", frame=real_keyframe - 1)
             
         case "ROTATE":
-            print("note letter", note_letter)
-            print("initial state", initial_state)
             move_obj.rotation_euler[axis] = initial_state[note_letter]
             move_obj.keyframe_insert(data_path="rotation_euler", frame=real_keyframe - 1)
 
@@ -746,10 +737,10 @@ def animate_jump(context, note_letter, octave, real_keyframe, pressed, has_relea
             prev_piano_key_world_pos = prev_piano_key.matrix_world.to_translation()
             middle_distance_x = (piano_key_world_pos.x - prev_piano_key_world_pos.x)
             move_obj.location.x = prev_piano_key_world_pos.x + middle_distance_x
-            print("middle point x", prev_piano_key_world_pos.x + middle_distance_x)
+            # print("middle point x", prev_piano_key_world_pos.x + middle_distance_x)
             move_obj.location.z += midi_keyframe_props.travel_distance
             move_obj.keyframe_insert(data_path="location", frame=frame_between)
-            print("Moving back down", note_letter, prev_note, prev_piano_key.name, prev_piano_key.location, prev_piano_key_world_pos.x, piano_key_world_pos.x)
+            # print("Moving back down", note_letter, prev_note, prev_piano_key.name, prev_piano_key.location, prev_piano_key_world_pos.x, piano_key_world_pos.x)
             # Place it back down
             move_obj.location.z -= midi_keyframe_props.travel_distance
 

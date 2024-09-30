@@ -49,6 +49,10 @@ Then you can select the collection and press the **"Auto-Assign Keys" button**.
 
 I'd recommend downloading [Audacity](https://www.audacityteam.org/) to visualize the MIDI tracks and see what the note charts look like before you import them into Blender.
 
+#### FPS and Music Timing
+
+When creating the animation keyframes, we use the current scene's frame rate to calculate the music time. If you **change the frame rate** after generating keyframes, you should **re-generate keyframes** to ensure the timing is correct.
+
 ## ⚙️ How it works
 
 I did [a full breakdown on my blog here](https://whoisryosuke.com/blog/2024/midi-powered-animations-in-blender) that covers the creation of the plugin and tips and tricks for working with MIDI in Python.

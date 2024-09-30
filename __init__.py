@@ -552,8 +552,9 @@ class GI_generate_piano_animation(bpy.types.Operator):
             # Get the right object corresponding to the note
             move_obj = get_note_obj(midi_keyframe_props, note_letter)
             if move_obj == None:
-                break
-            print(move_obj)
+                continue
+            print("Move Object Note Letter", note_letter)
+            print("Move Object", move_obj)
             
             match animation_type:
                 case "MOVE":
@@ -586,7 +587,7 @@ class GI_delete_all_keyframes(bpy.types.Operator):
         for note_letter in midi_note_map:
             note_obj = get_note_obj(midi_keyframe_props, note_letter)
             if note_obj == None:
-                break
+                continue
             note_obj.animation_data_clear()
 
         return {"FINISHED"}
@@ -684,6 +685,8 @@ def animate_keys(context, note_letter, octave: int, real_keyframe, pressed, has_
             move_obj.keyframe_insert(data_path="scale", frame=real_keyframe - 1)
             
         case "ROTATE":
+            print("note letter", note_letter)
+            print("initial state", initial_state)
             move_obj.rotation_euler[axis] = initial_state[note_letter]
             move_obj.keyframe_insert(data_path="rotation_euler", frame=real_keyframe - 1)
 
@@ -703,7 +706,8 @@ def animate_keys(context, note_letter, octave: int, real_keyframe, pressed, has_
             move_obj.keyframe_insert(data_path="scale", frame=real_keyframe)
         case "ROTATE":
             # Rotation distance is positive for pressing
-            move_distance = midi_keyframe_props.travel_distance + initial_state[note_letter] if pressed else initial_state[note_letter]
+            reverse_direction = midi_keyframe_props.travel_distance * direction_factor
+            move_distance = reverse_direction + initial_state[note_letter] if pressed else initial_state[note_letter]
             move_obj.rotation_euler[axis] = math.radians(move_distance)
             move_obj.keyframe_insert(data_path="rotation_euler", frame=real_keyframe)
 

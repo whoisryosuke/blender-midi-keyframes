@@ -13,6 +13,10 @@ This is a free Blender addon to import MIDI files and generate animation keyfram
 1. Select the zip you downloaded.
 1. You can confirm it's installed by searching for **"MIDI to Keyframes"** and seeing if it's checked off
 
+### Optional: Install Dependencies
+
+> This isn't necessary anymore, I'll remove this instructions soon.
+
 One last thing, you'll need to press 1 more button:
 
 1. Open up the side panel labeled **"MIDI Importer"**, it's available in the 3D viewport in the n-panel (the right side panel that's usually collapsed).
@@ -60,10 +64,21 @@ I did [a full breakdown on my blog here](https://whoisryosuke.com/blog/2024/midi
 ## Development
 
 1. Clone the repo: `git clone`
-1. Download any submodules: `git submodule update --init --recursive`
-1. Install in Blender
-1. Open the plugin code inside your Blender plugin folder
+1. Zip up the folder.
+1. Install in Blender.
+1. Open the plugin code inside your Blender plugin folder.
 1. Edit, Save, Repeat.
+
+## Publish
+
+1. Bump version in `__init__.py`
+1. Bump version in `blender_manifest.toml`
+1. `blender --command extension build --output-dir dist`
+1. Upload the new `.zip` file generated inside `/dist` folder to Blender addon marketplace and [GitHub Releases page](https://github.com/whoisryosuke/blender-midi-keyframes/releases/new).
+
+> Read more about [the extension setup here](https://docs.blender.org/manual/en/dev/advanced/extensions/getting_started.html) and [build process here](https://docs.blender.org/manual/en/dev/advanced/command_line/extension_arguments.html#command-line-args-extension-build). We basically have Python PIP "wheel" files that contain dependencies we need for this addon. The manifest installs them for us. Running the build command just zips up the folder with the version name attached - nothing fancy.
+
+> On Windows? You can add `blender` to your command line by going to Start annd searching for "Edit Environment Variables for your account". Find the Variable "PATH" and edit it. Add the full path to where your `blender.exe` is located (e.g. `C:/Program Files/Blender/4.2/`).
 
 ## 💪 Credits
 

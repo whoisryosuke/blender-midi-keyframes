@@ -13,18 +13,6 @@ This is a free Blender addon to import MIDI files and generate animation keyfram
 1. Select the zip you downloaded.
 1. You can confirm it's installed by searching for **"MIDI to Keyframes"** and seeing if it's checked off
 
-### Optional: Install Dependencies
-
-> This isn't necessary anymore, I'll remove this instructions soon.
-
-One last thing, you'll need to press 1 more button:
-
-1. Open up the side panel labeled **"MIDI Importer"**, it's available in the 3D viewport in the n-panel (the right side panel that's usually collapsed).
-1. Click the button labeled **"Install Dependencies"**.
-1. Done!
-
-> Having issues installing the dependencies? Try running `pip install mido` in the [Python console](https://docs.blender.org/manual/en/latest/editors/python_console.html).
-
 ## 🔰 How to use
 
 ![The plugin panel inside Blender](/docs/screenshots/plugin-panel.jpg)

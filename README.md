@@ -76,9 +76,21 @@ I did [a full breakdown on my blog here](https://whoisryosuke.com/blog/2024/midi
 1. `blender --command extension build --output-dir dist`
 1. Upload the new `.zip` file generated inside `/dist` folder to Blender addon marketplace and [GitHub Releases page](https://github.com/whoisryosuke/blender-midi-keyframes/releases/new).
 
-> Read more about [the extension setup here](https://docs.blender.org/manual/en/dev/advanced/extensions/getting_started.html) and [build process here](https://docs.blender.org/manual/en/dev/advanced/command_line/extension_arguments.html#command-line-args-extension-build). We basically have Python PIP "wheel" files that contain dependencies we need for this addon. The manifest installs them for us. Running the build command just zips up the folder with the version name attached - nothing fancy.
-
 > On Windows? You can add `blender` to your command line by going to Start annd searching for "Edit Environment Variables for your account". Find the Variable "PATH" and edit it. Add the full path to where your `blender.exe` is located (e.g. `C:/Program Files/Blender/4.2/`).
+
+### Dependencies
+
+We basically have Python PIP "wheel" files that contain dependencies we need for this addon. The manifest installs them for us. Running the build command just zips up the folder with the version name attached - nothing fancy.
+
+If you want to update the dependencies, run these commands and then update the `blender_manifest.toml` with any new `.whl` filenames:
+
+```shell
+pip download mido --dest ./wheels --only-binary=:all: --python-version=3.11 --platform=macosx_11_0_arm64
+pip download mido --dest ./wheels --only-binary=:all: --python-version=3.11 --platform=manylinux_2_28_x86_64
+pip download mido --dest ./wheels --only-binary=:all: --python-version=3.11 --platform=win_amd64
+```
+
+> Read more about [the extension setup here](https://docs.blender.org/manual/en/dev/advanced/extensions/getting_started.html) and [build process here](https://docs.blender.org/manual/en/dev/advanced/command_line/extension_arguments.html#command-line-args-extension-build).
 
 ## 💪 Credits
 

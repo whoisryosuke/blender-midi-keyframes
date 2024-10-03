@@ -70,4 +70,5 @@ files = "Import/export MIDI from disk"
 paths_exclude_pattern = [
   "midi/",
   "docs/",
+  "examples/",
 ]

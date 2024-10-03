@@ -59,7 +59,7 @@ wheels = [
 #
 # [permissions]
 # network = "Need to sync motion-capture data to server"
-# files = "Import/export FBX from/to disk"
+files = "Import/export MIDI from disk"
 # clipboard = "Copy and paste bone transforms"
 
 # # Optional: advanced build settings.

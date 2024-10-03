@@ -3,7 +3,7 @@ schema_version = "1.0.0"
 # Example of manifest file for a Blender extension
 # Change the values according to your extension
 id = "midi_to_keyframes"
-version = "0.0.4"
+version = "0.0.5"
 name = "MIDI to Keyframes"
 tagline = "Import MIDI files and generate animation keyframes"
 maintainer = "Ryosuke <ryosuke.san.hana@gmail.com>"
@@ -57,14 +57,14 @@ wheels = [
 # # Keep this a single short sentence without a period (.) at the end.
 # # For longer explanations use the documentation or detail page.
 #
-# [permissions]
+[permissions]
 # network = "Need to sync motion-capture data to server"
 files = "Import/export MIDI from disk"
 # clipboard = "Copy and paste bone transforms"
 
 # # Optional: advanced build settings.
 # # https://docs.blender.org/manual/en/dev/advanced/extensions/command_line_arguments.html#command-line-args-extension-build
-# [build]
+[build]
 # # These are the default build excluded patterns.
 # # You only need to edit them if you want different options.
 paths_exclude_pattern = [

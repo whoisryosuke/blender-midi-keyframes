@@ -16,6 +16,7 @@ import bpy
 from bpy.props import (StringProperty,
                        FloatProperty,
                        EnumProperty,
+                       BoolProperty,
                        PointerProperty,
                        )
 from bpy.types import (
@@ -102,6 +103,9 @@ def selected_track_enum_callback(scene, context):
     return selected_tracks_raw
 
 # UI properties
+ANIM_MODE_KEYFRAMES = "KEYFRAMES"
+ANIM_MODE_ACTIONS = "ACTIONS"
+
 class GI_SceneProperties(PropertyGroup):
         
     # User Settings
@@ -120,6 +124,27 @@ class GI_SceneProperties(PropertyGroup):
     midi_file_loaded = ""
     
     # Animation toggles
+    animation_mode: EnumProperty(
+        name="Animation Mode",
+        description="Changes animation mode",
+        items=[ (ANIM_MODE_KEYFRAMES, "Keyframes", ""),
+                (ANIM_MODE_ACTIONS, "Actions", ""),
+              ]
+        )
+
+    ## MODE: Actions
+    action_advanced_mode: BoolProperty(
+        name = "Advanced Mode",
+        description = "Lets you add an action per note (instead of 1 for all)",
+        default = False,
+        )
+    action_default: PointerProperty(
+        name="Action",
+        description="Action that plays when any note is 'pressed'",
+        type=bpy.types.Action,
+        )
+    
+    ## MODE: Keyframes
     travel_distance: FloatProperty(
         name = "Travel Distance",
         description = "How far key moves when 'pressed' or how high object 'jumps'",
@@ -243,12 +268,13 @@ class GI_SceneProperties(PropertyGroup):
         description="Object to be controlled",
         type=bpy.types.Object,
         )
-    
+
     obj_asharp: PointerProperty(
         name="A#",
         description="Object to be controlled",
         type=bpy.types.Object,
         )
+    
     
     # App State (not for user)
     initial_state = {}
@@ -284,25 +310,38 @@ class GI_GamepadInputPanel(bpy.types.Panel):
         layout.separator(factor=1.5)
         layout.label(text="Animation Settings", icon="IPO_ELASTIC")
 
-        if midi_keyframe_props.animation_type != "SCALE":
-            row = layout.row()
-            row.prop(midi_keyframe_props, "axis")
+        row = layout.row()
+        row.prop(midi_keyframe_props, "animation_mode")
         
-        row = layout.row()
-        row.prop(midi_keyframe_props, "travel_distance")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "animation_type")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "direction")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "speed")
+        if midi_keyframe_props.animation_mode == ANIM_MODE_ACTIONS:
+            row = layout.row()
+            row.prop(midi_keyframe_props, "action_default")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "action_advanced_mode")
+            
+        if midi_keyframe_props.animation_mode == ANIM_MODE_KEYFRAMES:
+            row = layout.row()
+            row.prop(midi_keyframe_props, "animation_type")
+            if midi_keyframe_props.animation_type != "SCALE":
+                row = layout.row()
+                row.prop(midi_keyframe_props, "axis")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "travel_distance")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "direction")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "speed")
 
         layout.separator(factor=1.5)
         layout.label(text="Generate Animation", icon="RENDER_ANIMATION")
-        row = layout.row()
-        row.operator("wm.generate_piano_animation")
-        row = layout.row()
-        row.operator("wm.generate_jumping_animation")
+        if midi_keyframe_props.animation_mode == ANIM_MODE_ACTIONS:
+            row = layout.row()
+            row.operator("wm.generate_action_animation")
+        if midi_keyframe_props.animation_mode == ANIM_MODE_KEYFRAMES:
+            row = layout.row()
+            row.operator("wm.generate_piano_animation")
+            row = layout.row()
+            row.operator("wm.generate_jumping_animation")
 
         layout.separator(factor=1.5)
         layout.label(text="Piano Keys", icon="OBJECT_DATAMODE")
@@ -332,6 +371,8 @@ class GI_GamepadInputPanel(bpy.types.Panel):
         row.prop(midi_keyframe_props, "obj_gsharp", icon="EVENT_G")
         row = layout.row()
         row.prop(midi_keyframe_props, "obj_asharp", icon="EVENT_A")
+        row = layout.row()
+        row.prop(midi_keyframe_props, "action_c", icon="EVENT_C")
 
         layout.separator(factor=1.5)
         layout.label(text="Other Objects", icon="OBJECT_HIDDEN")
@@ -343,6 +384,8 @@ class GI_GamepadInputPanel(bpy.types.Panel):
         row = layout.row()
         row.operator("wm.delete_all_keyframes", icon="TRASH")
 
+# Legacy: We use PIP `.wheels` files to install deps via Blender manifest `.toml`
+# But this remains as a reference, in case that doesn't work for some reason (e.g. older versions of Blender)
 class GI_install_midi(bpy.types.Operator):
     """Install mido"""
     bl_idname = "wm.install_midi"
@@ -388,6 +431,33 @@ def get_note_obj(midi_keyframe_props, noteLetter):
         return midi_keyframe_props.obj_gsharp
     if noteLetter == "A#":
         return midi_keyframe_props.obj_asharp
+    return None
+    
+def get_note_action(midi_keyframe_props, noteLetter):
+    if noteLetter == "C":
+        return midi_keyframe_props.action_c
+    if noteLetter == "D":
+        return midi_keyframe_props.action_d
+    if noteLetter == "E":
+        return midi_keyframe_props.action_e
+    if noteLetter == "F":
+        return midi_keyframe_props.action_f
+    if noteLetter == "G":
+        return midi_keyframe_props.action_g
+    if noteLetter == "A":
+        return midi_keyframe_props.action_a
+    if noteLetter == "B":
+        return midi_keyframe_props.action_b
+    if noteLetter == "C#":
+        return midi_keyframe_props.action_csharp
+    if noteLetter == "D#":
+        return midi_keyframe_props.action_dsharp
+    if noteLetter == "F#":
+        return midi_keyframe_props.action_fsharp
+    if noteLetter == "G#":
+        return midi_keyframe_props.action_gsharp
+    if noteLetter == "A#":
+        return midi_keyframe_props.action_asharp
     return None
     
 def replace_note_obj(midi_keyframe_props, noteLetter, new_obj):
@@ -566,6 +636,32 @@ class GI_generate_piano_animation(bpy.types.Operator):
 
         return {"FINISHED"}
 
+class GI_generate_action_animation(bpy.types.Operator):
+    """Generate animation"""
+    bl_idname = "wm.generate_action_animation"
+    bl_label = "Action Animation"
+    bl_description = "Creates actions on piano key objects when notes are pressed"
+
+    def execute(self, context: bpy.types.Context):
+        midi_keyframe_props = context.scene.midi_keyframe_props
+        midi_file_path = midi_keyframe_props.midi_file
+        selected_track = midi_keyframe_props.selected_track
+        animation_type = midi_keyframe_props.animation_type
+        axis = int(midi_keyframe_props.axis)
+
+        # Is it a MIDI file? If not, bail early
+        check_for_midi_file(context)
+
+
+        # Import the MIDI file
+        print("Parsing MIDI file...") 
+        midi_file = ParsedMidiFile(midi_file_path, selected_track)
+
+        # Loop over each music note and animate corresponding keys
+        midi_file.for_each_key(context, animate_actions)
+
+        return {"FINISHED"}
+
 class GI_delete_all_keyframes(bpy.types.Operator):
     """Deletes all keyframes with confirm dialog"""
     bl_idname = "wm.delete_all_keyframes"
@@ -642,6 +738,40 @@ class GI_generate_jumping_animation(bpy.types.Operator):
         midi_file.for_each_key(context, animate_jump)
 
         return {"FINISHED"}
+
+# Animates objects up and down like piano keys
+def animate_actions(context, note_letter, octave: int, real_keyframe, pressed, has_release, prev_keyframe, prev_note):
+    midi_keyframe_props = context.scene.midi_keyframe_props
+    advanced_mode = midi_keyframe_props.action_advanced_mode
+    action = midi_keyframe_props.action_default
+
+    # We only care about presses for now
+    # TODO: Separate actions for each interaction type (pressed, released)
+    if not pressed:
+        return
+
+    # Keyframe generation
+    # Get the right object corresponding to the note
+    move_obj = get_note_obj(midi_keyframe_props, note_letter)
+    if move_obj == None:
+        return
+    
+    # Make sure we create a "slot" for animation data - if it doesn't exist we get errors
+    if move_obj.animation_data is None:
+        move_obj.animation_data_create()
+
+    # Create new animation track ("NLA Track")
+    new_track = move_obj.animation_data.nla_tracks.new()
+    strip_name = "note_c.001"
+
+    # If we're in advanced mode we select a note-specific action
+    if advanced_mode:
+        action = get_note_action(midi_keyframe_props, note_letter)
+
+    # Create new strip on that track and add action to it
+    new_strip = new_track.strips.new(strip_name, int(real_keyframe), action)
+    # We set extrapolation mode to NOTHING so it keeps playing (default is "HOLD" - freezing anim)
+    new_strip.extrapolation = 'NOTHING'
 
 # Animates objects up and down like piano keys
 def animate_keys(context, note_letter, octave: int, real_keyframe, pressed, has_release, prev_keyframe, prev_note):
@@ -761,6 +891,7 @@ classes = (
     GI_install_midi,
     GI_generate_piano_animation,
     GI_generate_jumping_animation,
+    GI_generate_action_animation,
     GI_assign_keys,
     GI_delete_all_keyframes
 )

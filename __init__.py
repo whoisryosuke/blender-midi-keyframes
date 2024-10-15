@@ -274,6 +274,79 @@ class GI_SceneProperties(PropertyGroup):
         description="Object to be controlled",
         type=bpy.types.Object,
         )
+
+    # Actions for objects
+    action_c: PointerProperty(
+        name="C",
+        description="Action that plays for corresponding note",
+        type=bpy.types.Action,
+        )
+        
+    action_d: PointerProperty(
+        name="D",
+        description="Action that plays for corresponding note",
+        type=bpy.types.Action,
+        )
+        
+    action_e: PointerProperty(
+        name="E",
+        description="Action that plays for corresponding note",
+        type=bpy.types.Action,
+        )
+        
+    action_f: PointerProperty(
+        name="F",
+        description="Action that plays for corresponding note",
+        type=bpy.types.Action,
+        )
+        
+    action_g: PointerProperty(
+        name="G",
+        description="Action that plays for corresponding note",
+        type=bpy.types.Action,
+        )
+        
+    action_a: PointerProperty(
+        name="A",
+        description="Action that plays for corresponding note",
+        type=bpy.types.Action,
+        )
+        
+    action_b: PointerProperty(
+        name="B",
+        description="Action that plays for corresponding note",
+        type=bpy.types.Action,
+        )
+        
+    action_csharp: PointerProperty(
+        name="C#",
+        description="Action that plays for corresponding note",
+        type=bpy.types.Action,
+        )
+        
+    action_dsharp: PointerProperty(
+        name="D#",
+        description="Action that plays for corresponding note",
+        type=bpy.types.Action,
+        )
+    
+    action_fsharp: PointerProperty(
+        name="F#",
+        description="Action that plays for corresponding note",
+        type=bpy.types.Action,
+        )
+    
+    action_gsharp: PointerProperty(
+        name="G#",
+        description="Action that plays for corresponding note",
+        type=bpy.types.Action,
+        )
+
+    action_asharp: PointerProperty(
+        name="A#",
+        description="Action that plays for corresponding note",
+        type=bpy.types.Action,
+        )
     
     
     # App State (not for user)
@@ -314,10 +387,37 @@ class GI_GamepadInputPanel(bpy.types.Panel):
         row.prop(midi_keyframe_props, "animation_mode")
         
         if midi_keyframe_props.animation_mode == ANIM_MODE_ACTIONS:
-            row = layout.row()
-            row.prop(midi_keyframe_props, "action_default")
+            if not midi_keyframe_props.action_advanced_mode:
+                row = layout.row()
+                row.prop(midi_keyframe_props, "action_default")
             row = layout.row()
             row.prop(midi_keyframe_props, "action_advanced_mode")
+            
+        if midi_keyframe_props.action_advanced_mode:
+            row = layout.row()
+            row.prop(midi_keyframe_props, "action_c", icon="EVENT_C")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "action_d", icon="EVENT_D")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "action_e", icon="EVENT_E")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "action_f", icon="EVENT_F")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "action_g", icon="EVENT_G")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "action_a", icon="EVENT_A")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "action_b", icon="EVENT_B")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "action_csharp", icon="EVENT_C")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "action_dsharp", icon="EVENT_D")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "action_fsharp", icon="EVENT_F")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "action_gsharp", icon="EVENT_G")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "action_asharp", icon="EVENT_A")
             
         if midi_keyframe_props.animation_mode == ANIM_MODE_KEYFRAMES:
             row = layout.row()
@@ -342,6 +442,9 @@ class GI_GamepadInputPanel(bpy.types.Panel):
             row.operator("wm.generate_piano_animation")
             row = layout.row()
             row.operator("wm.generate_jumping_animation")
+
+
+
 
         layout.separator(factor=1.5)
         layout.label(text="Piano Keys", icon="OBJECT_DATAMODE")
@@ -371,8 +474,6 @@ class GI_GamepadInputPanel(bpy.types.Panel):
         row.prop(midi_keyframe_props, "obj_gsharp", icon="EVENT_G")
         row = layout.row()
         row.prop(midi_keyframe_props, "obj_asharp", icon="EVENT_A")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "action_c", icon="EVENT_C")
 
         layout.separator(factor=1.5)
         layout.label(text="Other Objects", icon="OBJECT_HIDDEN")

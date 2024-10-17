@@ -353,11 +353,11 @@ class GI_SceneProperties(PropertyGroup):
     initial_state = {}
 
 # UI Panel
-class GI_GamepadInputPanel(bpy.types.Panel):
+class GI_MIDIInputPanel(bpy.types.Panel):
     """Creates a Panel in the scene context of the properties editor"""
     bl_category = "MIDI Import"
     bl_label = "MIDI Importer"
-    bl_idname = "SCENE_PT_gamepad"
+    bl_idname = "SCENE_PT_midi_panel"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
     # bl_context = "output"
@@ -988,7 +988,7 @@ def animate_jump(context, note_letter, octave, real_keyframe, pressed, has_relea
 # Load/unload addon into Blender
 classes = (
     GI_SceneProperties,
-    GI_GamepadInputPanel,
+    GI_MIDIInputPanel,
     GI_install_midi,
     GI_generate_piano_animation,
     GI_generate_jumping_animation,

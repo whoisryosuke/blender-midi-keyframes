@@ -30,7 +30,7 @@ This is a free Blender addon to import MIDI files and generate animation keyfram
 
 ## 🎥 Tutorial
 
-Here's a video walkthrough of the plugin and it's major features (up to `v0.0.5`):
+Here's [a video walkthrough](https://www.youtube.com/watch?v=E4wfblQWhtY) of the plugin and it's major features (up to `v0.0.5`):
 
 [![YouTube video thumbnail](./docs/yt-tutorial.jpg)](https://www.youtube.com/watch?v=E4wfblQWhtY)
 

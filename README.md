@@ -4,9 +4,24 @@
 
 This is a free Blender addon to import MIDI files and generate animation keyframes. It assigns the keyframes to objects you assign as piano keys.
 
+# Features:
+
+- 🎹 Assign objects as "piano keys"
+- 📈 Generate animations keyframes when note is pressed
+- ⚙️ Generate actions when note is pressed
+- 🎼 Select MIDI track
+- 🎵 Select octave (or condense all)
+- 🐇 Change animation type (move, rotate, or scale)
+- 📏 Change animation parameters (distance, axis)
+- 🔎 Automatically assign piano keys using selected collection
+
+**Coming Soon:**
+
+- “Jumping between keys” animation
+
 ## ⬇️ Installation
 
-1. [Download the plugin zip](https://github.com/whoisryosuke/blender-midi-keyframes/releases/download/v0.0.2/midi-to-keyframes-v0.0.2.zip) from the releases page or [Blender extension marketplace](https://extensions.blender.org/add-ons/midi-to-keyframes/)
+1. [Download the plugin zip](https://github.com/whoisryosuke/blender-midi-keyframes/releases/download/latest/midi-to-keyframes-v0.0.6.zip)
 1. Open Blender
 1. Go to Edit > Preferences and go to the Addons tab on left.
 1. Click install button.
@@ -63,6 +78,7 @@ I did [a full breakdown on my blog here](https://whoisryosuke.com/blog/2024/midi
 1. Bump version in `blender_manifest.toml`
 1. `blender --command extension build --output-dir dist`
 1. Upload the new `.zip` file generated inside `/dist` folder to Blender addon marketplace and [GitHub Releases page](https://github.com/whoisryosuke/blender-midi-keyframes/releases/new).
+1. Update the `README.md` Installation instructions with the new URL to the release ZIP.
 
 > On Windows? You can add `blender` to your command line by going to Start annd searching for "Edit Environment Variables for your account". Find the Variable "PATH" and edit it. Add the full path to where your `blender.exe` is located (e.g. `C:/Program Files/Blender/4.2/`).
 

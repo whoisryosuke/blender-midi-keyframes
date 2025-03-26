@@ -39,6 +39,10 @@ This is a free Blender addon to import MIDI files and generate animation keyfram
 
 > Not happy with the animation? You can undo the keyframes (`CTRL/CMD + Z`). Can't undo? Try the **"Delete All Keyframes"** button, it will delete **_all_** keyframes on any selected note object.
 
+I created a video walkthrough of the plugin and it's major features (up to `v0.0.5`):
+
+[![YouTube video thumbnail](./docs/yt-tutorial.jpg)](https://www.youtube.com/watch?v=E4wfblQWhtY)
+
 ### Tips
 
 #### Auto Assigning Keys

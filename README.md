@@ -32,11 +32,11 @@ This is a free Blender addon to import MIDI files and generate animation keyfram
 
 Here's [a video walkthrough](https://www.youtube.com/watch?v=E4wfblQWhtY) of the plugin and it's major features (up to `v0.0.5`):
 
-[![YouTube video thumbnail](./docs/yt-tutorial.jpg)](https://www.youtube.com/watch?v=E4wfblQWhtY)
+[![YouTube video thumbnail](./media/yt-tutorial.jpg)](https://www.youtube.com/watch?v=E4wfblQWhtY)
 
 ## 🔰 How to use
 
-![The plugin panel inside Blender](/docs/screenshots/plugin-panel.jpg)
+![The plugin panel inside Blender](/media/screenshots/plugin-panel.jpg)
 
 1. Open up the side panel labeled **"MIDI Importer"**, it's available in the 3D viewport in the n-panel (the right side panel that's usually collapsed).
 1. Select a MIDI file you'd like to import.

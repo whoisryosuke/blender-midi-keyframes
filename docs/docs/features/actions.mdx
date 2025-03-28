@@ -1,0 +1,30 @@
+---
+title: Actions
+description: How to use Blender Actions for animations
+tags:
+  - features
+  - actions
+---
+
+# Actions
+
+You can use Blender Actions instead of keyframe-based animations to represent MIDI note presses.
+
+With keyframe animation, we basically mimic a "key press" by moving/rotating/scaling the object from one state to another (like up and down).
+
+But with Actions, you can use any animation you'd like instead. For example, you could have a Player for a video game that has many actions like "Idle", "Jump", or actions like "Clap" or "Dance". These actions could be used when a note is pressed, so the Player object animates a certain way to the music.
+
+## Using Actions
+
+![The plugin panel inside Blender](/screenshots/action-mode.png)
+
+1. Import a MIDI file and pick your track.
+1. Change the mode from Keyframes to Actions. You might notice the plugin UI change and swap things out.
+1. Assign an action you want each object to use when a note is pressed.
+   - Want a unique action per object? Click the **"Advanced mode"** checkbox to reveal a dropdown for each note.
+1. Assign your "piano key" objects.
+1. Click **"Action Animation".**
+
+You should have an animation! Click play to preview it.
+
+Or select one of your "piano key" objects and check the **Non-Linear Animation** panel. Every time the note is pressed, a new NLA track will be generated with an action "clip" in the correct timing.

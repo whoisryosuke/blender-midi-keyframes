@@ -1,0 +1,39 @@
+---
+title: Tips
+sidebar_position: 2
+---
+
+# Tips and Tricks
+
+## Auto Assigning Keys
+
+The plugin can automatically assign piano keys if you create a collection with objects with the note letter appended to the end.
+
+For example, you'd name your objects something like:
+
+- `ObjectName.C` maps to the `C` piano key
+- `yourobject.F#` maps to the `F#` piano key
+
+Then you can select the collection and press the **"Auto-Assign Keys" button**.
+
+:::warning
+We currently only support 1 octave at a time, so you don't need to put `C4` vs `C5`. The plugin will detect the first `C` key it finds in the collection.
+:::
+
+## Deleting all keyframes or actions
+
+Didn't like the results of an animation and want to reset? Undo should work if you did the keyframe generation recently.
+
+But if undo doesn't work, you can use the **"Delete All Keyframes"** button on the bottom of the plugin in the aptly named **"Danger Zone".** This will delete all keyframes on any piano key objects you have assigned.
+
+This does not delete all keyframes across all objects globally - only those explicitly selected in the plugin.
+
+If you have multiple sets of keys (like octaves or different types of buttons) you'll have to use the "Auto-Assign Keys" to select each set to delete them from each set.
+
+## Visualizing the MIDI Track
+
+I'd recommend downloading [Audacity](https://www.audacityteam.org/) to visualize the MIDI tracks and see what the note charts look like before you import them into Blender.
+
+## FPS and Music Timing
+
+When creating the animation keyframes, we use the current scene's frame rate to calculate the music time. If you **change the frame rate** after generating keyframes, you should **re-generate keyframes** to ensure the timing is correct.

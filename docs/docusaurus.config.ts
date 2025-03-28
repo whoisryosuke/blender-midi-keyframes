@@ -73,6 +73,11 @@ const config: Config = {
           label: "Getting Started",
         },
         {
+          to: "https://www.youtube.com/watch?v=E4wfblQWhtY",
+          label: "Tutorial",
+          position: "left",
+        },
+        {
           href: "https://github.com/whoisryosuke/blender-midi-keyframes",
           label: "Source Code",
           position: "right",

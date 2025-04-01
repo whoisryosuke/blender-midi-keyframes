@@ -1,0 +1,32 @@
+.masthead {
+  text-align: center;
+  padding-top: var(--oat-space-6);
+  position: relative;
+  z-index: 420;
+}
+
+.masthead .title {
+  font-family: var(--oat-font-family);
+  font-optical-sizing: auto;
+  font-weight: var(--oat-font-weight-header);
+  font-size: 96px;
+  line-height: 100%;
+}
+
+.masthead .subtitle {
+  font-family: var(--oat-font-family);
+  font-optical-sizing: auto;
+  font-weight: var(--oat-font-weight-text);
+  font-size: 40px;
+  line-height: 100%;
+  width: 40ch;
+  margin: 0 auto var(--oat-space-5) auto;
+}
+
+.masthead .buttons {
+  margin: var(--oat-space-7) 0 0 0;
+}
+
+.masthead .buttons .oat-button:first-child {
+  margin-right: var(--oat-space-3);
+}

@@ -14,7 +14,7 @@ const DebugScene = (props: Props) => {
   useFrame(({ camera }) => {
     // Manual
     camera.position.x = 0;
-    camera.position.y = 12;
+    camera.position.y = 10;
     camera.position.z = 0;
     // orbitRef.current.target.x = 0;
     // orbitRef.current.target.y = 0;

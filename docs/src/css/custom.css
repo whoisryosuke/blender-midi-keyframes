@@ -16,6 +16,27 @@
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
   --footer-background-color: #333;
+  --oat-color-text: #fafafa;
+
+  --oat-font-family: "Inter Tight", sans-serif;
+  --oat-font-weight-header: 800;
+  --oat-font-weight-button: 700;
+  --oat-font-weight-text: 400;
+
+  --oat-space-0: 0px;
+  --oat-space-1: 2px;
+  --oat-space-2: 4px;
+  --oat-space-3: 8px;
+  --oat-space-4: 16px;
+  --oat-space-5: 24px;
+  --oat-space-6: 32px;
+  --oat-space-7: 48px;
+  --oat-space-8: 64px;
+  --oat-space-9: 96px;
+  --oat-space-10: 128px;
+  --oat-space-11: 192px;
+  --oat-space-12: 256px;
+  --oat-space-13: 512px;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -33,4 +54,45 @@
 
 .footer--dark {
   --ifm-footer-background-color: var(--footer-background-color);
+}
+
+.oat-button {
+  background-color: var(--ifm-color-primary);
+  border-radius: 16px;
+  padding: 16px 100px;
+  color: var(--oat-color-text);
+
+  font-family: var(--oat-font-family);
+  font-optical-sizing: auto;
+  font-weight: var(--oat-font-weight-button);
+}
+
+.oat-button:hover {
+  background-color: var(--ifm-color-primary-darker);
+  color: var(--oat-color-text);
+  text-decoration: none;
+}
+
+.oat-button:active {
+  background-color: var(--ifm-color-primary-darkest);
+  color: var(--oat-color-text);
+}
+
+.oat-button:visited {
+  color: var(--oat-color-text);
+}
+
+.oat-button.ghost {
+  background-color: transparent;
+  border: 1px solid var(--oat-color-text);
+}
+
+.oat-button.ghost:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--oat-color-text);
+}
+
+.oat-button.ghost:active {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: var(--oat-color-text);
 }

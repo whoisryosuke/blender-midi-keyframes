@@ -9,28 +9,7 @@ import Heading from "@theme/Heading";
 import styles from "./index.module.css";
 import PianoScene from "../components/PianoScene/PianoScene";
 import MastheadText from "../components/Masthead/MastheadText";
-
-function HomepageHeader() {
-  const { siteConfig } = useDocusaurusContext();
-  return (
-    <header className={clsx("hero hero--primary", styles.heroBanner)}>
-      <div className="container">
-        <Heading as="h1" className="hero__title">
-          {siteConfig.title}
-        </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/intro"
-          >
-            Docusaurus Tutorial - 5min ⏱️
-          </Link>
-        </div>
-      </div>
-    </header>
-  );
-}
+import Wrapper from "../components/Wrapper/Wrapper";
 
 export default function Home(): ReactNode {
   const { siteConfig } = useDocusaurusContext();
@@ -39,12 +18,14 @@ export default function Home(): ReactNode {
       title={`Hello from ${siteConfig.title}`}
       description="Description will go into a meta tag in <head />"
     >
-      <main style={{ display: "flex", flex: 1 }}>
-        <MastheadText />
-        <div style={{ width: "100%", flex: 1, minHeight: 600 }}>
-          <PianoScene />
-        </div>
-      </main>
+      <Wrapper>
+        <main style={{ display: "flex", flex: 1, flexDirection: "column" }}>
+          <MastheadText />
+          <div style={{ width: "100%", height: 600, marginTop: -50 }}>
+            <PianoScene />
+          </div>
+        </main>
+      </Wrapper>
     </Layout>
   );
 }

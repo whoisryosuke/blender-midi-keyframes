@@ -136,66 +136,78 @@ export function Ryoturia(props: JSX.IntrinsicElements["group"]) {
           name="WhiteKeyC"
           geometry={nodes.WhiteKeyC.geometry}
           position={[-0.488, 0.901, -5.421]}
+          castShadow
         />
         <PianoKey
           name="BlackKeyC#"
           geometry={nodes["BlackKeyC#"].geometry}
           position={[-0.096, 1.014, -5.417]}
           black
+          castShadow
         />
         <PianoKey
           name="BlackKeyG#"
           geometry={nodes["BlackKeyG#"].geometry}
           position={[4.304, 1.014, -5.417]}
           black
+          castShadow
         />
         <PianoKey
           name="WhiteKeyD"
           geometry={nodes.WhiteKeyD.geometry}
           position={[0.578, 0.901, -5.421]}
+          castShadow
         />
         <PianoKey
           name="WhiteKeyE"
           geometry={nodes.WhiteKeyE.geometry}
           position={[1.644, 0.901, -5.421]}
+          castShadow
         />
         <PianoKey
           name="WhiteKeyF"
           geometry={nodes.WhiteKeyF.geometry}
           position={[2.71, 0.901, -5.421]}
+          castShadow
         />
         <PianoKey
           name="WhiteKeyG"
           geometry={nodes.WhiteKeyG.geometry}
           position={[3.775, 0.901, -5.421]}
+          castShadow
         />
         <PianoKey
           name="WhiteKeyA"
           geometry={nodes.WhiteKeyA.geometry}
           position={[4.841, 0.901, -5.421]}
+          castShadow
         />
         <PianoKey
           name="WhiteKeyB"
           geometry={nodes.WhiteKeyB.geometry}
           position={[5.907, 0.901, -5.421]}
+          castShadow
         />
         <PianoKey
           name="BlackKeyD#"
           geometry={nodes["BlackKeyD#"].geometry}
           position={[1.111, 1.014, -5.417]}
           black
+          castShadow
         />
         <PianoKey
           name="BlackKeyF#"
           geometry={nodes["BlackKeyF#"].geometry}
           position={[3.217, 1.014, -5.417]}
           black
+          castShadow
         />
         <PianoKey
           name="BlackKeyA#"
           geometry={nodes["BlackKeyA#"].geometry}
           position={[5.357, 1.014, -5.417]}
           black
+          castShadow
         />
         <mesh
           name="ScreenBorder"
@@ -221,31 +233,35 @@ export function Ryoturia(props: JSX.IntrinsicElements["group"]) {
           geometry={nodes.ButtonsC.geometry}
           material={materials["Button.DynamicText.001"]}
           position={[-0.518, 1.453, -6.839]}
+          castShadow
         />
         <DrumpadButton
           name="ButtonsC#"
           geometry={nodes["ButtonsC#"].geometry}
           material={materials["Button.DynamicText.001"]}
           position={[-0.518, 1.453, -6.839]}
-          debug
+          castShadow
         />
         <DrumpadButton
           name="ButtonsD"
           geometry={nodes.ButtonsD.geometry}
           material={materials["Button.DynamicText.001"]}
           position={[-0.518, 1.453, -6.839]}
+          castShadow
         />
         <DrumpadButton
           name="ButtonsD#"
           geometry={nodes["ButtonsD#"].geometry}
           material={materials["Button.DynamicText.001"]}
           position={[-0.518, 1.453, -6.839]}
+          castShadow
         />
         <DrumpadButton
           name="ButtonsE"
           geometry={nodes.ButtonsE.geometry}
           material={materials["Button.DynamicText.001"]}
           position={[-0.518, 1.453, -6.839]}
+          castShadow
         />
         <mesh
           name="ButtonsF"

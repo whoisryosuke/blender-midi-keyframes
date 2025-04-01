@@ -8,6 +8,7 @@ import Heading from "@theme/Heading";
 
 import styles from "./index.module.css";
 import PianoScene from "../components/PianoScene/PianoScene";
+import MastheadText from "../components/Masthead/MastheadText";
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
@@ -39,6 +40,7 @@ export default function Home(): ReactNode {
       description="Description will go into a meta tag in <head />"
     >
       <main style={{ display: "flex", flex: 1 }}>
+        <MastheadText />
         <div style={{ width: "100%", flex: 1, minHeight: 600 }}>
           <PianoScene />
         </div>

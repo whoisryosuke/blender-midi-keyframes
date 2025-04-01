@@ -22,7 +22,7 @@ const RotatingRyoturia = (props: Props) => {
   });
   return (
     <group ref={containerRef} rotation={[0, 0, ROTATE_START]}>
-      <Ryoturia position={[0, 0, 4.2]} />
+      <Ryoturia position={[-3, 0, 4.2]} />
     </group>
   );
 };

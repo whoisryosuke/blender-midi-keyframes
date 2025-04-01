@@ -4,5 +4,6 @@
   "compilerOptions": {
     "baseUrl": "."
   },
+  "include": ["**/*.ts", "**/*.tsx", "src/types/r3f.d.ts"],
   "exclude": [".docusaurus", "build"]
 }

@@ -10,6 +10,7 @@ import styles from "./index.module.css";
 import PianoScene from "../components/PianoScene/PianoScene";
 import MastheadText from "../components/Masthead/MastheadText";
 import Wrapper from "../components/Wrapper/Wrapper";
+import ControlAnimations from "../components/Frontpage/ControlAnimations/ControlAnimations";
 
 export default function Home(): ReactNode {
   const { siteConfig } = useDocusaurusContext();
@@ -24,6 +25,7 @@ export default function Home(): ReactNode {
           <div style={{ width: "100%", height: 600, marginTop: -50 }}>
             <PianoScene />
           </div>
+          <ControlAnimations />
         </main>
       </Wrapper>
     </Layout>

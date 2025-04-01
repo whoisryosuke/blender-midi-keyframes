@@ -25,6 +25,7 @@
 
 .masthead .buttons {
   margin: var(--oat-space-7) 0 0 0;
+  font-size: 24px;
 }
 
 .masthead .buttons .oat-button:first-child {

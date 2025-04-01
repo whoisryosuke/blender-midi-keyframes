@@ -14,7 +14,7 @@ type Props = {};
 
 const Scene = (props: Props) => {
   return (
-    <Canvas>
+    <Canvas style={{ pointerEvents: "none" }}>
       {/* <ambientLight position={[0, 3, 0]} intensity={1} /> */}
       {/* <ambientLight position={[3, 3, 3]} intensity={0.5} /> */}
       <Environment

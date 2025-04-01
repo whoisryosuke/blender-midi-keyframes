@@ -38,10 +38,10 @@ export default function Home(): ReactNode {
       title={`Hello from ${siteConfig.title}`}
       description="Description will go into a meta tag in <head />"
     >
-      <PianoScene />
-      <HomepageHeader />
-      <main>
-        <HomepageFeatures />
+      <main style={{ display: "flex", flex: 1 }}>
+        <div style={{ width: "100%", flex: 1, minHeight: 600 }}>
+          <PianoScene />
+        </div>
       </main>
     </Layout>
   );

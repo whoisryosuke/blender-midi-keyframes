@@ -1,6 +1,5 @@
 import { useFrame } from "@react-three/fiber";
 import { JSX, useMemo, useRef } from "react";
-import PianoKeyMaterial from "./PianoKeyMaterial";
 import { Color, Mesh, MeshPhysicalMaterial } from "three";
 
 type Props = Partial<JSX.IntrinsicElements["mesh"]> & {};
@@ -14,7 +13,7 @@ const PRESSED_COLOR = new Color("#002EFF");
 // so we check if it's passed a threshold (this buffer)
 const FLOAT_BUFFER = 0.05;
 
-const DrumpadButton = ({ material, debug, ...props }: Props) => {
+const DrumpadButton = ({ material, ...props }: Props) => {
   const meshRef = useRef<Mesh>(null);
   const materialUnique = useMemo(() => material.clone(), []);
 
@@ -27,16 +26,9 @@ const DrumpadButton = ({ material, debug, ...props }: Props) => {
         meshRef.current.position.y < START_DISTANCE - FLOAT_BUFFER
           ? PRESSED_COLOR
           : BASE_COLOR;
-
-      if (debug) console.log(meshRef.current.position);
     }
   });
 
-  return (
-    <mesh ref={meshRef} material={materialUnique} {...props}>
-      {/* @ts-ignore */}
-      {/* <meshPhysicalMaterial color={BASE_COLOR} /> */}
-    </mesh>
-  );
+  return <mesh ref={meshRef} material={materialUnique} {...props} />;
 };
 export default DrumpadButton;

@@ -8,6 +8,7 @@ import { useGLTF, useAnimations } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 import PianoKey from "../Ryoturia/PianoKey";
 import { AnimationClip, Group, Mesh, MeshStandardMaterial } from "three";
+import { useMIDIAnimationStore } from "@site/src/store/midi-animation";
 
 type ActionName = "Scene";
 
@@ -38,29 +39,31 @@ type GLTFResult = GLTF & {
 };
 
 export function PianoKeys(props: JSX.IntrinsicElements["group"]) {
-  const [isPlaying, setIsPlaying] = useState(false);
   const group = useRef<Group>(null);
   // @ts-ignore
   const { nodes, materials, animations } = useGLTF(
-    "/models/MIDI Piano 3D - Piano Keys Transparent -V1 - Apple Market Baked.glb"
+    "/models/MIDI Piano 3D - Piano Keys Transparent -V2 - Mozart Sonata 16 Scale Snippet.glb"
   ) as GLTFResult;
   const { actions } = useAnimations(animations, group);
+  const { playing, setPlaying, setCurrentAnimation } = useMIDIAnimationStore();
 
   const startAnimation = () => {
-    console.log("toggling animation");
     const actionMap = Object.values(actions);
+    console.log("toggling animation", actionMap);
     // Loop through each object and start it's animation
-    if (isPlaying) {
+    if (playing) {
       actionMap.forEach((action) => {
         action.paused = false;
       });
     } else {
       actionMap.forEach((action) => {
         action.play();
+
+        setCurrentAnimation(action);
       });
     }
 
-    setIsPlaying((prevPlaying) => !prevPlaying);
+    setPlaying(!playing);
   };
 
   useEffect(() => {

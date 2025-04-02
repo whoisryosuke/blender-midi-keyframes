@@ -20,6 +20,7 @@
     "@mdx-js/react": "^3.0.0",
     "@react-three/drei": "^10.0.5",
     "@react-three/fiber": "^9.1.1",
+    "@tonejs/midi": "^2.0.28",
     "clsx": "^2.0.0",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.0.0",

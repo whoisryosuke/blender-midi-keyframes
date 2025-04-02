@@ -9,6 +9,7 @@ import { Canvas } from "@react-three/fiber";
 import React from "react";
 import DebugScene from "./DebugScene";
 import RotatingRyoturia from "./RotatingRyoturia";
+import RotatedPianoKeys from "./RotatedPianoKeys";
 
 type Props = {};
 
@@ -24,7 +25,7 @@ const Scene = (props: Props) => {
       >
         {/* Extra space lights if needed */}
       </Environment>
-      <RotatingRyoturia />
+      <RotatedPianoKeys />
 
       <DebugScene />
     </Canvas>

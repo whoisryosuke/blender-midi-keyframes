@@ -7,11 +7,11 @@ import React, { JSX, useEffect, useRef, useState } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 import PianoKey from "../Ryoturia/PianoKey";
-import { Group, Mesh, MeshStandardMaterial } from "three";
+import { AnimationClip, Group, Mesh, MeshStandardMaterial } from "three";
 
 type ActionName = "Scene";
 
-interface GLTFAction extends THREE.AnimationClip {
+interface GLTFAction extends AnimationClip {
   name: ActionName;
 }
 
@@ -40,9 +40,10 @@ type GLTFResult = GLTF & {
 export function PianoKeys(props: JSX.IntrinsicElements["group"]) {
   const [isPlaying, setIsPlaying] = useState(false);
   const group = useRef<Group>(null);
+  // @ts-ignore
   const { nodes, materials, animations } = useGLTF(
     "/models/MIDI Piano 3D - Piano Keys Transparent -V1 - Apple Market Baked.glb"
-  );
+  ) as GLTFResult;
   const { actions } = useAnimations(animations, group);
 
   const startAnimation = () => {
@@ -68,7 +69,6 @@ export function PianoKeys(props: JSX.IntrinsicElements["group"]) {
   return (
     <group ref={group} {...props} dispose={null}>
       <group name="Scene">
-        <group name="Focus" position={[2.789, 1.014, -2.336]} />
         <PianoKey
           name="WhiteKeyC"
           geometry={nodes.WhiteKeyC.geometry}

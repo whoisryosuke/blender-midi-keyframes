@@ -1,0 +1,37 @@
+.AnimatedNotesContainer {
+  width: 100%;
+  display: flex;
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 255, 0.2);
+}
+
+.AnimatedNotesContainer > div {
+  width: 50%;
+}
+
+.DAWContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+}
+
+.DAWRow {
+  width: 100%;
+  display: flex;
+  background: rgba(0, 0, 255, 0.2);
+  margin-bottom: 0.35rem;
+}
+
+.DAWNote {
+  min-width: 116px;
+  height: 32px;
+  background: linear-gradient(90deg, #1098ad 0%, #22b8cf 100%);
+  border: 2px solid #212529;
+  box-shadow: 0px 1.39403px 5.85491px rgba(0, 0, 0, 0.5),
+    0px 0px 11.431px rgba(255, 255, 255, 0.1),
+    inset 0px 2.09104px 1.39403px rgba(255, 255, 255, 0.25),
+    inset 0px -5.5761px 2.09104px rgba(0, 0, 0, 0.25);
+  border-radius: 5.5761px;
+}

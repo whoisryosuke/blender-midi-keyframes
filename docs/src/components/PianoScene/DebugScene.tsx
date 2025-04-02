@@ -40,9 +40,9 @@ const DebugScene = (props: Props) => {
     // console.log("orbit", orbitRef.current.target);
   });
   return (
-    <>
+    <group>
       <OrbitControls ref={orbitRef} />
-    </>
+    </group>
   );
 };
 

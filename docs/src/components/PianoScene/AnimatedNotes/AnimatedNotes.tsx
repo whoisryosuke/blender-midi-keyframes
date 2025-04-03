@@ -81,12 +81,7 @@ const AnimatedNotes = (props: Props) => {
     };
   }, []);
 
-  return (
-    <div className="AnimatedNotesContainer">
-      <DAWNotes time={localTime} />
-      <div>{localTime}</div>
-    </div>
-  );
+  return <DAWNotes time={localTime} />;
 };
 
 export default AnimatedNotes;

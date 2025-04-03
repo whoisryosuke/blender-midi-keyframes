@@ -46,35 +46,65 @@ const DAWNotes = ({ time }: Props) => {
   }, [playing, time]);
 
   return (
-    <div className="DAWContainer">
-      {noteTracks.map((_, index) => {
-        const trackNotes = notes.filter(
-          (note) => note.note.slice(0, -1) == NOTE_MAP[index]
-        );
-        return (
-          <div key={index} className="DAWRow">
-            {trackNotes.map((note) => {
-              const screenWidth = window.innerWidth / 2 - 400;
-              // We basically measure the distance from current time to when note plays
-              const animatedXPosition = Math.abs(note.time - time);
-              // Then we scale it up to half the size of screen
-              const scaledAnimatedXPosition =
-                animatedXPosition * -screenWidth + screenWidth;
+    <div className="AnimatedNotesContainer">
+      <div className="DAWContainer">
+        {noteTracks.map((_, index) => {
+          const trackNotes = notes.filter(
+            (note) => note.note.slice(0, -1) == NOTE_MAP[index]
+          );
+          return (
+            <div key={index} className="DAWRow">
+              {trackNotes.map((note) => {
+                const screenWidth = window.innerWidth / 2 - 400;
+                // We basically measure the distance from current time to when note plays
+                const animatedXPosition = Math.abs(note.time - time);
+                // Then we scale it up to half the size of screen
+                const scaledAnimatedXPosition =
+                  animatedXPosition * -screenWidth + screenWidth;
 
-              return (
-                <div
-                  className="DAWNote"
-                  style={{
-                    transform: `translateX(${scaledAnimatedXPosition}px)`,
-                  }}
-                >
-                  {note.note}
-                </div>
-              );
-            })}
-          </div>
-        );
-      })}
+                return (
+                  <div
+                    className="DAWNote"
+                    style={{
+                      transform: `translateX(${scaledAnimatedXPosition}px)`,
+                    }}
+                  >
+                    {note.note}
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })}
+      </div>
+      <div>
+        {noteTracks.map((_, index) => {
+          const trackNotes = notes.filter(
+            (note) => note.note.slice(0, -1) == NOTE_MAP[index]
+          );
+          return (
+            <div key={index} className="DAWRow TimelineRow">
+              {trackNotes.map((note) => {
+                const screenWidth = window.innerWidth / 2 - 400;
+                // We basically measure the distance from current time to when note plays
+                const animatedXPosition = Math.abs(time - note.time);
+                // Then we scale it up to half the size of screen
+                const scaledAnimatedXPosition =
+                  animatedXPosition * -screenWidth + screenWidth;
+
+                return (
+                  <div
+                    className="TimelineKeyframe"
+                    style={{
+                      transform: `translateX(${scaledAnimatedXPosition}px)`,
+                    }}
+                  ></div>
+                );
+              })}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

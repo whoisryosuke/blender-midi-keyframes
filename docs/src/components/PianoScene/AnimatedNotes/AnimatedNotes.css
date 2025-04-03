@@ -3,6 +3,8 @@
   display: flex;
   position: absolute;
   inset: 0;
+  padding-top: 5rem;
+  --row-height: 24px;
 }
 
 .AnimatedNotesContainer > div {
@@ -14,21 +16,21 @@
   display: flex;
   flex-direction: column;
   justify-content: stretch;
-  padding-top: 1rem;
 }
 
 .DAWRow {
   width: 100%;
-  height: 32px;
+  height: var(--row-height);
   display: flex;
   margin-bottom: 0.15rem;
 
   position: relative;
+  overflow: hidden;
 }
 
 .DAWNote {
   min-width: 116px;
-  height: 32px;
+  height: var(--row-height);
   background: linear-gradient(90deg, #1098ad 0%, #22b8cf 100%);
   border: 2px solid #212529;
   box-shadow: 0px 1.39403px 5.85491px rgba(0, 0, 0, 0.5),
@@ -44,4 +46,35 @@
   text-align: right;
   color: #212529;
   font-weight: bold;
+  font-size: 0.7rem;
+}
+
+.TimelineRow::after {
+  width: 100%;
+  height: 1px;
+
+  content: "";
+  background: #657c47;
+  position: absolute;
+  inset: 16px;
+}
+
+.TimelineKeyframe {
+  width: var(--row-height);
+  height: var(--row-height);
+
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.TimelineKeyframe::after {
+  width: 16px;
+  height: 16px;
+
+  content: "";
+  transform: rotate(45deg);
+  background: linear-gradient(90deg, #1098ad 0%, #22b8cf 100%);
+  position: absolute;
+  inset: 8px;
 }

@@ -23,6 +23,7 @@ const AnimatedNotes = (props: Props) => {
     const newMidiFile: MIDIFile = {
       name: midi.name,
       bpm: midi.header.tempos[0]?.bpm ?? 0,
+      duration: midi.duration,
       tracks: [],
     };
 

@@ -34,5 +34,6 @@ export type MIDITrack = {
 export type MIDIFile = {
   name: string;
   bpm: number; // Assume constant now - but ideally allow for an array for changes mid-song
+  duration: number;
   tracks: MIDITrack[];
 };

@@ -19,9 +19,12 @@
 
 .DAWRow {
   width: 100%;
+  height: 32px;
   display: flex;
   background: rgba(0, 0, 255, 0.2);
   margin-bottom: 0.35rem;
+
+  position: relative;
 }
 
 .DAWNote {
@@ -34,4 +37,8 @@
     inset 0px 2.09104px 1.39403px rgba(255, 255, 255, 0.25),
     inset 0px -5.5761px 2.09104px rgba(0, 0, 0, 0.25);
   border-radius: 5.5761px;
+
+  position: absolute;
+  top: 0;
+  left: 0;
 }

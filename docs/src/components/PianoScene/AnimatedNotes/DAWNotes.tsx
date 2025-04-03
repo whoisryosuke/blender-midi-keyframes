@@ -54,7 +54,17 @@ const DAWNotes = ({ time }: Props) => {
         return (
           <div key={index} className="DAWRow">
             {trackNotes.map((note) => (
-              <div className="DAWNote">{note.note}</div>
+              <div
+                className="DAWNote"
+                style={{
+                  transform: `translateX(${
+                    (Math.abs(note.time - time) * -window.innerWidth) / 2 +
+                    window.innerWidth / 2
+                  }px)`,
+                }}
+              >
+                {note.note}
+              </div>
             ))}
           </div>
         );

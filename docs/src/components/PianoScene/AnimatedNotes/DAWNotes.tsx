@@ -22,7 +22,7 @@ type Props = {
   time: number;
 };
 
-const DAW_TIMELINE_LENGTH = 4;
+const DAW_TIMELINE_LENGTH = 8;
 
 const DAWNotes = ({ time }: Props) => {
   const [notes, setNotes] = useState<RhythmNote[]>([]);
@@ -53,19 +53,25 @@ const DAWNotes = ({ time }: Props) => {
         );
         return (
           <div key={index} className="DAWRow">
-            {trackNotes.map((note) => (
-              <div
-                className="DAWNote"
-                style={{
-                  transform: `translateX(${
-                    (Math.abs(note.time - time) * -window.innerWidth) / 2 +
-                    window.innerWidth / 2
-                  }px)`,
-                }}
-              >
-                {note.note}
-              </div>
-            ))}
+            {trackNotes.map((note) => {
+              const screenWidth = window.innerWidth / 2 - 400;
+              // We basically measure the distance from current time to when note plays
+              const animatedXPosition = Math.abs(note.time - time);
+              // Then we scale it up to half the size of screen
+              const scaledAnimatedXPosition =
+                animatedXPosition * -screenWidth + screenWidth;
+
+              return (
+                <div
+                  className="DAWNote"
+                  style={{
+                    transform: `translateX(${scaledAnimatedXPosition}px)`,
+                  }}
+                >
+                  {note.note}
+                </div>
+              );
+            })}
           </div>
         );
       })}

@@ -4,7 +4,7 @@ import AnimatedNotes from "../PianoScene/AnimatedNotes/AnimatedNotes";
 import PianoScene from "../PianoScene/PianoScene";
 import ControlAnimations from "./widgets/ControlAnimations/ControlAnimations";
 import "./shared/FrontpageWidgets.css";
-import ExportWidget from "./ExportWidget";
+import ExportWidget from "./widgets/ExportWidget/ExportWidget";
 
 type Props = {};
 

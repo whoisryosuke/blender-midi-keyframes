@@ -26,6 +26,10 @@
   line-height: 100%;
 }
 
+.FrontpageContainer .textbox h2.subtitle {
+  color: var(--oat-color-shadowed);
+}
+
 .FrontpageContainer .textbox li {
   font-family: var(--oat-font-family);
   font-optical-sizing: auto;

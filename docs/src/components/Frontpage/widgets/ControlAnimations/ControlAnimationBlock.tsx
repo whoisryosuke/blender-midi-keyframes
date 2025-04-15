@@ -3,7 +3,7 @@ import {
   BiListOl,
   BiMenuAltLeft,
   BiMove,
-  BiCaretRight,
+  BiCaretRightSquare,
   BiFile,
   BiGhost,
 } from "react-icons/bi";
@@ -12,7 +12,7 @@ const ICONS = {
   select_track: BiListOl,
   select_octave: BiMenuAltLeft,
   animation_type: BiMove,
-  animation_mode: BiCaretRight,
+  animation_mode: BiCaretRightSquare,
   export: BiFile,
   object: BiGhost,
 };

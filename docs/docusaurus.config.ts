@@ -53,10 +53,9 @@ const config: Config = {
     // Replace with your project's social card
     image: "img/docusaurus-social-card.jpg",
     navbar: {
-      title: "MIDI Motion",
       logo: {
         alt: "MIDI Motion Blender Plugin Logo",
-        src: "img/logo.png",
+        src: "img/logo-horizontal.svg",
       },
       items: [
         // {
@@ -68,14 +67,14 @@ const config: Config = {
         // { to: "/blog", label: "Blog", position: "left" },
         {
           type: "doc",
-          position: "left",
+          position: "right",
           docId: "getting-started",
           label: "Getting Started",
         },
         {
           to: "https://www.youtube.com/watch?v=E4wfblQWhtY",
           label: "Tutorial",
-          position: "left",
+          position: "right",
         },
         {
           href: "https://github.com/whoisryosuke/blender-midi-keyframes",

@@ -1,0 +1,35 @@
+.FrontpageContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: var(--oat-space-8) auto;
+}
+
+.FrontpageContainer .textbox {
+  padding-right: var(--oat-space-8);
+}
+
+.FrontpageContainer .textbox.center {
+  text-align: center;
+}
+
+.FrontpageContainer img,
+.FrontpageContainer video {
+  max-height: 800px;
+}
+
+.FrontpageContainer .textbox h2 {
+  font-family: var(--oat-font-family);
+  font-optical-sizing: auto;
+  font-weight: var(--oat-font-weight-header);
+  font-size: 72px;
+  line-height: 100%;
+}
+
+.FrontpageContainer .textbox li {
+  font-family: var(--oat-font-family);
+  font-optical-sizing: auto;
+  font-weight: var(--oat-font-weight-text);
+  font-size: 1.5rem;
+  line-height: 175%;
+}

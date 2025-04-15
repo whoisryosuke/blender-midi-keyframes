@@ -85,9 +85,10 @@ const DAWNotes = ({ time }: Props) => {
           return (
             <div key={index} className="DAWRow TimelineRow">
               {trackNotes.map((note) => {
+                const delayTime = time;
                 const screenWidth = window.innerWidth / 2;
                 // We basically measure the distance from current time to when note plays
-                const animatedXPosition = Math.abs(time - note.time);
+                const animatedXPosition = Math.abs(delayTime - note.time);
                 // Then we scale it up to half the size of screen
                 const scaledAnimatedXPosition =
                   animatedXPosition * -screenWidth + screenWidth;

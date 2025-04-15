@@ -12,6 +12,7 @@ import MastheadText from "../components/Masthead/MastheadText";
 import Wrapper from "../components/Wrapper/Wrapper";
 import ControlAnimations from "../components/Frontpage/ControlAnimations/ControlAnimations";
 import AnimatedNotes from "../components/PianoScene/AnimatedNotes/AnimatedNotes";
+import Frontpage from "../components/Frontpage/Frontpage";
 
 export default function Home(): ReactNode {
   const { siteConfig } = useDocusaurusContext();
@@ -21,21 +22,7 @@ export default function Home(): ReactNode {
       description="Description will go into a meta tag in <head />"
     >
       <Wrapper>
-        <main style={{ display: "flex", flex: 1, flexDirection: "column" }}>
-          <MastheadText />
-          <div
-            style={{
-              width: "100%",
-              height: 600,
-              marginTop: -50,
-              position: "relative",
-            }}
-          >
-            <AnimatedNotes />
-            <PianoScene />
-          </div>
-          <ControlAnimations />
-        </main>
+        <Frontpage />
       </Wrapper>
     </Layout>
   );

@@ -1,0 +1,41 @@
+.ControlAnimations {
+  padding: var(--oat-space-6);
+}
+
+.ControlAnimations .blocks {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.ControlAnimations .block {
+  width: 50%;
+  text-align: center;
+}
+
+.ControlAnimations .block .content {
+  padding: var(--oat-space-4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.ControlAnimations h3 {
+  font-family: var(--oat-font-family);
+  font-optical-sizing: auto;
+  font-weight: var(--oat-font-weight-header);
+  font-size: 36px;
+  margin-bottom: var(--oat-space-1);
+}
+
+.ControlAnimations p {
+  font-family: var(--oat-font-family);
+  font-optical-sizing: auto;
+  font-weight: var(--oat-font-weight-text);
+  font-size: 18px;
+  color: var(--oat-color-shadowed);
+}
+
+.ControlAnimations svg {
+  color: var(--oat-color-shadowed);
+}

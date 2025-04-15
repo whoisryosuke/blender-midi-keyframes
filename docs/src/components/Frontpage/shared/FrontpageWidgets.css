@@ -33,3 +33,7 @@
   font-size: 1.5rem;
   line-height: 175%;
 }
+
+.FrontpageContainer .highlight {
+  color: var(--ifm-color-primary);
+}

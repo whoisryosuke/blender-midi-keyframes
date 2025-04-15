@@ -25,6 +25,7 @@
     "prism-react-renderer": "^2.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0",
     "three": "^0.175.0",
     "three-stdlib": "^2.35.14",
     "zustand": "^5.0.3"

@@ -5,6 +5,8 @@ import PianoScene from "../PianoScene/PianoScene";
 import ControlAnimations from "./widgets/ControlAnimations/ControlAnimations";
 import "./shared/FrontpageWidgets.css";
 import ExportWidget from "./widgets/ExportWidget/ExportWidget";
+import ImportNotesWidget from "./widgets/ImportNotesWidget/ImportNotesWidget";
+import GetCreativeWidget from "./widgets/GetCreativeWidget/GetCreativeWidget";
 
 type Props = {};
 
@@ -23,8 +25,10 @@ const Frontpage = (props: Props) => {
         <AnimatedNotes />
         <PianoScene />
       </div>
+      <ImportNotesWidget />
       <ControlAnimations />
       <ExportWidget />
+      <GetCreativeWidget />
     </main>
   );
 };

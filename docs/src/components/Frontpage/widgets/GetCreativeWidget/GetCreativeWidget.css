@@ -1,0 +1,55 @@
+.GetCreative {
+  padding: var(--oat-space-6);
+}
+
+.GetCreative .container {
+  position: relative;
+}
+
+.GetCreative .box {
+  width: 100%;
+  background: radial-gradient(53.15% 100% at 50% 0%, #0052ff 0%, #003199 81.97%)
+    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  border-radius: 36px;
+
+  position: relative;
+}
+
+.GetCreative .box .content {
+  padding: var(--oat-space-7);
+}
+
+.GetCreative .box .oat-button {
+  position: absolute;
+  bottom: var(--oat-space-7);
+  right: var(--oat-space-7);
+  font-size: 32px;
+  z-index: 710;
+}
+
+.GetCreative .piano {
+  position: absolute;
+  bottom: calc(-1 * var(--oat-space-6));
+}
+
+.GetCreative h2 {
+  margin: 0;
+  font-size: 48px;
+}
+
+.GetCreative h3 {
+  opacity: 0.5;
+  font-weight: var(--oat-font-weight-text);
+  font-size: 32px;
+}
+
+.GetCreative img {
+  width: 100%;
+  height: auto;
+  max-height: none;
+}
+
+.GetCreative .spacer {
+  opacity: 0;
+  max-height: 600px;
+}

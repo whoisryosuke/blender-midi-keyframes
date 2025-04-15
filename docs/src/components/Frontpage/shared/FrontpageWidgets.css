@@ -5,6 +5,10 @@
   margin: var(--oat-space-8) auto;
 }
 
+.FrontpageContainer .container {
+  max-width: 1600px;
+}
+
 .FrontpageContainer .textbox {
   padding-right: var(--oat-space-8);
 }

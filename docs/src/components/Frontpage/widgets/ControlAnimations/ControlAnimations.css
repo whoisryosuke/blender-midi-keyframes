@@ -1,6 +1,9 @@
 .ControlAnimations {
   padding: var(--oat-space-6);
 }
+.ControlAnimations .container {
+  display: flex;
+}
 
 .ControlAnimations .blocks {
   display: flex;

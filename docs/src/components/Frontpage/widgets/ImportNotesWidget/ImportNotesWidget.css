@@ -4,7 +4,7 @@
 
 .ImportNotes .textbox {
   flex: 1;
-  text-align: center;
+  text-align: right;
 }
 
 .ImportNotes h3 {

@@ -2,8 +2,19 @@
   width: 100%;
   background-color: #10101b;
   padding: var(--oat-space-10);
+}
+
+.Footer .content {
+  max-width: 1600px;
+  margin: auto;
   display: flex;
   flex-direction: row;
+}
+
+@media screen and (max-width: 996px) {
+  .Footer .content {
+    flex-direction: column;
+  }
 }
 
 .Footer ul {

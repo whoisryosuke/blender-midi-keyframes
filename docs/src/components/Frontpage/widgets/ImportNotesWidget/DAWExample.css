@@ -66,3 +66,14 @@
 .BlockColumn .daw-row.alt {
   background-color: #343a40;
 }
+
+/* Notes */
+
+.SampleNotes {
+  position: absolute;
+  inset: 0;
+}
+
+.SampleNotes > div {
+  position: absolute;
+}

@@ -14,13 +14,15 @@ function Footer(): ReactNode {
 
   return (
     <footer className="Footer">
-      <div className="logo">
-        <img src="/img/logo-stacked.svg" alt="MIDI Motion logo" />
-        <p>MIDI animation made easy with one plugin.</p>
+      <div className="content">
+        <div className="logo">
+          <img src="/img/logo-stacked.svg" alt="MIDI Motion logo" />
+          <p>MIDI animation made easy with one plugin.</p>
+        </div>
+        <FooterLinks title="Guides" links={LINKS.guides} />
+        <FooterLinks title="Resources" links={LINKS.resources} />
+        <FooterLinks title="Social" links={LINKS.social} />
       </div>
-      <FooterLinks title="Guides" links={LINKS.guides} />
-      <FooterLinks title="Resources" links={LINKS.resources} />
-      <FooterLinks title="Social" links={LINKS.social} />
     </footer>
   );
 }

@@ -1,8 +1,4 @@
 import React, { type ReactNode } from "react";
-
-import { isMultiColumnFooterLinks } from "@docusaurus/theme-common";
-import FooterLinksMultiColumn from "@theme/Footer/Links/MultiColumn";
-import FooterLinksSimple from "@theme/Footer/Links/Simple";
 import { FooterLink } from "../footer-links";
 
 type Props = {

@@ -63,6 +63,19 @@ body {
   font-optical-sizing: auto;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: var(--oat-font-weight-header);
+}
+
+p {
+  font-weight: var(--oat-font-weight-text);
+}
+
 /* Buttons / Interaction */
 /* Button */
 .oat-button {

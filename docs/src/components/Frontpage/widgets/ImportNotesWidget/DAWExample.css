@@ -1,0 +1,68 @@
+.DAWExample {
+  --row-height: 40px;
+  display: flex;
+  border: 12px solid #212529;
+  background-color: #212529;
+  filter: drop-shadow(0px 1px 6px rgba(0, 0, 0, 0.5))
+    drop-shadow(0px 0px 12px rgba(255, 255, 255, 0.1));
+  border-radius: 12px;
+}
+
+.PianoKeyColumn {
+  border-radius: var(--oat-space-4) 0 0 var(--oat-space-4);
+  overflow: hidden;
+}
+
+.PianoKeyColumn > div {
+  min-width: 200px;
+  height: var(--row-height);
+  border-right: 2px solid rgba(33, 37, 40, 0.2);
+  border-bottom: 2.79px solid #212529;
+  text-align: right;
+  padding: var(--oat-space-1) var(--oat-space-3);
+  color: #868e96;
+  font-weight: bold;
+}
+.PianoKeyColumn > div:last-child {
+  border-bottom: 0px;
+}
+
+.DAWExample .header {
+  background-color: #868e96;
+  color: white;
+}
+
+.PianoKeyColumn .black {
+  background-color: black;
+  background: linear-gradient(270deg, #262626 0%, #0d0d0d 97%);
+  box-shadow: 0px 1.39403px 5.85491px rgba(0, 0, 0, 0.5),
+    0px 0px 11.431px rgba(255, 255, 255, 0.1),
+    inset 0px -5.5761px 2.09104px rgba(0, 0, 0, 0.25);
+}
+
+.PianoKeyColumn .white {
+  background-color: white;
+  background: linear-gradient(270deg, #f2f9ff 0%, #dee2e6 100%);
+  box-shadow: 0px 1.39403px 5.85491px rgba(0, 0, 0, 0.5),
+    0px 0px 11.431px rgba(255, 255, 255, 0.1),
+    inset 0px -5.5761px 2.09104px rgba(0, 0, 0, 0.25);
+}
+
+.BlockColumn {
+  width: var(--row-height);
+}
+.BlockColumn > div {
+  width: var(--row-height);
+  height: var(--row-height);
+  border-bottom: 2.79px solid #212529;
+}
+.BlockColumn > div:last-child {
+  border-bottom: 0px;
+}
+.BlockColumn .daw-row {
+  background-color: #495057;
+  border-right: 2px solid rgba(33, 37, 40, 0.2);
+}
+.BlockColumn .daw-row.alt {
+  background-color: #343a40;
+}

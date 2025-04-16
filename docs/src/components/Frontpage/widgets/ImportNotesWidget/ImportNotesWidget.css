@@ -1,0 +1,14 @@
+.ImportNotes .container {
+  display: flex;
+}
+
+.ImportNotes .textbox {
+  flex: 1;
+  text-align: center;
+}
+
+.ImportNotes h3 {
+  font-size: 32px;
+  color: var(--oat-color-shadowed);
+  margin-bottom: var(--oat-space-1);
+}

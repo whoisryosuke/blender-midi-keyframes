@@ -1,0 +1,30 @@
+.Footer {
+  width: 100%;
+  background-color: #10101b;
+  padding: var(--oat-space-10);
+  display: flex;
+  flex-direction: row;
+}
+
+.Footer ul {
+  list-style-type: none;
+  margin-right: var(--oat-space-6);
+}
+.Footer li {
+  margin-bottom: var(--oat-space-3);
+}
+.Footer li a {
+  color: var(--oat-color-shadowed);
+}
+.Footer li a:hover {
+  color: var(--ifm-color-primary);
+}
+
+.Footer .logo {
+  margin-right: var(--oat-space-10);
+  color: var(--oat-color-shadowed);
+}
+
+.Footer .logo img {
+  margin-bottom: var(--oat-space-5);
+}

@@ -16,15 +16,10 @@ type Props = {};
 const Scene = (props: Props) => {
   return (
     <Canvas style={{ pointerEvents: "none" }}>
-      {/* <ambientLight position={[0, 3, 0]} intensity={1} /> */}
-      {/* <ambientLight position={[3, 3, 3]} intensity={0.5} /> */}
-      <Environment
-        // background
-        files="./img/studio_small_08_1k.hdr"
-        {...props}
-      >
-        {/* Extra space lights if needed */}
-      </Environment>
+      <pointLight position={[5, 3, 5]} intensity={1.5} castShadow />
+      <pointLight position={[-5, 0, 2]} intensity={0.7} />
+      <directionalLight position={[0, 3, -5]} intensity={1} />
+      <ambientLight position={[0, 0, 0]} intensity={1} />
       <RotatedPianoKeys />
 
       <DebugScene />

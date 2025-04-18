@@ -13,7 +13,7 @@ const GetCreativeWidget = (props: Props) => {
             <h3>Let your music flow</h3>
           </div>
 
-          <a href="#" className="oat-button ghost">
+          <a href="/docs/resources/showcase" className="oat-button ghost">
             Browse our showcase for inspiration
           </a>
 

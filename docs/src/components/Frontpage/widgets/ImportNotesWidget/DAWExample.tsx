@@ -1,5 +1,6 @@
 import React from "react";
 import "./DAWExample.css";
+import { motion } from "motion/react";
 
 const SAMPLES_NOTE = [
   {
@@ -125,16 +126,36 @@ const DAWExample = (props: Props) => {
 
       <div className="SampleNotes">
         {SAMPLES_NOTE.map((note) => (
-          <div
+          <motion.div
             className="DAWNote"
             style={{
               minWidth: 112 * note.duration,
-              top: NOTES.findIndex((notes) => notes == note.note) * 40,
-              left: 200 + note.time * 40,
+              // top: NOTES.findIndex((notes) => notes == note.note) * 40,
+              // left: 200 + note.time * 40,
+            }}
+            initial={{
+              opacity: 0,
+              y: NOTES.findIndex((notes) => notes == note.note) * 40,
+              x: 0,
+            }}
+            animate={[
+              {
+                opacity: 0,
+                y: NOTES.findIndex((notes) => notes == note.note) * 40,
+                x: 200 + note.time * 40 - 50,
+              },
+              {
+                opacity: 1,
+                y: NOTES.findIndex((notes) => notes == note.note) * 40,
+                x: 200 + note.time * 40,
+              },
+            ]}
+            transition={{
+              duration: 1.5,
             }}
           >
             {note.note}4
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>

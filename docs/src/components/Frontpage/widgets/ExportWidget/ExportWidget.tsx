@@ -1,5 +1,6 @@
 import React from "react";
 import "./ExportWidget.css";
+import ScrollFadeUpRepeat from "@site/src/components/animations/ScrollFadeUp";
 
 type Props = {};
 
@@ -8,31 +9,40 @@ const ExportWidget = (props: Props) => {
     <div className="FrontpageContainer ExportWidget">
       <div className="container">
         <div className="textbox center">
-          <h2 className="subtitle">Export your animation to</h2>
+          <ScrollFadeUpRepeat>
+            <h2 className="subtitle">Export your animation to</h2>
+          </ScrollFadeUpRepeat>
           <div className="buttons">
-            <a href="/docs/exporting/unreal" className="oat-button">
-              Unreal Engine
-            </a>
-            <a href="/docs/exporting/godot" className="oat-button ghost">
-              Godot
-            </a>
-            <a href="/docs/exporting/threejs" className="oat-button ghost">
-              ThreeJS
-            </a>
+            <ScrollFadeUpRepeat delay={1}>
+              <a href="/docs/exporting/unreal" className="oat-button">
+                Unreal Engine
+              </a>
+            </ScrollFadeUpRepeat>
+            <ScrollFadeUpRepeat delay={1.5}>
+              <a href="/docs/exporting/godot" className="oat-button ghost">
+                Godot
+              </a>
+            </ScrollFadeUpRepeat>
+            <ScrollFadeUpRepeat delay={2}>
+              <a href="/docs/exporting/threejs" className="oat-button ghost">
+                ThreeJS
+              </a>
+            </ScrollFadeUpRepeat>
           </div>
 
-          <video
-            title="An animated piano imported into an Unreal Engine project rotating on a turn table while playing"
-            controls
-          >
-            <source src="/videos/export-to-unreal.mp4" type="video/mp4" />
+          <ScrollFadeUpRepeat delay={2.5}>
+            <video
+              title="An animated piano imported into an Unreal Engine project rotating on a turn table while playing"
+              controls
+            >
+              <source src="/videos/export-to-unreal.mp4" type="video/mp4" />
 
-            <img
-              src="/img/frontpage/export-unreal-engine.png"
-              alt="An animated piano in Unreal Engine imported from a GLTF file"
-            />
-          </video>
-
+              <img
+                src="/img/frontpage/export-unreal-engine.png"
+                alt="An animated piano in Unreal Engine imported from a GLTF file"
+              />
+            </video>
+          </ScrollFadeUpRepeat>
           <a
             href="/docs/category/export-animations"
             className="oat-button ghost"

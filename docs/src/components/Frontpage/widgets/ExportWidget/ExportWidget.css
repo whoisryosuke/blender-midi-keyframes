@@ -1,4 +1,5 @@
-.ExportWidget {
+.ExportWidget .textbox {
+  padding-right: 0;
 }
 .ExportWidget h2.subtitle {
   font-size: 36px;
@@ -6,11 +7,16 @@
 .ExportWidget .buttons {
   position: relative;
   z-index: 420;
+  display: flex;
+  gap: var(--oat-space-4);
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .ExportWidget .buttons .oat-button {
   font-size: 36px;
   margin-right: var(--oat-space-4);
+  display: inline-block;
 }
 .ExportWidget .buttons .oat-button:last-child {
   margin-right: 0;
@@ -19,4 +25,5 @@
 .ExportWidget video {
   position: relative;
   margin-bottom: var(--oat-space-6);
+  width: 100%;
 }

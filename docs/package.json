@@ -22,6 +22,7 @@
     "@react-three/fiber": "^9.1.1",
     "@tonejs/midi": "^2.0.28",
     "clsx": "^2.0.0",
+    "motion": "^12.7.4",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

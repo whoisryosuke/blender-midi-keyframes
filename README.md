@@ -1,8 +1,12 @@
 [Example of plugin generating keyframes with 3D piano keys](https://github.com/user-attachments/assets/dc90301c-569a-493f-a6f9-35798aeb086b)
 
-# MIDI to Keyframes Blender addon
+[![MIDI Motion logo](./media/logo-horizontal.svg)](https://whoisryosuke.github.io/blender-midi-motion/)
 
-This is a free Blender addon to import MIDI files and generate animation keyframes. It assigns the keyframes to objects you assign as piano keys.
+# MIDI Motion Blender addon
+
+This is a free Blender addon to import MIDI files and generate animations using keyframes or actions. It assigns the animations to objects you assign as piano keys.
+
+You can animate piano keys using rotation, buttons using movement, or get more creative with any object using the scale.
 
 # Features:
 
@@ -36,35 +40,7 @@ Here's [a video walkthrough](https://www.youtube.com/watch?v=E4wfblQWhtY) of the
 
 ## 🔰 How to use
 
-![The plugin panel inside Blender](/media/screenshots/plugin-panel.jpg)
-
-1. Open up the side panel labeled **"MIDI Importer"**, it's available in the 3D viewport in the n-panel (the right side panel that's usually collapsed).
-1. Select a MIDI file you'd like to import.
-1. Assign 3D objects to piano keys.
-1. Click the button labeled **"Generate Keyframes"**
-
-> Not happy with the animation? You can undo the keyframes (`CTRL/CMD + Z`). Can't undo? Try the **"Delete All Keyframes"** button, it will delete **_all_** keyframes on any selected note object.
-
-### Tips
-
-#### Auto Assigning Keys
-
-The plugin can automatically assign piano keys if you create a collection with objects with the note letter appended to the end.
-
-For example, you'd name your objects something like:
-
-- `ObjectName.C` maps to the `C` piano key
-- `yourobject.F#` maps to the `F#` piano key
-
-Then you can select the collection and press the **"Auto-Assign Keys" button**.
-
-#### Visualizing the MIDI Track
-
-I'd recommend downloading [Audacity](https://www.audacityteam.org/) to visualize the MIDI tracks and see what the note charts look like before you import them into Blender.
-
-#### FPS and Music Timing
-
-When creating the animation keyframes, we use the current scene's frame rate to calculate the music time. If you **change the frame rate** after generating keyframes, you should **re-generate keyframes** to ensure the timing is correct.
+Check out [our documentation website](https://whoisryosuke.github.io/blender-midi-motion/docs/getting-started) for guides, tips, and resources.
 
 ## ⚙️ How it works
 

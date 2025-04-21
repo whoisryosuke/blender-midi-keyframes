@@ -16,7 +16,7 @@
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
   --footer-background-color: #333;
-  --oat-color-text: #fafafa;
+  --oat-color-text: #151515;
   --oat-color-shadowed: #828282;
 
   --oat-font-family: "Inter Tight", sans-serif;
@@ -52,6 +52,9 @@
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
   --footer-background-color: #111;
   --ifm-navbar-background-color: var(--ifm-background-color);
+  --footer-background-color: #333;
+  --oat-color-text: #fafafa;
+  --oat-color-shadowed: #828282;
 }
 
 .footer--dark {

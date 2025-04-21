@@ -17,6 +17,7 @@
 
 .GetCreative .box .content {
   padding: var(--oat-space-7);
+  color: #fafafa;
 }
 
 .GetCreative .box .oat-button {
@@ -25,6 +26,8 @@
   right: var(--oat-space-7);
   font-size: 32px;
   z-index: 710;
+  color: #fafafa;
+  border-color: inherit;
 }
 
 .GetCreative .piano {

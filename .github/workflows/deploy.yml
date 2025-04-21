@@ -32,8 +32,10 @@ jobs:
 
       - name: Upload Build Artifact
         uses: actions/upload-pages-artifact@v3
+        # Working directory doesn't get picked up here
+        # so make sure this is absolute path to build folder
         with:
-          path: build
+          path: docs/build
 
   deploy:
     name: Deploy to GitHub Pages

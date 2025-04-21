@@ -1,7 +1,8 @@
 {
-  "label": "Features",
+  "position": 2,
+  "label": "Generating Animations",
   "link": {
     "type": "generated-index",
-    "description": "Actions"
+    "description": "How to generate piano key animations with the plugin"
   }
 }

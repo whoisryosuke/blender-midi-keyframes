@@ -1,6 +1,6 @@
 ---
 title: Keyframes
-description: How to animate using keyframes
+description: How to generate a piano key animation using Blender Keyframes
 tags:
   - features
   - keyframes
@@ -33,3 +33,15 @@ With keyframe animation, we basically mimic a "key press" by moving/rotating/sca
 You should have an animation! Click play to preview it.
 
 Or select one of your "piano key" objects that gets pressed and check the **Timeline** panel for keyframes. Make sure you check an object representing a note that actually gets pressed, since not all notes are pressed in every song.
+
+:::info
+
+Not happy with the animation? You can undo the keyframes (`CTRL/CMD + Z`). Can't undo? Try the **"Delete All Keyframes"** button, it will delete **_all_** keyframes on any selected note object.
+
+:::
+
+:::warning
+
+When generating the animation keyframes, we use the current scene's frame rate to calculate the music time. If you **change your Blender scene's frame rate** after generating keyframes, you should **delete all keyframes, then re-generate the animation** to ensure the timing is correct.
+
+:::

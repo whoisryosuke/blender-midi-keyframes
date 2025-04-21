@@ -24,7 +24,7 @@ const ScrollFadeUpRepeat = ({
         duration: 1,
         delay,
       }}
-      viewport={{ once: true }}
+      viewport={{ once: true, amount: 0.5 }}
       {...props}
     >
       {children}

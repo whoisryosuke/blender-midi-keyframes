@@ -30,7 +30,7 @@ const ExportWidget = (props: Props) => {
             </ScrollFadeUpRepeat>
           </div>
 
-          <ScrollFadeUpRepeat delay={2.5}>
+          <ScrollFadeUpRepeat delay={1.2}>
             <video
               title="An animated piano imported into an Unreal Engine project rotating on a turn table while playing"
               controls

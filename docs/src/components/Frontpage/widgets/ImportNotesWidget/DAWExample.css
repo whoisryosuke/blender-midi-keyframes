@@ -23,6 +23,7 @@
   color: #868e96;
   font-weight: bold;
 }
+
 .PianoKeyColumn > div:last-child {
   border-bottom: 0px;
 }

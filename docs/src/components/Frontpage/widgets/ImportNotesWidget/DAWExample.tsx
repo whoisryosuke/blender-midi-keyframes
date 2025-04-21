@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import "./DAWExample.css";
 import { motion } from "motion/react";
 
@@ -89,6 +89,7 @@ const NUM_COLS = 10;
 type Props = {};
 
 const DAWExample = (props: Props) => {
+  const containerRef = useRef(null);
   return (
     <div className="DAWExample">
       <div className="PianoKeyColumn">
@@ -124,8 +125,13 @@ const DAWExample = (props: Props) => {
         </div>
       ))}
 
-      <div className="SampleNotes">
-        {SAMPLES_NOTE.map((note) => (
+      <motion.div
+        className="SampleNotes"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{}}
+      >
+        {SAMPLES_NOTE.map((note, index) => (
           <motion.div
             className="DAWNote"
             style={{
@@ -138,26 +144,20 @@ const DAWExample = (props: Props) => {
               y: NOTES.findIndex((notes) => notes == note.note) * 40,
               x: 0,
             }}
-            animate={[
-              {
-                opacity: 0,
-                y: NOTES.findIndex((notes) => notes == note.note) * 40,
-                x: 200 + note.time * 40 - 50,
-              },
-              {
-                opacity: 1,
-                y: NOTES.findIndex((notes) => notes == note.note) * 40,
-                x: 200 + note.time * 40,
-              },
-            ]}
+            animate={{
+              opacity: [0, 1],
+              x: [200 + note.time * 40 - 50, 200 + note.time * 40],
+            }}
+            // viewport={{ once: true, amount: 1, root: containerRef }}
             transition={{
               duration: 1.5,
+              delay: index * 0.1,
             }}
           >
             {note.note}4
           </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 };

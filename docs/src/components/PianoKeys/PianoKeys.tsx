@@ -42,7 +42,7 @@ export function PianoKeys(props: JSX.IntrinsicElements["group"]) {
   const group = useRef<Group>(null);
   // @ts-ignore
   const { nodes, materials, animations } = useGLTF(
-    "/models/MIDI Piano 3D - Piano Keys Transparent -V2 - Mozart Sonata 16 Scale Snippet.glb"
+    "/blender-midi-motion/models/MIDI Piano 3D - Piano Keys Transparent -V2 - Mozart Sonata 16 Scale Snippet.glb"
   ) as GLTFResult;
   const { actions } = useAnimations(animations, group);
   const { playing, setPlaying, setCurrentAnimation } = useMIDIAnimationStore();
@@ -157,5 +157,5 @@ export function PianoKeys(props: JSX.IntrinsicElements["group"]) {
 export default PianoKeys;
 
 useGLTF.preload(
-  "/models/MIDI Piano 3D - Piano Keys Transparent -V1 - Apple Market Baked.glb"
+  "/blender-midi-motion/models/MIDI Piano 3D - Piano Keys Transparent -V1 - Apple Market Baked.glb"
 );

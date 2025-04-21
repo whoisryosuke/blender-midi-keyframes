@@ -83,7 +83,7 @@ export function Ryoturia(props: JSX.IntrinsicElements["group"]) {
   const modelViewRef = React.useRef<Array<number>>([]);
   const audioEl = React.useRef<HTMLAudioElement>(new Audio(MUSIC_FILE));
   const { nodes, materials, animations } = useGLTF(
-    "/models/Ryoturia MIDI Piano Web Animation - R2 - Apple Market - V2.glb"
+    "/blender-midi-motion/models/Ryoturia MIDI Piano Web Animation - R2 - Apple Market - V2.glb"
   );
   const { actions } = useAnimations(animations, group);
 
@@ -325,5 +325,5 @@ export function Ryoturia(props: JSX.IntrinsicElements["group"]) {
 export default Ryoturia;
 
 useGLTF.preload(
-  "/models/Ryoturia MIDI Piano Web Animation - R2 - Apple Market - V2.glb"
+  "/blender-midi-motion/models/Ryoturia MIDI Piano Web Animation - R2 - Apple Market - V2.glb"
 );

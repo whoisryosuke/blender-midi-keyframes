@@ -1,5 +1,9 @@
 name: Deploy to GitHub Pages
 
+defaults:
+  run:
+    working-directory: ./docs
+
 on:
   push:
     branches:
@@ -11,9 +15,6 @@ jobs:
   build:
     name: Build Docusaurus
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./docs
     steps:
       - uses: actions/checkout@v4
         with:

@@ -3,6 +3,14 @@
   background-color: #10101b;
   padding: var(--oat-space-10);
 }
+@media screen and (max-width: 996px) {
+  .Footer {
+    padding: var(--oat-space-7);
+  }
+  .Footer ul {
+    padding-left: 0;
+  }
+}
 
 .Footer .content {
   max-width: 1600px;

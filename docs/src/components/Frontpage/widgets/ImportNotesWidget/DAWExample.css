@@ -78,3 +78,9 @@
 .SampleNotes > div {
   position: absolute;
 }
+
+@media (max-width: 600px) {
+  .DAWExample .DAWNote {
+    left: -100px;
+  }
+}

@@ -29,6 +29,14 @@
   color: #fafafa;
   border-color: inherit;
 }
+@media (max-width: 600px) {
+  .GetCreative .box .oat-button {
+    font-size: 21px;
+    padding-left: var(--oat-space-3);
+    padding-right: var(--oat-space-3);
+    left: var(--oat-space-7);
+  }
+}
 
 .GetCreative .piano {
   position: absolute;
@@ -55,4 +63,9 @@
 .GetCreative .spacer {
   opacity: 0;
   max-height: 600px;
+}
+@media (max-width: 600px) {
+  .GetCreative .spacer {
+    max-height: 100px;
+  }
 }

@@ -1,6 +1,11 @@
 .ImportNotes .container {
   display: flex;
 }
+@media (max-width: 600px) {
+  .ImportNotes .container {
+    flex-direction: column;
+  }
+}
 
 .ImportNotes .textbox {
   flex: 1;
@@ -11,4 +16,16 @@
   font-size: 32px;
   color: var(--oat-color-shadowed);
   margin-bottom: var(--oat-space-1);
+}
+
+@media (max-width: 600px) {
+  .ImportNotes h3 {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 600px) {
+  .ImportNotes .textbox h2 {
+    font-size: 52px !important;
+  }
 }

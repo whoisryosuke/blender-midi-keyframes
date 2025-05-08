@@ -35,7 +35,10 @@ const ExportWidget = (props: Props) => {
               title="An animated piano imported into an Unreal Engine project rotating on a turn table while playing"
               controls
             >
-              <source src="/videos/export-to-unreal.mp4" type="video/mp4" />
+              <source
+                src="/blender-midi-motion/videos/export-to-unreal.mp4"
+                type="video/mp4"
+              />
 
               <img
                 src="/img/frontpage/export-unreal-engine.png"

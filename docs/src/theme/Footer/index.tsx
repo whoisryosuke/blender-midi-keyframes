@@ -16,7 +16,10 @@ function Footer(): ReactNode {
     <footer className="Footer">
       <div className="content">
         <div className="logo">
-          <img src="/img/logo-stacked.svg" alt="MIDI Motion logo" />
+          <img
+            src="/blender-midi-motion/img/logo-stacked.svg"
+            alt="MIDI Motion logo"
+          />
           <p>MIDI animation made easy with one plugin.</p>
         </div>
         <FooterLinks title="Guides" links={LINKS.guides} />

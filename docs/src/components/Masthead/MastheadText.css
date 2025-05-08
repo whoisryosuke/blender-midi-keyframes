@@ -2,6 +2,8 @@
   text-align: center;
   padding-top: var(--oat-space-9);
   position: relative;
+  display: flex;
+  flex-direction: column;
   z-index: 420;
 }
 
@@ -11,6 +13,12 @@
   font-weight: var(--oat-font-weight-header);
   font-size: 96px;
   line-height: 100%;
+}
+
+@media (max-width: 600px) {
+  .masthead .title {
+    font-size: 64px;
+  }
 }
 
 .masthead .title > div {
@@ -23,14 +31,24 @@
   font-weight: var(--oat-font-weight-text);
   font-size: 40px;
   line-height: 100%;
-  width: 40ch;
+  max-width: 40ch;
   color: var(--oat-color-shadowed);
   margin: 0 auto var(--oat-space-5) auto;
 }
 
+@media (max-width: 600px) {
+  .masthead .subtitle {
+    font-size: 24px;
+    margin-bottom: var(--oat-space-3);
+  }
+}
 .masthead .buttons {
   margin: var(--oat-space-7) 0 0 0;
   font-size: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--oat-space-3);
 }
 
 .masthead .buttons .oat-button:first-child {

@@ -127,3 +127,8 @@ p {
 .highlight {
   color: var(--ifm-color-primary);
 }
+
+/* Fixes */
+.navbar {
+  z-index: 710;
+}

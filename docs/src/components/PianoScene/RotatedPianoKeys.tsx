@@ -17,26 +17,26 @@ const RotatedPianoKeys = (props: Props) => {
   const springRef = useRef(spring({ keyframes: [0.5, 1], stiffness: 400 }));
 
   useFrame(({ clock }) => {
+    const isMobile = window.innerWidth < 600;
+    // Get browser size to scale it in general
+    const baseScale = isMobile ? 0.75 : 1;
+
+    // Rotation animation
     const animate = Math.sin(clock.elapsedTime) * 100;
     const animateY = Math.cos(clock.elapsedTime) * 200;
 
-    // containerRef.current.rotation.x =
-    //   lerp(ROTATE_START, ROTATE_END, animateY) + 0.5;
     containerRef.current.rotation.z = lerp(ROTATE_START, ROTATE_END, animate);
-
-    const scaleDuration = 1; // in seconds
 
     const { value, done } = springRef.current.next(clock.elapsedTime * 1000);
 
     const animatedScale = value;
-    // const animatedScale = lerp(
-    //   0.5,
-    //   1,
-    //   Math.min(clock.elapsedTime / scaleDuration, 1)
-    // );
-    containerRef.current.scale.x = animatedScale;
-    containerRef.current.scale.y = animatedScale;
-    containerRef.current.scale.z = animatedScale;
+    containerRef.current.scale.x = animatedScale * baseScale;
+    containerRef.current.scale.y = animatedScale * baseScale;
+    containerRef.current.scale.z = animatedScale * baseScale;
+
+    if (isMobile) {
+      containerRef.current.position.z = -1;
+    }
   });
   return (
     <group

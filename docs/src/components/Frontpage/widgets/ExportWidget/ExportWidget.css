@@ -18,6 +18,13 @@
   margin-right: var(--oat-space-4);
   display: inline-block;
 }
+@media (max-width: 600px) {
+  .ExportWidget .buttons .oat-button {
+    font-size: 24px;
+    padding-left: var(--oat-space-5);
+    padding-right: var(--oat-space-5);
+  }
+}
 .ExportWidget .buttons .oat-button:last-child {
   margin-right: 0;
 }

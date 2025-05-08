@@ -4,6 +4,11 @@
 .ControlAnimations .container {
   display: flex;
 }
+@media (max-width: 600px) {
+  .ControlAnimations .container {
+    flex-direction: column;
+  }
+}
 
 .ControlAnimations .blocks {
   display: flex;
@@ -29,6 +34,18 @@
   font-weight: var(--oat-font-weight-header);
   font-size: 36px;
   margin-bottom: var(--oat-space-1);
+}
+
+@media (max-width: 600px) {
+  .ControlAnimations .block .content {
+    padding: var(--oat-space-2);
+  }
+  .ControlAnimations .textbox h2 {
+    font-size: 52px !important;
+  }
+  .ControlAnimations h3 {
+    font-size: 24px;
+  }
 }
 
 .ControlAnimations p {

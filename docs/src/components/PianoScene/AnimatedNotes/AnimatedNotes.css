@@ -30,6 +30,12 @@
   width: 50%;
 }
 
+@media (max-width: 600px) {
+  .AnimatedNotesContainer {
+    --row-height: 20px;
+  }
+}
+
 .DAWContainer {
   width: 100%;
   display: flex;

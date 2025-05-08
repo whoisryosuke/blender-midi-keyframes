@@ -38,7 +38,7 @@ const GetCreativeWidget = (props: Props) => {
           }}
         >
           <motion.img
-            src="/img/frontpage/get-creative-curved-piano.png"
+            src="/blender-midi-motion/img/frontpage/get-creative-curved-piano.png"
             alt="The settings UI panel for the plugin in Blender"
             initial={{
               y: -50,

@@ -57,7 +57,7 @@ const ControlAnimations = (props: Props) => {
         </div>
 
         <motion.img
-          src="/img/frontpage/panel.png"
+          src="/blender-midi-motion/img/frontpage/panel.png"
           alt="The settings UI panel for the plugin in Blender"
           initial={{
             opacity: 0,

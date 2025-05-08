@@ -12,6 +12,11 @@
 .FrontpageContainer .textbox {
   padding-right: var(--oat-space-8);
 }
+@media (max-width: 600px) {
+  .FrontpageContainer .textbox {
+    padding-right: 0;
+  }
+}
 
 .FrontpageContainer .textbox.center {
   text-align: center;

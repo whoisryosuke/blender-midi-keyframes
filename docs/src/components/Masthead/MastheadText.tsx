@@ -33,8 +33,11 @@ const MastheadText = (props: Props) => {
         >
           Download
         </a>
-        <a href="/docs/resources/showcase" className="oat-button ghost">
-          See Examples
+        <a
+          href="/blender-midi-motion/docs/getting-started"
+          className="oat-button ghost"
+        >
+          Get Started
         </a>
       </div>
     </div>

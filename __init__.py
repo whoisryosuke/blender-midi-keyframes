@@ -28,8 +28,29 @@ import sys
 import os
 
 # Constants
-
 midi_note_map = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
+octaves = [0,1,2,3,4,5,6,7,8]
+def generate_full_midi_keys():
+    # 88 note piano goes from C1 to C7 with a few extra keys in 0 and 8 octave
+    # so we add them manually before + after
+    full_notes = [
+        "A0",
+        "B0"
+    ]
+    # Limit octaves from 1-7
+    limit_octaves = octaves.copy()
+    limit_octaves.remove(0)
+    limit_octaves.remove(8)
+    
+    # Generate notes with numbers (e.g. C#4, C#5, etc)
+    for note in midi_note_map:
+        for octave in limit_octaves:
+            full_notes.append(note + str(octave))
+        
+        full_notes.append("C8")
+    return full_notes
+full_midi_note_map = generate_full_midi_keys()
+
 DEFAULT_TEMPO = 500000
 
 # Global state
@@ -130,6 +151,13 @@ class GI_SceneProperties(PropertyGroup):
         items=[ (ANIM_MODE_KEYFRAMES, "Keyframes", ""),
                 (ANIM_MODE_ACTIONS, "Actions", ""),
               ]
+        )
+
+    ## MODE: Collection
+    collection_mode: BoolProperty(
+        name = "Collection Mode",
+        description = "Animate objects inside a collection instead of individual objects",
+        default = False,
         )
 
     ## MODE: Actions
@@ -275,6 +303,12 @@ class GI_SceneProperties(PropertyGroup):
         type=bpy.types.Object,
         )
 
+    obj_collection: PointerProperty(
+        name="Collection",
+        description="Collection with 88 or less key objects to be controlled",
+        type=bpy.types.Collection,
+        )
+
     # Actions for objects
     action_c: PointerProperty(
         name="C",
@@ -351,6 +385,7 @@ class GI_SceneProperties(PropertyGroup):
     
     # App State (not for user)
     initial_state = {}
+    collection_cache = []
 
 # UI Panel
 class GI_MIDIInputPanel(bpy.types.Panel):
@@ -449,31 +484,38 @@ class GI_MIDIInputPanel(bpy.types.Panel):
         layout.separator(factor=1.5)
         layout.label(text="Piano Keys", icon="OBJECT_DATAMODE")
         row = layout.row()
-        row.operator("wm.assign_keys")
+
+        row.prop(midi_keyframe_props, "collection_mode")
         row = layout.row()
-        row.prop(midi_keyframe_props, "obj_c", icon="EVENT_C")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "obj_d", icon="EVENT_D")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "obj_e", icon="EVENT_E")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "obj_f", icon="EVENT_F")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "obj_g", icon="EVENT_G")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "obj_a", icon="EVENT_A")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "obj_b", icon="EVENT_B")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "obj_csharp", icon="EVENT_C")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "obj_dsharp", icon="EVENT_D")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "obj_fsharp", icon="EVENT_F")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "obj_gsharp", icon="EVENT_G")
-        row = layout.row()
-        row.prop(midi_keyframe_props, "obj_asharp", icon="EVENT_A")
+
+        if midi_keyframe_props.collection_mode:
+            row.prop(midi_keyframe_props, "obj_collection")
+        else:
+            row.operator("wm.assign_keys")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "obj_c", icon="EVENT_C")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "obj_d", icon="EVENT_D")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "obj_e", icon="EVENT_E")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "obj_f", icon="EVENT_F")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "obj_g", icon="EVENT_G")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "obj_a", icon="EVENT_A")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "obj_b", icon="EVENT_B")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "obj_csharp", icon="EVENT_C")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "obj_dsharp", icon="EVENT_D")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "obj_fsharp", icon="EVENT_F")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "obj_gsharp", icon="EVENT_G")
+            row = layout.row()
+            row.prop(midi_keyframe_props, "obj_asharp", icon="EVENT_A")
 
         layout.separator(factor=1.5)
         layout.label(text="Other Objects", icon="OBJECT_HIDDEN")
@@ -505,33 +547,63 @@ class GI_install_midi(bpy.types.Operator):
         subprocess.call([python_exe, '-m', 'pip', 'install', '--upgrade', 'mido', '-t', target])
 
         return {"FINISHED"}
-    
+
+# Global Debug Vars   
+print_once = False
+
 # Shared helper functions
-def get_note_obj(midi_keyframe_props, noteLetter):
-    if noteLetter == "C":
-        return midi_keyframe_props.obj_c
-    if noteLetter == "D":
-        return midi_keyframe_props.obj_d
-    if noteLetter == "E":
-        return midi_keyframe_props.obj_e
-    if noteLetter == "F":
-        return midi_keyframe_props.obj_f
-    if noteLetter == "G":
-        return midi_keyframe_props.obj_g
-    if noteLetter == "A":
-        return midi_keyframe_props.obj_a
-    if noteLetter == "B":
-        return midi_keyframe_props.obj_b
-    if noteLetter == "C#":
-        return midi_keyframe_props.obj_csharp
-    if noteLetter == "D#":
-        return midi_keyframe_props.obj_dsharp
-    if noteLetter == "F#":
-        return midi_keyframe_props.obj_fsharp
-    if noteLetter == "G#":
-        return midi_keyframe_props.obj_gsharp
-    if noteLetter == "A#":
-        return midi_keyframe_props.obj_asharp
+# Cache the collection to use across multiple notes
+# We need to search the obj names inside the collection and `.find()` doesn't support it 
+def cache_collection(midi_keyframe_props):
+    print("Caching collection")
+    print(midi_keyframe_props.obj_collection)
+    print(midi_keyframe_props.obj_collection.all_objects.items())
+
+    midi_keyframe_props.collection_cache = midi_keyframe_props.obj_collection.all_objects.items()
+
+def get_note_obj_from_collection(collection, noteLetter, octave):
+
+    note = noteLetter + str(octave)
+
+    print("Getting obj from collection", note, noteLetter, octave)
+    found_obj = None
+    for (key, obj) in collection:
+        if note in key:
+            print("found obj {} {}".format(key, obj))
+            found_obj = obj
+
+    return found_obj
+
+def get_note_obj(midi_keyframe_props, noteLetter, octave):
+
+    if midi_keyframe_props.collection_mode:
+        return get_note_obj_from_collection(midi_keyframe_props.obj_collection.all_objects.items(), noteLetter, octave)
+        
+    else:
+        if noteLetter == "C":
+            return midi_keyframe_props.obj_c
+        if noteLetter == "D":
+            return midi_keyframe_props.obj_d
+        if noteLetter == "E":
+            return midi_keyframe_props.obj_e
+        if noteLetter == "F":
+            return midi_keyframe_props.obj_f
+        if noteLetter == "G":
+            return midi_keyframe_props.obj_g
+        if noteLetter == "A":
+            return midi_keyframe_props.obj_a
+        if noteLetter == "B":
+            return midi_keyframe_props.obj_b
+        if noteLetter == "C#":
+            return midi_keyframe_props.obj_csharp
+        if noteLetter == "D#":
+            return midi_keyframe_props.obj_dsharp
+        if noteLetter == "F#":
+            return midi_keyframe_props.obj_fsharp
+        if noteLetter == "G#":
+            return midi_keyframe_props.obj_gsharp
+        if noteLetter == "A#":
+            return midi_keyframe_props.obj_asharp
     return None
     
 def get_note_action(midi_keyframe_props, noteLetter):
@@ -699,6 +771,7 @@ class GI_generate_piano_animation(bpy.types.Operator):
         midi_file_path = midi_keyframe_props.midi_file
         selected_track = midi_keyframe_props.selected_track
         animation_type = midi_keyframe_props.animation_type
+        collection_mode = midi_keyframe_props.collection_mode
         axis = int(midi_keyframe_props.axis)
 
         # Is it a MIDI file? If not, bail early
@@ -715,22 +788,40 @@ class GI_generate_piano_animation(bpy.types.Operator):
         #     if not is_note:
         #         print(msg)
 
+        # Cache the collection if needed
+        if collection_mode:
+            cache_collection(midi_keyframe_props)
+
+
         # Get initial positions for each key
-        for note_letter in midi_note_map:
+        note_map = full_midi_note_map if collection_mode else midi_note_map
+        octave = 0
+
+        print("Saving initial positions...") 
+        for note in note_map:
+            print("Initial position for:") 
+            print(note)
+
+            # For collections note_letter is C#1 - so we need to strip out octave
+            note_letter = note
+            if collection_mode:
+                octave = int(note[-1])
+                note_letter = note_letter[0:-1]
+
             # Get the right object corresponding to the note
-            move_obj = get_note_obj(midi_keyframe_props, note_letter)
+            move_obj = get_note_obj(midi_keyframe_props, note_letter, octave)
             if move_obj == None:
                 continue
             
             match animation_type:
                 case "MOVE":
-                    midi_keyframe_props.initial_state[note_letter] = move_obj.location[axis]
+                    midi_keyframe_props.initial_state[note] = move_obj.location[axis]
 
                 case "SCALE":
-                    midi_keyframe_props.initial_state[note_letter] = move_obj.scale.x
+                    midi_keyframe_props.initial_state[note] = move_obj.scale.x
                     
                 case "ROTATE":
-                    midi_keyframe_props.initial_state[note_letter] = move_obj.rotation_euler[axis]
+                    midi_keyframe_props.initial_state[note] = move_obj.rotation_euler[axis]
 
         # Loop over each music note and animate corresponding keys
         midi_file.for_each_key(context, animate_keys)
@@ -877,6 +968,7 @@ def animate_actions(context, note_letter, octave: int, real_keyframe, pressed, h
 # Animates objects up and down like piano keys
 def animate_keys(context, note_letter, octave: int, real_keyframe, pressed, has_release, prev_keyframe, prev_note):
     midi_keyframe_props = context.scene.midi_keyframe_props
+    collection_mode = midi_keyframe_props.collection_mode
     initial_state = midi_keyframe_props.initial_state
     animation_type = midi_keyframe_props.animation_type
     direction = midi_keyframe_props.direction
@@ -891,25 +983,31 @@ def animate_keys(context, note_letter, octave: int, real_keyframe, pressed, has_
         if user_octave != str(octave):
             return;
 
+    print("animating key", note_letter, octave)
+
+    # For collections note includes octave - so we need full note to check initial state cache
+    note = note_letter
+    if collection_mode:
+        note = note_letter + str(octave)
 
     # Keyframe generation
     # Get the right object corresponding to the note
-    move_obj = get_note_obj(midi_keyframe_props, note_letter)
+    move_obj = get_note_obj(midi_keyframe_props, note_letter, octave)
     if move_obj == None:
         return
     
     # Save initial position as previous frame
     match animation_type:
         case "MOVE":
-            move_obj.location[axis] = initial_state[note_letter]
+            move_obj.location[axis] = initial_state[note]
             move_obj.keyframe_insert(data_path="location", frame=real_keyframe - 1)
 
         case "SCALE":
-            move_obj.scale = (initial_state[note_letter],initial_state[note_letter],initial_state[note_letter])
+            move_obj.scale = (initial_state[note],initial_state[note],initial_state[note])
             move_obj.keyframe_insert(data_path="scale", frame=real_keyframe - 1)
             
         case "ROTATE":
-            move_obj.rotation_euler[axis] = initial_state[note_letter]
+            move_obj.rotation_euler[axis] = initial_state[note]
             move_obj.keyframe_insert(data_path="rotation_euler", frame=real_keyframe - 1)
 
     # Move the object
@@ -918,18 +1016,18 @@ def animate_keys(context, note_letter, octave: int, real_keyframe, pressed, has_
             # Position distance is negative for pressing (since we're in Z-axis going "down")
             # But it can be flipped by user preference
             reverse_direction = midi_keyframe_props.travel_distance * direction_factor
-            move_distance = reverse_direction + initial_state[note_letter] if pressed else initial_state[note_letter]
+            move_distance = reverse_direction + initial_state[note] if pressed else initial_state[note]
             move_obj.location[axis] = move_distance
             move_obj.keyframe_insert(data_path="location", frame=real_keyframe)
         case "SCALE":
             # Scale "distance" is positive for pressing
-            move_distance = midi_keyframe_props.travel_distance + initial_state[note_letter] if pressed else initial_state[note_letter]
+            move_distance = midi_keyframe_props.travel_distance + initial_state[note] if pressed else initial_state[note]
             move_obj.scale = (move_distance,move_distance,move_distance)
             move_obj.keyframe_insert(data_path="scale", frame=real_keyframe)
         case "ROTATE":
             # Rotation distance is positive for pressing
             reverse_direction = midi_keyframe_props.travel_distance * direction_factor
-            move_distance = reverse_direction + initial_state[note_letter] if pressed else initial_state[note_letter]
+            move_distance = reverse_direction + initial_state[note] if pressed else initial_state[note]
             move_obj.rotation_euler[axis] = math.radians(move_distance)
             move_obj.keyframe_insert(data_path="rotation_euler", frame=real_keyframe)
 
@@ -937,13 +1035,13 @@ def animate_keys(context, note_letter, octave: int, real_keyframe, pressed, has_
     # TODO: Figure out proper "hold" time based on time scale
     match animation_type:
         case "MOVE":
-            move_obj.location[axis] = initial_state[note_letter]
+            move_obj.location[axis] = initial_state[note]
             move_obj.keyframe_insert(data_path="location", frame=real_keyframe + 10)
         case "SCALE":
-            move_obj.scale = (initial_state[note_letter],initial_state[note_letter],initial_state[note_letter])
+            move_obj.scale = (initial_state[note],initial_state[note],initial_state[note])
             move_obj.keyframe_insert(data_path="scale", frame=real_keyframe + 10)
         case "ROTATE":
-            move_obj.rotation_euler[axis] = initial_state[note_letter]
+            move_obj.rotation_euler[axis] = initial_state[note]
             move_obj.keyframe_insert(data_path="rotation_euler", frame=real_keyframe + 10)
 
 # Animates an object to "jump" between keys

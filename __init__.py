@@ -866,9 +866,19 @@ class GI_delete_all_keyframes(bpy.types.Operator):
         return True
     def execute(self, context: bpy.types.Context):
         midi_keyframe_props = context.scene.midi_keyframe_props
+        collection_mode = midi_keyframe_props.collection_mode
 
-        for note_letter in midi_note_map:
-            note_obj = get_note_obj(midi_keyframe_props, note_letter)
+        note_map = full_midi_note_map if collection_mode else midi_note_map
+        octave = 0
+
+        for note in note_map:
+            # For collections note_letter is C#1 - so we need to strip out octave
+            note_letter = note
+            if collection_mode:
+                octave = int(note[-1])
+                note_letter = note_letter[0:-1]
+
+            note_obj = get_note_obj(midi_keyframe_props, note_letter, octave)
             if note_obj == None:
                 continue
             note_obj.animation_data_clear()
@@ -878,10 +888,10 @@ class GI_delete_all_keyframes(bpy.types.Operator):
         return context.window_manager.invoke_confirm(self, event)
 
 class GI_assign_keys(bpy.types.Operator):
-    """Test function for gamepads"""
+    """Automatically assign piano keys"""
     bl_idname = "wm.assign_keys"
     bl_label = "Auto-Assign Keys"
-    bl_description = "Finds piano keys in currently selected collection"
+    bl_description = "Finds piano keys in currently selected collection with names ending in the note letter like .C or .D#"
 
     def execute(self, context: bpy.types.Context):
         midi_keyframe_props = context.scene.midi_keyframe_props
@@ -944,7 +954,7 @@ def animate_actions(context, note_letter, octave: int, real_keyframe, pressed, h
 
     # Keyframe generation
     # Get the right object corresponding to the note
-    move_obj = get_note_obj(midi_keyframe_props, note_letter)
+    move_obj = get_note_obj(midi_keyframe_props, note_letter, octave)
     if move_obj == None:
         return
     

@@ -556,11 +556,10 @@ def get_note_obj_from_collection(collection, noteLetter, octave):
 
     note = noteLetter + str(octave)
 
-    print("Getting obj from collection", note, noteLetter, octave)
+    # print("Getting obj from collection", note, noteLetter, octave)
     found_obj = None
     for (key, obj) in collection:
         if note in key:
-            print("found obj {} {}".format(key, obj))
             found_obj = obj
 
     return found_obj
@@ -786,8 +785,6 @@ class GI_generate_piano_animation(bpy.types.Operator):
 
         print("Saving initial positions...") 
         for note in note_map:
-            print("Initial position for:") 
-            print(note)
 
             # For collections note_letter is C#1 - so we need to strip out octave
             note_letter = note
@@ -812,6 +809,8 @@ class GI_generate_piano_animation(bpy.types.Operator):
 
         # Loop over each music note and animate corresponding keys
         midi_file.for_each_key(context, animate_keys)
+
+        print("Done animating. Check objects for keyframes.")
 
         return {"FINISHED"}
 
@@ -838,6 +837,8 @@ class GI_generate_action_animation(bpy.types.Operator):
 
         # Loop over each music note and animate corresponding keys
         midi_file.for_each_key(context, animate_actions)
+
+        print("Done animating. Check objects for actions.")
 
         return {"FINISHED"}
 
@@ -979,8 +980,6 @@ def animate_keys(context, note_letter, octave: int, real_keyframe, pressed, has_
         # The user_octave is string, while MIDI returns int for octave 
         if user_octave != str(octave):
             return;
-
-    print("animating key", note_letter, octave)
 
     # For collections note includes octave - so we need full note to check initial state cache
     note = note_letter

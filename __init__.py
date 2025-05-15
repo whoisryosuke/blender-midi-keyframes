@@ -385,7 +385,6 @@ class GI_SceneProperties(PropertyGroup):
     
     # App State (not for user)
     initial_state = {}
-    collection_cache = []
 
 # UI Panel
 class GI_MIDIInputPanel(bpy.types.Panel):
@@ -552,14 +551,6 @@ class GI_install_midi(bpy.types.Operator):
 print_once = False
 
 # Shared helper functions
-# Cache the collection to use across multiple notes
-# We need to search the obj names inside the collection and `.find()` doesn't support it 
-def cache_collection(midi_keyframe_props):
-    print("Caching collection")
-    print(midi_keyframe_props.obj_collection)
-    print(midi_keyframe_props.obj_collection.all_objects.items())
-
-    midi_keyframe_props.collection_cache = midi_keyframe_props.obj_collection.all_objects.items()
 
 def get_note_obj_from_collection(collection, noteLetter, octave):
 
@@ -787,10 +778,6 @@ class GI_generate_piano_animation(bpy.types.Operator):
         #     is_note = True if msg.type == "note_on" or msg.type == "note_off" else False
         #     if not is_note:
         #         print(msg)
-
-        # Cache the collection if needed
-        if collection_mode:
-            cache_collection(midi_keyframe_props)
 
 
         # Get initial positions for each key

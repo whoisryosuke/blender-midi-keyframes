@@ -31,20 +31,11 @@ import os
 midi_note_map = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 octaves = [0,1,2,3,4,5,6,7,8]
 def generate_full_midi_keys():
-    # 88 note piano goes from C1 to C7 with a few extra keys in 0 and 8 octave
-    # so we add them manually before + after
-    full_notes = [
-        "A0",
-        "B0"
-    ]
-    # Limit octaves from 1-7
-    limit_octaves = octaves.copy()
-    limit_octaves.remove(0)
-    limit_octaves.remove(8)
+    full_notes = []
     
     # Generate notes with numbers (e.g. C#4, C#5, etc)
     for note in midi_note_map:
-        for octave in limit_octaves:
+        for octave in octaves:
             full_notes.append(note + str(octave))
         
         full_notes.append("C8")
@@ -662,12 +653,13 @@ def check_for_midi_file(context):
 def get_note_letter(note):
     # Figure out the actual note "letter" (e.g. C, C#, etc)
     # Get the octave
-    octave = round(note / 12)
+    octave_base = math.floor(note / 12)
     # MIDI note number = current octave * 12 + the note index (0-11)
-    octave_offset = octave * 12
+    octave_offset = octave_base * 12
     note_index = note - octave_offset
     note_letter = midi_note_map[note_index]
-    # print("Note: {}{}".format(note_letter, octave))
+    octave = octave_base - 1
+    print("Note: {}{}".format(note_letter, octave))
 
     return note_letter, octave
 
@@ -730,6 +722,8 @@ class ParsedMidiFile:
                 pressed = True if msg.type == "note_on" else False
                 released = True if msg.type == "note_off" else False
 
+
+                print("midi note number", msg.note)
                 # Figure out the actual note "letter" (e.g. C, C#, etc)
                 note_letter, octave = get_note_letter(msg.note)
                 
@@ -986,11 +980,14 @@ def animate_keys(context, note_letter, octave: int, real_keyframe, pressed, has_
     if collection_mode:
         note = note_letter + str(octave)
 
+    print("animating key", note, octave)
+
     # Keyframe generation
     # Get the right object corresponding to the note
     move_obj = get_note_obj(midi_keyframe_props, note_letter, octave)
     if move_obj == None:
         return
+    
     
     # Save initial position as previous frame
     match animation_type:

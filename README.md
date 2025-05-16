@@ -25,12 +25,14 @@ You can animate piano keys using rotation, buttons using movement, or get more c
 
 ## ⬇️ Installation
 
-1. [Download the plugin zip](https://github.com/whoisryosuke/blender-midi-keyframes/releases/download/latest/midi-to-keyframes-v0.0.6.zip)
+1. [Download the plugin zip](https://github.com/whoisryosuke/blender-midi-keyframes/releases/download/latest/midi_motion-0.0.7.zip)
 1. Open Blender
 1. Go to Edit > Preferences and go to the Addons tab on left.
 1. Click install button.
 1. Select the zip you downloaded.
-1. You can confirm it's installed by searching for **"MIDI to Keyframes"** and seeing if it's checked off
+1. You can confirm it's installed by searching for **"MIDI Motion"** and seeing if it's checked off
+
+> If you still have MIDI to Keyframes installed, you can remove it. MIDI Motion is the newer version of that plugin.
 
 ## 🎥 Tutorial
 
@@ -59,7 +61,7 @@ I did [a full breakdown on my blog here](https://whoisryosuke.com/blog/2024/midi
 1. Bump version in `__init__.py`
 1. Bump version in `blender_manifest.toml`
 1. `blender --command extension build --output-dir dist`
-1. Upload the new `.zip` file generated inside `/dist` folder to Blender addon marketplace and [GitHub Releases page](https://github.com/whoisryosuke/blender-midi-keyframes/releases/new).
+1. Upload the new `.zip` file generated inside `/dist` folder to [GitHub Releases page](https://github.com/whoisryosuke/blender-midi-keyframes/releases/new).
 1. Update the `README.md` Installation instructions with the new URL to the release ZIP.
 
 > On Windows? You can add `blender` to your command line by going to Start annd searching for "Edit Environment Variables for your account". Find the Variable "PATH" and edit it. Add the full path to where your `blender.exe` is located (e.g. `C:/Program Files/Blender/4.2/`).

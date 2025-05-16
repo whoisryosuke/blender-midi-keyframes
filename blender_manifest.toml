@@ -2,16 +2,16 @@ schema_version = "1.0.0"
 
 # Example of manifest file for a Blender extension
 # Change the values according to your extension
-id = "midi_to_keyframes"
-version = "0.0.6"
-name = "MIDI to Keyframes"
-tagline = "Import MIDI files and generate animation keyframes"
+id = "midi_motion"
+version = "0.0.7"
+name = "MIDI Motion"
+tagline = "Import MIDI files and generate animations"
 maintainer = "Ryosuke <ryosuke.san.hana@gmail.com>"
 # Supported types: "add-on", "theme"
 type = "add-on"
 
 # # Optional: link to documentation, support, source files, etc
-website = "https://github.com/whoisryosuke/blender-midi-keyframes"
+website = "https://github.com/whoisryosuke/blender-midi-motion"
 
 # # Optional: tag list defined by Blender and server, see:
 # # https://docs.blender.org/manual/en/dev/advanced/extensions/tags.html

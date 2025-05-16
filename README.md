@@ -25,7 +25,7 @@ You can animate piano keys using rotation, buttons using movement, or get more c
 
 ## ⬇️ Installation
 
-1. [Download the plugin zip](https://github.com/whoisryosuke/blender-midi-keyframes/releases/download/latest/midi_motion-0.0.7.zip)
+1. [Download the plugin zip](https://github.com/whoisryosuke/blender-midi-keyframes/releases/download/latest/midi_motion-0.0.8.zip)
 1. Open Blender
 1. Go to Edit > Preferences and go to the Addons tab on left.
 1. Click install button.

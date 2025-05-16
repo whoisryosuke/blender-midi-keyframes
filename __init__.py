@@ -659,7 +659,7 @@ def get_note_letter(note):
     note_index = note - octave_offset
     note_letter = midi_note_map[note_index]
     octave = octave_base - 1
-    print("Note: {}{}".format(note_letter, octave))
+    # print("Note: {}{}".format(note_letter, octave))
 
     return note_letter, octave
 
@@ -722,8 +722,6 @@ class ParsedMidiFile:
                 pressed = True if msg.type == "note_on" else False
                 released = True if msg.type == "note_off" else False
 
-
-                print("midi note number", msg.note)
                 # Figure out the actual note "letter" (e.g. C, C#, etc)
                 note_letter, octave = get_note_letter(msg.note)
                 

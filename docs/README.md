@@ -1,6 +1,19 @@
-# Website
+# MIDI Motion Documentation
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+The documentation website for the MIDI Motion plugin, built using [Docusaurus](https://docusaurus.io/).
+
+## How it works
+
+The [frontpage is located here](docs\src\pages\index.tsx). It's the only page that's built fully in React. It contains a few fun components that handle the 3D rendering and MIDI animations.
+
+All documentation content is written in MDX files (basically Markdown with React components added). Content is located in `docs/docs/`.
+
+### Tips
+
+- Keep images located alongside documentation (unless it's used globally). Add an `assets/` folder to the MDX content folder and place any images inside.
+- There's a few "preset" React components you can use anywhere in MDX files, like embeds for social media. [Find a full list here](docs\src\theme\MDXComponents\index.tsx).
+
+## Development
 
 ### Installation
 
@@ -26,16 +39,8 @@ This command generates static content into the `build` directory and can be serv
 
 ### Deployment
 
-Using SSH:
+Push changes to `main` branch and documentation website should automatically build to GitHub Pages using GitHub Actions. See `.github/workflows/` for more info.
 
-```
-$ USE_SSH=true yarn deploy
-```
+## References
 
-Not using SSH:
-
-```
-$ GIT_USER=<Your GitHub username> yarn deploy
-```
-
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+- [Docusaurus](https://docusaurus.io/)

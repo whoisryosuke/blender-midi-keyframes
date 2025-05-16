@@ -31,6 +31,27 @@ The plugin will do this for all notes in the MIDI file. If no object is found fo
 
 Done! Select one of your piano keys to see if it has animation keyframes.
 
+## Example file
+
+To make things easier, we have an example Blender file with an 88-key piano with all the objects named properly.
+
+![The example file open in Blender with a 88 3D black and white piano keys](./assets/collection-mode-example-file.png)
+
+[You can download it here.](https://github.com/whoisryosuke/blender-midi-motion/tree/main/examples/MIDI Motion - 88 Key Collection - V1.blend)
+
+Here's how to use it:
+
+1. Open the Blender file.
+1. Open the MIDI plugin panel if it's not already open
+1. Select a MIDI file and change the animation settings to your liking.
+1. Change to collection mode if not already.
+1. Select the Piano Keys collection.
+1. Click **Piano Key Animation** when ready to generate the animation.
+
+The piano keys should be animated, play the animation or select one of them to confirm it has keyframes.
+
+There's a camera setup in the scene that's focused on the keyboard, so you can move it around anywhere and keep it in view. The only thing missing is some good lighting, I'd recommend downloading an HDR and just using that.
+
 ## Naming objects
 
 The plugin searches for objects inside your selected collection with the note name at the end. For example, `C#4` would search for objects like `Whatever.C#4` or `Cube.001.C#4`.

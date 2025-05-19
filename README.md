@@ -6,7 +6,9 @@
 
 This is a free Blender addon to import MIDI files and generate animations using keyframes or actions. It assigns the animations to objects you assign as piano keys.
 
-You can animate piano keys using rotation, buttons using movement, or get more creative with any object using the scale.
+You can animate "piano key" objects using rotation, buttons using movement, or get more creative using the scale.
+
+**[📘 Documentation](https://whoisryosuke.github.io/blender-midi-motion/)** | **[📂 Download](#️-installation)**
 
 # Features:
 
@@ -42,7 +44,7 @@ Here's [a video walkthrough](https://www.youtube.com/watch?v=E4wfblQWhtY) of the
 
 ## 🔰 How to use
 
-Check out [our documentation website](https://whoisryosuke.github.io/blender-midi-motion/docs/getting-started) for guides, tips, and resources.
+Check out **[our documentation website](https://whoisryosuke.github.io/blender-midi-motion/docs/getting-started)** for guides, tips, and resources.
 
 ## ⚙️ How it works
 

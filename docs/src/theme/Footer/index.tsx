@@ -23,7 +23,9 @@ function Footer(): ReactNode {
           <p>MIDI animation made easy with one plugin.</p>
           <p>
             Created with 💙 by
-            [@whoisryosuke](https://bsky.app/profile/whoisryosuke.bsky.social)
+            <a href="https://bsky.app/profile/whoisryosuke.bsky.social">
+              @whoisryosuke
+            </a>
           </p>
         </div>
         <FooterLinks title="Guides" links={LINKS.guides} />

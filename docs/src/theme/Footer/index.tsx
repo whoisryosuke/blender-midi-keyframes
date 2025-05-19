@@ -21,6 +21,10 @@ function Footer(): ReactNode {
             alt="MIDI Motion logo"
           />
           <p>MIDI animation made easy with one plugin.</p>
+          <p>
+            Created with 💙 by
+            [@whoisryosuke](https://bsky.app/profile/whoisryosuke.bsky.social)
+          </p>
         </div>
         <FooterLinks title="Guides" links={LINKS.guides} />
         <FooterLinks title="Resources" links={LINKS.resources} />

@@ -3,55 +3,57 @@ export type FooterLink = {
   href: string;
 };
 
+const DOCS_URL = "/blender-midi-motion/docs";
+
 const GUIDES: FooterLink[] = [
   {
-    href: "#",
+    href: `${DOCS_URL}/getting-started`,
     title: "Installation",
   },
   {
-    href: "#",
+    href: `${DOCS_URL}/getting-started`,
     title: "Getting Started",
   },
   {
-    href: "#",
+    href: `${DOCS_URL}/exporting/export`,
     title: "Exporting to GLTF",
   },
-  {
-    href: "#",
-    title: "Ableton Live Workflow",
-  },
+  // {
+  //   href: "#",
+  //   title: "Ableton Live Workflow",
+  // },
 ];
 
 const RESOURCES: FooterLink[] = [
   {
-    href: "#",
+    href: `${DOCS_URL}/resources/example-files`,
     title: "Free Blender Templates",
   },
   {
-    href: "#",
+    href: "https://www.youtube.com/watch?v=E4wfblQWhtY",
     title: "Video Tutorial Walkthrough",
   },
   {
-    href: "#",
-    title: "Examples",
+    href: `${DOCS_URL}/resources/showcase`,
+    title: "Showcase",
   },
 ];
 
 const SOCIAL: FooterLink[] = [
   {
-    href: "#",
+    href: "https://www.instagram.com/whoisryosuke/",
     title: "Instagram",
   },
   {
-    href: "#",
+    href: "https://bsky.app/profile/whoisryosuke.bsky.social",
     title: "Bluesky",
   },
   {
-    href: "#",
+    href: "https://www.threads.com/@whoisryosuke",
     title: "Threads",
   },
   {
-    href: "#",
+    href: "https://www.youtube.com/@whoisryosuke",
     title: "YouTube",
   },
 ];

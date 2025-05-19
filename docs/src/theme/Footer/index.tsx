@@ -21,7 +21,7 @@ function Footer(): ReactNode {
             alt="MIDI Motion logo"
           />
           <p>MIDI animation made easy with one plugin.</p>
-          <p>
+          <p style={{ fontSize: "0.8rem" }}>
             Created with 💙 by
             <a href="https://bsky.app/profile/whoisryosuke.bsky.social">
               @whoisryosuke

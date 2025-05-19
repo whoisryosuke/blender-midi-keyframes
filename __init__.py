@@ -695,6 +695,7 @@ class ParsedMidiFile:
             # We also see if there's any stopping points using `note_off`
             # If missing - we assume notes are held for 1 second (like 1 block in FLStudio)
             if msg.type == 'note_off':
+                print("MIDI has release notes")
                 self.has_release = True
 
     def for_each_key(self, context, key_callback):
@@ -737,7 +738,7 @@ class ParsedMidiFile:
 
                 real_keyframe = (real_time * fps) + 1
 
-                key_callback(context, note_letter, octave, real_keyframe, pressed, self.has_release, last_keyframe, last_note)
+                key_callback(context, note_letter, octave, real_keyframe, pressed, released, self.has_release, last_keyframe, last_note)
 
                 last_keyframe = real_keyframe
                 last_note = note_letter
@@ -922,7 +923,7 @@ class GI_generate_jumping_animation(bpy.types.Operator):
         return {"FINISHED"}
 
 # Animates objects up and down like piano keys
-def animate_actions(context, note_letter, octave: int, real_keyframe, pressed, has_release, prev_keyframe, prev_note):
+def animate_actions(context, note_letter, octave: int, real_keyframe, pressed, released, has_release, prev_keyframe, prev_note):
     midi_keyframe_props = context.scene.midi_keyframe_props
     advanced_mode = midi_keyframe_props.action_advanced_mode
     action = midi_keyframe_props.action_default
@@ -956,7 +957,7 @@ def animate_actions(context, note_letter, octave: int, real_keyframe, pressed, h
     new_strip.extrapolation = 'NOTHING'
 
 # Animates objects up and down like piano keys
-def animate_keys(context, note_letter, octave: int, real_keyframe, pressed, has_release, prev_keyframe, prev_note):
+def animate_keys(context, note_letter, octave: int, real_keyframe, pressed, released, has_release, prev_keyframe, prev_note):
     midi_keyframe_props = context.scene.midi_keyframe_props
     collection_mode = midi_keyframe_props.collection_mode
     initial_state = midi_keyframe_props.initial_state
@@ -1002,41 +1003,63 @@ def animate_keys(context, note_letter, octave: int, real_keyframe, pressed, has_
             move_obj.keyframe_insert(data_path="rotation_euler", frame=real_keyframe - 1)
 
     # Move the object
-    match animation_type:
-        case "MOVE":
-            # Position distance is negative for pressing (since we're in Z-axis going "down")
-            # But it can be flipped by user preference
-            reverse_direction = midi_keyframe_props.travel_distance * direction_factor
-            move_distance = reverse_direction + initial_state[note] if pressed else initial_state[note]
-            move_obj.location[axis] = move_distance
-            move_obj.keyframe_insert(data_path="location", frame=real_keyframe)
-        case "SCALE":
-            # Scale "distance" is positive for pressing
-            move_distance = midi_keyframe_props.travel_distance + initial_state[note] if pressed else initial_state[note]
-            move_obj.scale = (move_distance,move_distance,move_distance)
-            move_obj.keyframe_insert(data_path="scale", frame=real_keyframe)
-        case "ROTATE":
-            # Rotation distance is positive for pressing
-            reverse_direction = midi_keyframe_props.travel_distance * direction_factor
-            move_distance = reverse_direction + initial_state[note] if pressed else initial_state[note]
-            move_obj.rotation_euler[axis] = math.radians(move_distance)
-            move_obj.keyframe_insert(data_path="rotation_euler", frame=real_keyframe)
+    if pressed:
+        match animation_type:
+            case "MOVE":
+                # Position distance is negative for pressing (since we're in Z-axis going "down")
+                # But it can be flipped by user preference
+                reverse_direction = midi_keyframe_props.travel_distance * direction_factor
+                move_distance = reverse_direction + initial_state[note]
+                move_obj.location[axis] = move_distance
+                move_obj.keyframe_insert(data_path="location", frame=real_keyframe)
+            case "SCALE":
+                # Scale "distance" is positive for pressing
+                move_distance = midi_keyframe_props.travel_distance + initial_state[note]
+                move_obj.scale = (move_distance,move_distance,move_distance)
+                move_obj.keyframe_insert(data_path="scale", frame=real_keyframe)
+            case "ROTATE":
+                # Rotation distance is positive for pressing
+                reverse_direction = midi_keyframe_props.travel_distance * direction_factor
+                move_distance = reverse_direction + initial_state[note]
+                move_obj.rotation_euler[axis] = math.radians(move_distance)
+                move_obj.keyframe_insert(data_path="rotation_euler", frame=real_keyframe)
+    if released:
+        match animation_type:
+            case "MOVE":
+                # Position distance is negative for pressing (since we're in Z-axis going "down")
+                # But it can be flipped by user preference
+                reverse_direction = midi_keyframe_props.travel_distance * direction_factor
+                move_distance = initial_state[note]
+                move_obj.location[axis] = move_distance
+                move_obj.keyframe_insert(data_path="location", frame=real_keyframe)
+            case "SCALE":
+                # Scale "distance" is positive for pressing
+                move_distance = initial_state[note]
+                move_obj.scale = (move_distance,move_distance,move_distance)
+                move_obj.keyframe_insert(data_path="scale", frame=real_keyframe)
+            case "ROTATE":
+                # Rotation distance is positive for pressing
+                reverse_direction = midi_keyframe_props.travel_distance * direction_factor
+                move_distance = initial_state[note]
+                move_obj.rotation_euler[axis] = math.radians(move_distance)
+                move_obj.keyframe_insert(data_path="rotation_euler", frame=real_keyframe)
 
     # Does the file not have "released" notes? Create one if not
     # TODO: Figure out proper "hold" time based on time scale
-    match animation_type:
-        case "MOVE":
-            move_obj.location[axis] = initial_state[note]
-            move_obj.keyframe_insert(data_path="location", frame=real_keyframe + 10)
-        case "SCALE":
-            move_obj.scale = (initial_state[note],initial_state[note],initial_state[note])
-            move_obj.keyframe_insert(data_path="scale", frame=real_keyframe + 10)
-        case "ROTATE":
-            move_obj.rotation_euler[axis] = initial_state[note]
-            move_obj.keyframe_insert(data_path="rotation_euler", frame=real_keyframe + 10)
+    if not has_release:
+        match animation_type:
+            case "MOVE":
+                move_obj.location[axis] = initial_state[note]
+                move_obj.keyframe_insert(data_path="location", frame=real_keyframe + 10)
+            case "SCALE":
+                move_obj.scale = (initial_state[note],initial_state[note],initial_state[note])
+                move_obj.keyframe_insert(data_path="scale", frame=real_keyframe + 10)
+            case "ROTATE":
+                move_obj.rotation_euler[axis] = initial_state[note]
+                move_obj.keyframe_insert(data_path="rotation_euler", frame=real_keyframe + 10)
 
 # Animates an object to "jump" between keys
-def animate_jump(context, note_letter, octave, real_keyframe, pressed, has_release, prev_keyframe, prev_note):
+def animate_jump(context, note_letter, octave, real_keyframe, pressed, released, has_release, prev_keyframe, prev_note):
     midi_keyframe_props = context.scene.midi_keyframe_props
     # Keyframe generation
     # Get the right object corresponding to the note

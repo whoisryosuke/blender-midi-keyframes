@@ -51,7 +51,7 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: "img/docusaurus-social-card.jpg",
+    image: "img/midi-motion-social-preview.png",
     navbar: {
       logo: {
         alt: "MIDI Motion Blender Plugin Logo",

@@ -3,7 +3,7 @@ schema_version = "1.0.0"
 # Example of manifest file for a Blender extension
 # Change the values according to your extension
 id = "midi_motion"
-version = "0.0.8"
+version = "0.0.9"
 name = "MIDI Motion"
 tagline = "Import MIDI files and generate animations"
 maintainer = "Ryosuke <ryosuke.san.hana@gmail.com>"

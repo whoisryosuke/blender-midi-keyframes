@@ -2,7 +2,7 @@ bl_info = {
     "name": "MIDI Motion",
     "description": "Import MIDI files and generate animations",
     "author": "whoisryosuke",
-    "version": (0, 0, 8),
+    "version": (0, 0, 9),
     "blender": (2, 80, 0), # not sure if this is right
     "location": "Properties > Output",
     "warning": "Make sure to press 'Install dependencies' button in the plugin panel before using", # used for warning icon and text in addons panel

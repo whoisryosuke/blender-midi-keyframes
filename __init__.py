@@ -694,7 +694,7 @@ class ParsedMidiFile:
 
             # We also see if there's any stopping points using `note_off`
             # If missing - we assume notes are held for 1 second (like 1 block in FLStudio)
-            if msg.type == 'note_off':
+            if msg.type == 'note_off' or msg.type == 'note_on' and msg.velocity == 0:
                 print("MIDI has release notes")
                 self.has_release = True
 
@@ -720,8 +720,8 @@ class ParsedMidiFile:
             # print(msg.type)
             is_note = True if msg.type == "note_on" or msg.type == "note_off" else False
             if not msg.is_meta and is_note:
-                pressed = True if msg.type == "note_on" else False
-                released = True if msg.type == "note_off" else False
+                pressed = True if msg.type == "note_on" and msg.velocity > 0 else False
+                released = True if msg.type == "note_off" or msg.type == "note_on" and msg.velocity == 0 else False
 
                 # Figure out the actual note "letter" (e.g. C, C#, etc)
                 note_letter, octave = get_note_letter(msg.note)
